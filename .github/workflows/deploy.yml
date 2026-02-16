@@ -31,9 +31,9 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/steam-mind/**"
+          source: "dist/steam-mind/browser/**"
           target: "/var/www/roboticsworld"
-          strip_components: 2
+          strip_components: 3
 
       - name: Fix Permissions and Reload Nginx
         uses: appleboy/ssh-action@v1.0.3
