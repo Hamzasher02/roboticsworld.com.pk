@@ -1,0 +1,48 @@
+﻿<!-- Overlay -->
+<div class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 px-4 py-6" role="dialog"
+    aria-modal="true" aria-label="Course Feedback">
+    <!-- Modal -->
+    <div class="w-full max-w-[600px] overflow-hidden rounded-[26px] bg-white shadow-[0_18px_45px_rgba(0,0,0,0.25)]">
+        <!-- Header -->
+        <div class="relative px-12 pt-8 pb-6">
+            <h2 class="text-[26px] font-semibold text-gray-900">Course Feedback</h2>
+
+            <a aria-label="Close" (click)="goBack()"
+                class="absolute right-8 top-8 inline-flex h-9 w-9 items-center justify-center rounded-full text-gray-800 hover:bg-gray-100 cursor-pointer">
+                <span class="text-[20px] leading-none">×</span>
+            </a>
+        </div>
+
+        <!-- Divider -->
+        <div class="h-px w-full bg-gray-200"></div>
+
+        <!-- Body -->
+        <div class="px-12 pt-8 pb-10">
+            <div class="flex items-center justify-between">
+                <p class="text-[13px] font-semibold text-gray-900">
+                    How has your experience been with this course?
+                </p>
+                <div class="flex gap-1.5">
+                    <img *ngFor="let i of [1,2,3,4,5]" (click)="setRating(i)"
+                        [src]="i <= rating ? 'assets/student/courseImage/goldStart.svg' : 'assets/student/courseImage/outlineStart.svg'"
+                        alt="star" class="h-6 w-6 cursor-pointer transition-transform hover:scale-110" />
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="mt-4">
+                <textarea rows="6" [(ngModel)]="feedbackText" name="feedbackText"
+                    class="w-full resize-none rounded-none border border-gray-400 bg-white px-4 py-3 text-[12px] text-gray-900 outline-none placeholder:text-gray-500 focus:border-gray-500"
+                    placeholder="Share your thought about the course content, instructor, pace or any suggestions for improvement...."></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div class="mt-6 flex justify-end">
+                <button type="button" (click)="submitFeedback()" [disabled]="isSubmitting"
+                    class="h-[44px] w-[150px] rounded-[6px] bg-[#FF6A3D] text-[13px] font-semibold text-white shadow-[0_2px_0_rgba(0,0,0,0.10)] hover:bg-[#ff5b2a] disabled:opacity-50 disabled:cursor-not-allowed">
+                    {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

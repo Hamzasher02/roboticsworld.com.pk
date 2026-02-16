@@ -1,0 +1,15 @@
+/* hide indicator container */
+:host ::ng-deep .p-carousel-indicators,
+:host ::ng-deep .p-carousel-indicator,
+:host ::ng-deep .p-carousel-indicator button {
+  display: none !important;
+}
+
+/* remove reserved space under carousel */
+:host ::ng-deep .p-carousel-content {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+:host ::ng-deep p-carousel div[class*="indicator"] {
+  display: none !important;
+}

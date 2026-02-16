@@ -1,0 +1,128 @@
+<!-- contact-us.component.html -->
+<section class="w-full bg-white">
+  <div class="bg-[#F5F5F566] mx-auto flex w-full max-w-[1320px] flex-col px-4 pt-10 sm:px-6 sm:pt-12 lg:px-10 lg:pt-14">
+    <!-- TOP HERO ROW -->
+    <div class="flex w-full flex-col items-start justify-between gap-10 lg:flex-row lg:items-center">
+      <!-- Left -->
+      <div class="flex w-full flex-col lg:max-w-[640px]">
+        <h1 class="text-[26px] font-extrabold leading-[1.15] text-black sm:text-[34px] lg:text-[40px]">
+          {{ hero.titleA }}
+          <span class="text-[#FF6A3D]"> {{ hero.titleB }} </span>
+        </h1>
+
+        <p class="mt-4 max-w-[560px] text-[12px] leading-5 text-black/70 sm:text-[13px] sm:leading-6">
+          {{ hero.desc }}
+        </p>
+
+        <div class="mt-6 text-[16px] font-extrabold text-black sm:text-[18px]">
+          {{ hero.subTitle }}
+        </div>
+
+        <p class="mt-2 max-w-[560px] text-[12px] leading-5 text-black/70 sm:text-[13px] sm:leading-6">
+          {{ hero.subDesc }}
+        </p>
+
+        <!-- Contact list -->
+        <div class="mt-6 flex w-full flex-col gap-3">
+          <div
+            *ngFor="let item of contactItems"
+            class="flex w-full items-start gap-3"
+          >
+            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[2px] bg-[#FF6A3D]">
+              <img [src]="item.icon" alt="" class="h-4 w-4" draggable="false" />
+            </div>
+            <div class="pt-[2px] text-[12px] leading-5 text-black/80 sm:text-[13px]">
+              {{ item.label }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+   <!-- Right -->
+<div class="relative flex w-full items-center justify-center lg:w-[520px]">
+  <img
+    src="assets/steam-mind/contact-us/girl.png"
+    alt="Contact Illustration"
+    class="w-[300px] max-w-full object-contain sm:w-[380px] lg:w-[460px]"
+    draggable="false"
+  />
+</div>
+
+
+
+
+    </div>
+  </div>
+
+  <!-- PURPLE BAND BACKGROUND (as screenshot) -->
+  <div class="mt-10 w-full bg-[#E9D8EA] pb-14 pt-10 sm:pb-16 sm:pt-12">
+    <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 sm:px-6 lg:px-10">
+      <!-- Card -->
+      <div class="flex w-full flex-col rounded-[14px] bg-white shadow-[0_12px_30px_rgba(0,0,0,0.10)]">
+        <div class="flex w-full flex-col items-stretch gap-10 px-6 py-10 sm:px-10 sm:py-12 lg:flex-row lg:items-center lg:justify-between lg:px-12">
+          <!-- Left illustration -->
+          <div class="flex w-full items-center justify-center lg:w-[44%]">
+            <img
+              [src]="section.leftIllustration"
+              alt="Contact illustration"
+              class="w-[260px] max-w-full object-contain sm:w-[320px] lg:w-[360px]"
+              draggable="false"
+            />
+          </div>
+
+          <!-- Right form -->
+          <div class="flex w-full flex-col lg:w-[56%]">
+            <div class="flex w-full items-center justify-center">
+              <div class="text-[20px] font-extrabold text-black sm:text-[22px]">
+                {{ section.title }}
+              </div>
+            </div>
+
+            <form (ngSubmit)="submit()" class="mt-6 flex w-full flex-col items-center">
+              <div class="flex w-full max-w-[520px] flex-col gap-3">
+                <input
+                  type="email"
+                  name="email"
+                  [(ngModel)]="form.email"
+                  placeholder="Enter your Email"
+                  class="h-10 w-full rounded-[3px] bg-[#F3F3F3] px-3 text-[12px] text-black placeholder:text-black/40 outline-none focus:ring-2 focus:ring-[#9B3AA1]/25"
+                  required
+                />
+
+                <input
+                  type="text"
+                  name="subject"
+                  [(ngModel)]="form.subject"
+                  placeholder="Enter Message Subject"
+                  class="h-10 w-full rounded-[3px] bg-[#F3F3F3] px-3 text-[12px] text-black placeholder:text-black/40 outline-none focus:ring-2 focus:ring-[#9B3AA1]/25"
+                  required
+                />
+
+                <textarea
+                  name="message"
+                  [(ngModel)]="form.message"
+                  rows="4"
+                  placeholder="Go a head, we’re listening"
+                  class="min-h-[90px] w-full resize-none rounded-[3px] bg-[#F3F3F3] px-3 py-2 text-[12px] text-black placeholder:text-black/40 outline-none focus:ring-2 focus:ring-[#9B3AA1]/25"
+                  required
+                ></textarea>
+
+                <div class="mt-2 flex w-full items-center justify-start">
+                  <button
+                    type="submit"
+                    class="inline-flex h-9 w-[140px] items-center justify-center rounded-full bg-[#9B3AA1] text-[12px] font-semibold text-white shadow-[0_10px_22px_rgba(155,58,161,0.28)] active:scale-[0.99]"
+                  >
+                    {{ section.btnText }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- bottom tiny spacing like screenshot -->
+      <div class="h-4"></div>
+    </div>
+  </div>
+</section>

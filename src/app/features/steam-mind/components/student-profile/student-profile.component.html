@@ -1,0 +1,451 @@
+<!-- ✅ STUDENT SIGNUP (ORANGE THEME) -->
+<main class="min-h-screen w-full bg-[#EEF0FF]">
+  <div class="mx-auto flex min-h-screen w-full items-start justify-center px-4 py-10 sm:py-14">
+    <div class="flex w-full max-w-[6000px] flex-col items-center">
+      <!-- Title -->
+      <div class="flex w-full flex-col items-center justify-center">
+        <h1 class="text-center text-[26px] font-extrabold leading-[1.1] text-[#111827]">
+          Join Our Learning Platform
+        </h1>
+        <p class="mt-1 text-center text-[13px] font-medium leading-[1.2] text-[#6B7280]">
+          Create your account to get started
+        </p>
+      </div>
+
+      <!-- Outer Card -->
+      <div
+        class="mt-6 flex w-full max-w-3xl flex-col overflow-hidden rounded-[12px] border border-[#E5E7EB] bg-rose-50/40 shadow-[0_10px_25px_rgba(17,24,39,0.10)]">
+        <!-- Orange Header -->
+        <div class="flex w-full items-center justify-center px-6 pt-6">
+          <div
+            class="flex h-[48px] w-full max-w-[780px] items-center justify-center gap-2 rounded-[8px] bg-[#FF6A3D] text-white">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="shrink-0">
+              <path d="M12 12c2.761 0 5-2.239 5-5S14.761 2 12 2 7 4.239 7 7s2.239 5 5 5Z" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" />
+              <path d="M20 22a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span class="text-[16px] font-semibold">Student</span>
+          </div>
+        </div>
+
+        <div class="flex w-full flex-col px-6 pb-6 pt-5 sm:px-8">
+          <!-- PERSONAL INFO -->
+          <section class="flex w-full flex-col rounded-[12px] border border-[#E5E7EB] bg-rose-50/40 p-6">
+            <div class="flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#FF6A3D]">
+                <path d="M12 12c2.761 0 5-2.239 5-5S14.761 2 12 2 7 4.239 7 7s2.239 5 5 5Z" fill="currentColor"
+                  opacity="0.95" />
+                <path d="M20 22a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <h4 class="text-[14px] font-semibold text-[#111827]">
+                Personal Information
+              </h4>
+            </div>
+
+            <!-- Avatar -->
+            <div class="mt-6 flex w-full flex-col items-center justify-center">
+              <div class="relative">
+                <div
+                  class="flex h-[92px] w-[92px] items-center justify-center overflow-hidden rounded-full bg-[#FFE7DE]">
+                  <!-- ✅ if preview exists show image -->
+                  <img *ngIf="personal.avatarPreview" [src]="personal.avatarPreview" alt="Profile"
+                    class="h-full w-full object-cover" draggable="false" />
+
+                  <!-- ✅ else show default icon -->
+                  <svg *ngIf="!personal.avatarPreview" width="34" height="34" viewBox="0 0 24 24" fill="none"
+                    class="text-[#FF6A3D] opacity-80">
+                    <path d="M12 12c2.761 0 5-2.239 5-5S14.761 2 12 2 7 4.239 7 7s2.239 5 5 5Z" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" />
+                    <path d="M20 22a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+
+                <label
+                  class="absolute -bottom-1 -right-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#FF6A3D] shadow-[0_6px_14px_rgba(0,0,0,0.16)]"
+                  title="Upload">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-white">
+                    <path d="M12 16V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M7 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+
+                  <input type="file" accept="image/*" class="hidden" (change)="onAvatarSelected($event)" />
+                </label>
+              </div>
+
+              <p class="mt-3 text-[13px] font-medium text-[#4B5563]">
+                Upload Profile Picture
+              </p>
+            </div>
+
+            <!-- Fields -->
+            <div class="mt-6 flex w-full flex-col gap-5">
+              <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+                <!-- First Name -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">First Name*</label>
+                  <input [(ngModel)]="personal.firstName"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter First Name" />
+                </div>
+
+                <!-- Last Name -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Last Name*</label>
+                  <input [(ngModel)]="personal.lastName"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter Last Name" />
+                </div>
+
+                <!-- Father Name -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Father Name*</label>
+                  <input [(ngModel)]="personal.fatherName"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter Father's Name" />
+                </div>
+
+                <!-- Email -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Email*</label>
+                  <input [(ngModel)]="personal.email"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter email" />
+                </div>
+
+                <!-- Phone -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Phone No*</label>
+                  <input [(ngModel)]="personal.phone"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter phone no" />
+                </div>
+
+                <!-- Parent Phone -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Parent's Phone No*</label>
+                  <input [(ngModel)]="personal.parentPhone"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter parent's phone no" />
+                </div>
+
+                <!-- Age -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Age*</label>
+                  <input [(ngModel)]="personal.age"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter age" />
+                </div>
+
+                <!-- Age Group -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">
+                    Age Group*
+                  </label>
+
+                  <div class="relative w-full">
+                    <select [(ngModel)]="personal.ageGroup" name="ageGroup"
+                      class="h-[42px] w-full appearance-none rounded-[8px] border border-[#FFC9B6] bg-white px-3 pr-10 text-[13px] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]">
+                      <option value="">Select age group</option>
+                      <option *ngFor="let group of ageGroups" [value]="group">{{ group }}</option>
+                    </select>
+
+                    <!-- Orange dropdown icon -->
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#FF6A3D]">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+
+
+                <!-- DOB -->
+                <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Date of Birth*</label>
+
+                  <div class="relative flex w-full items-center">
+                    <input #dobInput type="date" [(ngModel)]="personal.dob"
+                      class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 pr-10 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE] [appearance:textfield] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-10 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer" />
+
+                    <!-- calendar icon (click also opens picker) -->
+                    <button type="button"
+                      class="absolute right-2 flex h-8 w-8 items-center justify-center rounded-[8px]"
+                      (click)="openDobPicker(dobInput)" aria-label="Open calendar">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#FF6A3D]">
+                        <path d="M8 2v3M16 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M3 9h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M6 5h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z"
+                          stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bio -->
+                <div class="flex w-full flex-col">
+                  <label class="mb-1 text-[12px] font-semibold text-[#111827]">Bio*</label>
+                  <textarea [(ngModel)]="personal.bio" rows="5"
+                    class="w-full rounded-[10px] border border-[#FFC9B6] bg-white px-3 py-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Type here..."></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RESIDENCE -->
+          <section class="mt-5 flex w-full flex-col rounded-[12px] border border-[#E5E7EB] bg-rose-50/40 p-6">
+            <div class="flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#FF6A3D]">
+                <path d="M12 22s7-4.5 7-12a7 7 0 1 0-14 0c0 7.5 7 12 7 12Z" stroke="currentColor" stroke-width="2"
+                  stroke-linejoin="round" />
+                <path d="M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" fill="currentColor" />
+              </svg>
+              <h4 class="text-[14px] font-semibold text-[#111827]">
+                Residence Information
+              </h4>
+            </div>
+
+            <div class="mt-5 flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+              <div class="flex w-full flex-col">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Address*</label>
+                <input [(ngModel)]="residence.address"
+                  class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                  placeholder="Street address" />
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">City*</label>
+                <input [(ngModel)]="residence.city"
+                  class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                  placeholder="Enter City Name" />
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Country*</label>
+                <div class="relative flex w-full items-center">
+                  <select [(ngModel)]="residence.country"
+                    class="h-[42px] w-full appearance-none rounded-[8px] border border-[#FFC9B6] bg-white px-3 pr-10 text-[13px] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]">
+                    <option value="" selected>Select Country</option>
+                    <option value="PK">Pakistan</option>
+                    <option value="AE">UAE</option>
+                    <option value="US">USA</option>
+                  </select>
+
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    class="pointer-events-none absolute right-3 text-[#FF6A3D]">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Postal Code*</label>
+                <input [(ngModel)]="residence.postalCode"
+                  class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                  placeholder="12345" />
+              </div>
+            </div>
+          </section>
+
+          <!-- EMERGENCY -->
+          <section class="mt-5 flex w-full flex-col rounded-[12px] border border-[#E5E7EB] bg-rose-50/40 p-6">
+            <div class="flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#FF6A3D]">
+                <path d="M17 21a5 5 0 0 0-10 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="currentColor" opacity="0.9" />
+                <path d="M21 21a4.5 4.5 0 0 0-6-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <h4 class="text-[14px] font-semibold text-[#111827]">
+                Emergency Contacts
+              </h4>
+            </div>
+
+            <div class="mt-5 flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Full Name*</label>
+                <input [(ngModel)]="emergency.fullName"
+                  class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                  placeholder="Enter Name" />
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Relationship*</label>
+                <div class="relative flex w-full items-center">
+                  <select [(ngModel)]="emergency.relationship"
+                    class="h-[42px] w-full appearance-none rounded-[8px] border border-[#FFC9B6] bg-white px-3 pr-10 text-[13px] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]">
+                    <option value="" selected>Select relationship</option>
+                    <option>Father</option>
+                    <option>Mother</option>
+                    <option>Brother</option>
+                    <option>Sister</option>
+                  </select>
+
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    class="pointer-events-none absolute right-3 text-[#FF6A3D]">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Phone No*</label>
+                <input [(ngModel)]="emergency.phone"
+                  class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-white px-3 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                  placeholder="+9231778391" />
+              </div>
+            </div>
+          </section>
+
+          <!-- ACCOUNT SECURITY -->
+          <section class="mt-5 flex w-full flex-col rounded-[12px] border border-[#E5E7EB] bg-[#FFF7F4] p-6">
+            <div class="flex items-center gap-2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#FF6A3D]">
+                <path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M6 11h12v10H6V11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              </svg>
+              <h4 class="text-[14px] font-semibold text-[#111827]">
+                Account Security
+              </h4>
+            </div>
+
+            <div class="mt-5 flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+              <div class="flex w-full flex-col md:w-[calc(50%-10px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Password*</label>
+                <div class="relative w-full">
+                  <input [(ngModel)]="security.password" [type]="showPassword ? 'text' : 'password'"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-gray-50 px-3 pr-10 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Enter password" readonly />
+                  <button type="button" (click)="toggleVisibility('password')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-[#FF6A3D] hover:text-[#FF6A3D]/80">
+                    <svg *ngIf="!showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg *ngIf="showPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                      </path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex w-full flex-col md:w-[calc(50%-10px)]">
+                <label class="mb-1 text-[12px] font-semibold text-[#111827]">Confirm Password*</label>
+                <div class="relative w-full">
+                  <input [(ngModel)]="security.confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                    class="h-[42px] w-full rounded-[8px] border border-[#FFC9B6] bg-gray-50 px-3 pr-10 text-[13px] outline-none placeholder:text-[#9CA3AF] focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]"
+                    placeholder="Re-enter password" readonly />
+                  <button type="button" (click)="toggleVisibility('confirm')"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-[#FF6A3D] hover:text-[#FF6A3D]/80">
+                    <svg *ngIf="!showConfirmPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg *ngIf="showConfirmPassword" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                      </path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Bottom button + login -->
+          <button type="button" (click)="saveChanges()"
+            class="mt-6 flex h-[48px] w-full items-center justify-center rounded-[8px] bg-[#FF6A3D] text-[14px] font-semibold text-white shadow-[0_10px_20px_rgba(255,106,61,0.25)] hover:brightness-95">
+            Sign Up as Student
+          </button>
+
+          <p class="mt-4 text-center text-[13px] text-[#111827]">
+            Already have an account?
+            <a [routerLink]="['/steam-mind/login']" class="font-semibold text-[#FF6A3D] hover:underline">
+              Login here
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ OTP MODAL (Enter OTP) - ORANGE -->
+  <div *ngIf="showOtpModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-3"
+    role="dialog" aria-modal="true">
+    <div class="w-full max-w-[430px] rounded-[16px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.25)]">
+      <div class="flex flex-col items-center px-8 py-8">
+        <div class="text-[30px] font-extrabold text-[#111827]">Enter OTP</div>
+
+        <div class="mt-2 text-center text-[12px] text-[#6B7280]">
+          We have sent a OTP to your Email
+        </div>
+
+        <div class="mt-5 w-full text-left text-[12px] font-semibold text-[#6B7280]">
+          Enter 4-digit OTP
+        </div>
+
+        <!-- OTP boxes -->
+        <div class="mt-3 flex w-full items-center justify-center gap-5" (paste)="onOtpPaste($event)">
+          <input id="otp-0" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[0]"
+            (ngModelChange)="otpDigits[0] = $event" (input)="onOtpInput(0, $event)" (keydown)="onOtpKeyDown(0, $event)"
+            class="h-[46px] w-[56px] rounded-[8px] border border-[#FFC9B6] bg-white text-center text-[16px] font-bold text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]" />
+          <input id="otp-1" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[1]"
+            (ngModelChange)="otpDigits[1] = $event" (input)="onOtpInput(1, $event)" (keydown)="onOtpKeyDown(1, $event)"
+            class="h-[46px] w-[56px] rounded-[8px] border border-[#FFC9B6] bg-white text-center text-[16px] font-bold text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]" />
+          <input id="otp-2" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[2]"
+            (ngModelChange)="otpDigits[2] = $event" (input)="onOtpInput(2, $event)" (keydown)="onOtpKeyDown(2, $event)"
+            class="h-[46px] w-[56px] rounded-[8px] border border-[#FFC9B6] bg-white text-center text-[16px] font-bold text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]" />
+          <input id="otp-3" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[3]"
+            (ngModelChange)="otpDigits[3] = $event" (input)="onOtpInput(3, $event)" (keydown)="onOtpKeyDown(3, $event)"
+            class="h-[46px] w-[56px] rounded-[8px] border border-[#FFC9B6] bg-white text-center text-[16px] font-bold text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-4 focus:ring-[#FFE7DE]" />
+        </div>
+
+        <div *ngIf="otpError" class="mt-3 text-[12px] font-semibold text-red-600">
+          {{ otpError }}
+        </div>
+
+        <!-- Verify button (orange) -->
+        <button type="button" (click)="verifyOtp()" [disabled]="isVerifying"
+          class="mt-6 inline-flex h-[46px] w-[340px] max-w-full items-center justify-center rounded-full bg-[#FF6A3D] text-[14px] font-semibold text-white shadow-[0_10px_20px_rgba(255,106,61,0.25)] hover:brightness-95 disabled:opacity-60">
+          {{ isVerifying ? "Verifying..." : "Verify" }}
+        </button>
+
+        <!-- Resend -->
+        <div class="mt-4 flex items-center justify-center gap-2 text-[12px]">
+          <span class="text-[#9CA3AF]">Didn’t receive code?</span>
+          <button type="button" (click)="resendOtp()" class="font-semibold text-[#FF6A3D] hover:underline">
+            Resend OTP
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ SUCCESS MODAL (Verified) - ORANGE -->
+  <div *ngIf="showVerifiedModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-3"
+    role="dialog" aria-modal="true">
+    <div class="w-full max-w-[430px] rounded-[16px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.25)]">
+      <div class="flex flex-col items-center px-8 py-12">
+        <div class="text-[22px] font-semibold text-[#111827]">
+          Successfully Verified
+        </div>
+
+        <a [routerLink]="['/student']"
+          class="mt-8 inline-flex h-[42px] w-[250px] max-w-full items-center justify-center rounded-full bg-[#FF6A3D] text-[13px] font-semibold text-white shadow-[0_10px_20px_rgba(255,106,61,0.25)] hover:brightness-95">
+          Go To Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</main>

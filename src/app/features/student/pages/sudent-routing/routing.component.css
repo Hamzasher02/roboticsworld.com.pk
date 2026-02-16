@@ -1,0 +1,13 @@
+/* Student Module Toast Styles */
+@media screen and (max-width: 768px) {
+    .p-toast {
+        width: 90vw !important;
+        left: 5vw !important;
+        right: 5vw !important;
+        top: 20px !important;
+    }
+
+    .p-toast-message {
+        width: 100% !important;
+    }
+}

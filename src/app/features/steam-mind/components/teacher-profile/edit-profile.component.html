@@ -1,0 +1,620 @@
+<!-- ✅ src/app/features/steam-mind/pages/edit-profile/edit-profile.component.html -->
+<main class="min-h-screen bg-gray-50">
+  <div class="mx-auto w-full max-w-6xl px-4 py-5">
+    <div class="flex w-full items-center justify-center px-4 py-6">
+      <div class="flex w-full flex-col items-center justify-center">
+        <h1 class="text-center text-[22px] font-extrabold leading-[1.15] text-[#111827] sm:text-[26px]">
+          Join Our Learning Platform
+        </h1>
+        <p class="mt-1 text-center text-[12px] font-medium leading-[1.2] text-[#6B7280] sm:text-[13px]">
+          Create your account to get started
+        </p>
+      </div>
+    </div>
+
+    <div class="mx-auto mt-4 w-full max-w-3xl rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+      <h2 class="mt-2 flex w-full items-center justify-center gap-2 bg-cyan-600 py-3 text-sm font-semibold text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+          <path d="M5 11.5v3.75C5 16.99 8.13 18.5 12 18.5s7-1.51 7-3.25V11.5l-7 3.82-7-3.82z" />
+        </svg>
+        Instructor
+      </h2>
+
+      <!-- ✅ top error/success -->
+      <div *ngIf="submitError" class="mt-4 whitespace-pre-line rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        {{ submitError }}
+      </div>
+
+      <div *ngIf="submitSuccessMsg" class="mt-4 whitespace-pre-line rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+        {{ submitSuccessMsg }}
+      </div>
+
+      <!-- PERSONAL INFORMATION -->
+      <section class="mt-4 rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+        <div class="mb-5 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/Vector.svg" class="h-4 w-4" alt="user" />
+          <h4 class="text-sm font-semibold text-gray-900">Personal Information</h4>
+        </div>
+
+        <!-- Upload profile picture -->
+        <div class="mb-2 flex flex-col items-center justify-center">
+          <div class="relative">
+            <div class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-[#089BC414]">
+              <img *ngIf="user.avatar; else avatarFallback" [src]="user.avatar" class="h-full w-full object-cover" alt="avatar" draggable="false" />
+              <ng-template #avatarFallback>
+                <img src="/assets/instructor-images/profile/edit.svg" class="h-9 w-9 opacity-80" alt="user" />
+              </ng-template>
+            </div>
+
+            <label class="absolute -bottom-1 -right-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-cyan-600 shadow-sm" title="Upload">
+              <img src="/assets/instructor-images/profile/arrow.svg" class="h-4 w-4" alt="upload" />
+              <input type="file" class="hidden" (change)="onAvatarSelected($event)" (blur)="markTouched('avatarFile')" />
+            </label>
+          </div>
+
+          <p class="mt-3 text-sm font-medium text-gray-600">Upload Profile Picture</p>
+
+          <p *ngIf="shouldShowError('avatarFile')" class="mt-2 text-xs font-semibold text-red-600">
+            {{ errors.avatarFile }}
+          </p>
+        </div>
+
+        <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+          <!-- First Name -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">First Name*</label>
+            <input
+              [(ngModel)]="personal.firstName"
+              [class]="inputClass('firstName')"
+              placeholder="Enter First Name"
+              (input)="validateField('firstName')"
+              (blur)="markTouched('firstName')"
+            />
+            <p *ngIf="shouldShowError('firstName')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.firstName }}
+            </p>
+          </div>
+
+          <!-- Last Name -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Last Name*</label>
+            <input
+              [(ngModel)]="personal.lastName"
+              [class]="inputClass('lastName')"
+              placeholder="Enter Last Name"
+              (input)="validateField('lastName')"
+              (blur)="markTouched('lastName')"
+            />
+            <p *ngIf="shouldShowError('lastName')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.lastName }}
+            </p>
+          </div>
+
+          <!-- Father Name -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Father Name*</label>
+            <input
+              [(ngModel)]="personal.fatherName"
+              [class]="inputClass('fatherName')"
+              placeholder="Enter Father’s Name"
+              (input)="validateField('fatherName')"
+              (blur)="markTouched('fatherName')"
+            />
+            <p *ngIf="shouldShowError('fatherName')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.fatherName }}
+            </p>
+          </div>
+
+          <!-- Email -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Email*</label>
+            <input [(ngModel)]="personal.email" disabled class="h-10 w-full rounded-lg border border-gray-200 bg-gray-200 px-3 text-sm text-gray-700 outline-none" />
+          </div>
+
+          <!-- Phone -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Phone No*</label>
+            <input
+              [(ngModel)]="personal.phone"
+              [class]="inputClass('phone')"
+              placeholder="+923001234567"
+              (input)="validateField('phone')"
+              (blur)="markTouched('phone')"
+            />
+            <p *ngIf="shouldShowError('phone')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.phone }}
+            </p>
+          </div>
+
+          <!-- DOB -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Date of Birth*</label>
+            <div class="relative flex w-full items-center">
+              <input
+                #dobInput
+                type="date"
+                [(ngModel)]="personal.dob"
+                [class]="
+                  inputClass('dob') +
+                  ' pr-10 [appearance:textfield] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:w-10 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer'
+                "
+                (click)="openDobPicker(dobInput)"
+                (focus)="openDobPicker(dobInput)"
+                (input)="validateField('dob')"
+                (blur)="markTouched('dob')"
+              />
+              <button type="button" class="absolute right-2 flex h-8 w-8 items-center justify-center rounded-md" (click)="openDobPicker(dobInput)" aria-label="Open calendar">
+                <img src="/assets/instructor-images/profile/dateofbirth.svg" class="h-4 w-4 opacity-80" alt="calendar" />
+              </button>
+            </div>
+            <p *ngIf="shouldShowError('dob')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.dob }}
+            </p>
+          </div>
+
+          <!-- Bio -->
+          <div class="flex w-full flex-col">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Bio*</label>
+            <textarea
+              [(ngModel)]="personal.bio"
+              rows="4"
+              [class]="textareaClass('bio')"
+              placeholder="Type here.."
+              (input)="validateField('bio')"
+              (blur)="markTouched('bio')"
+            ></textarea>
+            <p *ngIf="shouldShowError('bio')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.bio }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESIDENCE INFORMATION -->
+      <section class="mt-5 rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/location.svg" class="h-4 w-4" alt="location" />
+          <h4 class="text-sm font-semibold text-gray-900">Residence Information</h4>
+        </div>
+
+        <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+          <!-- Address -->
+          <div class="flex w-full flex-col">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Address*</label>
+            <input
+              [(ngModel)]="residence.address"
+              [class]="inputClass('address')"
+              placeholder="Street address"
+              (input)="validateField('address')"
+              (blur)="markTouched('address')"
+            />
+            <p *ngIf="shouldShowError('address')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.address }}
+            </p>
+          </div>
+
+          <!-- City -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">City*</label>
+            <input
+              [(ngModel)]="residence.city"
+              [class]="inputClass('city')"
+              placeholder="Enter City Name"
+              (input)="validateField('city')"
+              (blur)="markTouched('city')"
+            />
+            <p *ngIf="shouldShowError('city')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.city }}
+            </p>
+          </div>
+
+          <!-- Country -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Country*</label>
+            <select
+              [(ngModel)]="residence.country"
+              [class]="inputClass('country')"
+              (change)="validateField('country')"
+              (blur)="markTouched('country')"
+            >
+              <option value="" selected>Select Country</option>
+              <option value="PK">Pakistan</option>
+              <option value="AE">UAE</option>
+              <option value="US">USA</option>
+            </select>
+            <p *ngIf="shouldShowError('country')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.country }}
+            </p>
+          </div>
+
+          <!-- Postal Code -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Postal Code*</label>
+            <input
+              [(ngModel)]="residence.postalCode"
+              [class]="inputClass('postalCode')"
+              placeholder="12345"
+              (input)="validateField('postalCode')"
+              (blur)="markTouched('postalCode')"
+            />
+            <p *ngIf="shouldShowError('postalCode')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.postalCode }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMERGENCY CONTACTS -->
+      <section class="mt-5 rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/contact.svg" class="h-4 w-4" alt="users" />
+          <h4 class="text-sm font-semibold text-gray-900">Emergency Contacts</h4>
+        </div>
+
+        <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+          <!-- Full Name -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Full Name*</label>
+            <input
+              [(ngModel)]="emergency.fullName"
+              [class]="inputClass('emergencyFullName')"
+              placeholder="Enter Name"
+              (input)="validateField('emergencyFullName')"
+              (blur)="markTouched('emergencyFullName')"
+            />
+            <p *ngIf="shouldShowError('emergencyFullName')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.emergencyFullName }}
+            </p>
+          </div>
+
+          <!-- Relationship -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Relationship*</label>
+            <select
+              [(ngModel)]="emergency.relationship"
+              [class]="inputClass('relationship')"
+              (change)="validateField('relationship')"
+              (blur)="markTouched('relationship')"
+            >
+              <option value="" selected>Select relationship</option>
+              <option>Father</option>
+              <option>Mother</option>
+              <option>Brother</option>
+              <option>Sister</option>
+            </select>
+            <p *ngIf="shouldShowError('relationship')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.relationship }}
+            </p>
+          </div>
+
+          <!-- Phone -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Phone No*</label>
+            <input
+              [(ngModel)]="emergency.phone"
+              [class]="inputClass('emergencyPhone')"
+              placeholder="+923001234567"
+              (input)="validateField('emergencyPhone')"
+              (blur)="markTouched('emergencyPhone')"
+            />
+            <p *ngIf="shouldShowError('emergencyPhone')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.emergencyPhone }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACADEMIC DETAILS -->
+      <section class="mt-5 rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/cap.svg" class="h-4 w-4" alt="cap" />
+          <h4 class="text-sm font-semibold text-gray-900">Academic Details</h4>
+        </div>
+
+        <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+          <!-- Qualification -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Qualification*</label>
+            <select
+              [(ngModel)]="academic.qualification"
+              [class]="inputClass('qualification')"
+              (change)="validateField('qualification')"
+              (blur)="markTouched('qualification')"
+            >
+              <option value="" selected>Select qualification</option>
+              <option>Ph.D.</option>
+              <option>Masters</option>
+              <option>Bachelors</option>
+            </select>
+            <p *ngIf="shouldShowError('qualification')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.qualification }}
+            </p>
+          </div>
+
+          <!-- Degree Title -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Degree Title*</label>
+            <input
+              [(ngModel)]="academic.degreeTitle"
+              [class]="inputClass('degreeTitle')"
+              placeholder="e.g., Computer Science"
+              (input)="validateField('degreeTitle')"
+              (blur)="markTouched('degreeTitle')"
+            />
+            <p *ngIf="shouldShowError('degreeTitle')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.degreeTitle }}
+            </p>
+          </div>
+
+          <!-- Graduation Year -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Graduation Year*</label>
+            <input
+              [(ngModel)]="academic.graduationYear"
+              [class]="inputClass('graduationYear')"
+              placeholder="e.g., 2019"
+              (input)="validateField('graduationYear')"
+              (blur)="markTouched('graduationYear')"
+            />
+            <p *ngIf="shouldShowError('graduationYear')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.graduationYear }}
+            </p>
+          </div>
+
+          <!-- Total Marks -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Total CGPA/Marks*</label>
+            <input
+              [(ngModel)]="academic.totalMarks"
+              [class]="inputClass('totalMarks')"
+              placeholder="e.g., 1000"
+              (input)="validateField('totalMarks')"
+              (blur)="markTouched('totalMarks')"
+            />
+            <p *ngIf="shouldShowError('totalMarks')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.totalMarks }}
+            </p>
+          </div>
+
+          <!-- Obtained Marks -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Obtained CGPA/Marks*</label>
+            <input
+              [(ngModel)]="academic.obtainedMarks"
+              [class]="inputClass('obtainedMarks')"
+              placeholder="e.g., 850"
+              (input)="validateField('obtainedMarks')"
+              (blur)="markTouched('obtainedMarks')"
+            />
+            <p *ngIf="shouldShowError('obtainedMarks')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.obtainedMarks }}
+            </p>
+          </div>
+
+          <!-- Institution -->
+          <div class="flex w-full flex-col md:w-[calc(33.333%-14px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Institution*</label>
+            <input
+              [(ngModel)]="academic.institution"
+              [class]="inputClass('institution')"
+              placeholder="Enter institution"
+              (input)="validateField('institution')"
+              (blur)="markTouched('institution')"
+            />
+            <p *ngIf="shouldShowError('institution')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.institution }}
+            </p>
+          </div>
+
+          <!-- ✅ Transcript (PDF) -->
+          <div class="flex w-full flex-col">
+            <label class="mb-2 block text-xs font-semibold text-gray-700">Upload Transcript (PDF)*</label>
+
+            <label class="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-cyan-200 bg-[#F9F6F6] px-4 py-10 text-center">
+              <div class="flex h-14 w-14 items-center justify-center rounded-full bg-[#089BC414]">
+                <img src="/assets/instructor-images/profile/upload.svg" class="h-9 w-9" alt="upload" />
+              </div>
+
+              <p class="mt-4 text-sm font-medium text-gray-600">Click to upload (PDF)</p>
+              <p class="mt-1 text-xs text-gray-500">PDF up to 10MB</p>
+
+              <div *ngIf="transcriptFile" class="mt-3 flex w-full flex-col items-center">
+                <p class="text-xs font-semibold text-gray-700">{{ transcriptFile.name }}</p>
+              </div>
+
+              <input
+                type="file"
+                accept="application/pdf"
+                class="hidden"
+                (change)="onTranscriptSelected($event)"
+                (blur)="markTouched('transcriptFile')"
+              />
+            </label>
+
+            <p *ngIf="shouldShowError('transcriptFile')" class="mt-2 text-xs font-semibold text-red-600">
+              {{ errors.transcriptFile }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TEACHING COURSE PREFERENCES -->
+      <section class="mt-5 rounded-2xl border border-gray-200 bg-[#F9F6F6] p-6 shadow-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/lock.svg" class="h-4 w-4" alt="lock" />
+          <h4 class="text-sm font-semibold text-gray-900">Teaching Course Preferences</h4>
+        </div>
+
+        <label class="mb-2 block text-xs font-semibold text-gray-700">Preferred Courses*</label>
+
+        <div class="relative flex w-full items-center">
+          <select
+            [(ngModel)]="teaching.preferredCourse"
+            class="h-10 w-full appearance-none rounded-lg border border-cyan-200 bg-[#F9F6F6] px-3 pr-10 text-sm outline-none focus:border-cyan-500"
+          >
+            <option value="">Select from drop down</option>
+            <option *ngIf="isCoursesLoading" value="" disabled>Loading courses...</option>
+            <option *ngFor="let c of courses" [value]="c._id">{{ c.courseTitle }}</option>
+          </select>
+
+          <img
+            src="/assets/instructor-images/profile/downarrow.svg"
+            class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-80"
+            alt="down"
+          />
+        </div>
+
+        <div *ngIf="teaching.items.length" class="mt-4 flex flex-wrap gap-3">
+          <div
+            *ngFor="let c of teaching.items; let i = index"
+            class="flex items-center gap-3 rounded-lg border border-cyan-200 bg-[#F9F6F6] px-3 py-2 text-sm text-gray-800"
+          >
+            <span class="break-all">
+              {{ getCourseTitleById(c) }}
+            </span>
+
+            <button
+              type="button"
+              (click)="removeCourse(i)"
+              class="flex h-8 w-8 items-center justify-center rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="addCourse()"
+          class="mt-4 inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-700"
+        >
+          <span class="text-lg leading-none">+</span>
+          Add Another
+        </button>
+
+        <p class="mt-2 text-xs text-gray-500">You can add up to 5 courses you'd like to teach.</p>
+
+        <p *ngIf="shouldShowError('coursePreferences')" class="mt-2 text-xs font-semibold text-red-600">
+          {{ errors.coursePreferences }}
+        </p>
+      </section>
+
+      <!-- ACCOUNT SECURITY -->
+      <section class="mt-5 rounded-2xl border border-gray-200 bg-rose-50/40 p-6 shadow-sm">
+        <div class="mb-4 flex items-center gap-2">
+          <img src="/assets/instructor-images/profile/lock.svg" class="h-4 w-4" alt="lock" />
+          <h4 class="text-sm font-semibold text-gray-900">Account Security</h4>
+        </div>
+
+        <div class="flex w-full flex-col gap-5 md:flex-row md:flex-wrap">
+          <!-- Password -->
+          <div class="flex w-full flex-col md:w-[calc(50%-10px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Password*</label>
+            <input
+              [(ngModel)]="security.password"
+              type="password"
+              [class]="inputClass('password')"
+              placeholder="Enter password"
+              (input)="validateField('password'); validateField('confirmPassword')"
+              (blur)="markTouched('password')"
+            />
+            <p *ngIf="shouldShowError('password')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.password }}
+            </p>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="flex w-full flex-col md:w-[calc(50%-10px)]">
+            <label class="mb-1 block text-xs font-semibold text-gray-700">Confirm Password*</label>
+            <input
+              [(ngModel)]="security.confirmPassword"
+              type="password"
+              [class]="inputClass('confirmPassword')"
+              placeholder="Re-enter password"
+              (input)="validateField('confirmPassword')"
+              (blur)="markTouched('confirmPassword')"
+            />
+            <p *ngIf="shouldShowError('confirmPassword')" class="mt-1 text-xs font-semibold text-red-600">
+              {{ errors.confirmPassword }}
+            </p>
+          </div>
+        </div>
+      </section>
+
+    <button
+  type="button"
+  (click)="saveChanges()"
+  [disabled]="isSubmitting"
+  class="mt-6 w-full rounded-lg bg-cyan-600 py-3 text-sm font-semibold text-white hover:bg-cyan-700 disabled:opacity-60"
+>
+  {{ isSubmitting ? 'Submitting...' : 'Sign up as Instructor' }}
+</button>
+
+
+      <p class="mt-3 text-center text-sm text-gray-700">
+        Already have an account?
+        <a [routerLink]="['/steam-mind/login']" class="font-semibold text-cyan-600 hover:text-cyan-700">Login here</a>
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ✅ OTP MODAL -->
+  <div *ngIf="showOtpModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-3" role="dialog" aria-modal="true">
+    <div class="w-full max-w-[430px] rounded-[16px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.25)]">
+      <div class="flex flex-col items-center px-8 py-8">
+        <div class="text-[28px] font-semibold text-gray-900">Enter OTP</div>
+        <div class="mt-2 text-center text-[12px] text-gray-500">We have sent a OTP to your Email</div>
+        <div class="mt-5 w-full text-left text-[12px] font-medium text-gray-600">Enter 4-digit OTP</div>
+
+        <div class="mt-3 flex w-full items-center justify-center gap-5" (paste)="onOtpPaste($event)">
+          <input id="otp-0" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[0]" (ngModelChange)="otpDigits[0]=$event"
+            (input)="onOtpInput(0, $event)" (keydown)="onOtpKeyDown(0, $event)"
+            class="h-[42px] w-[50px] rounded-[6px] border border-[#7CCAF3] text-center text-[16px] font-semibold text-gray-800 outline-none focus:ring-4 focus:ring-[#DBEAFE]" />
+          <input id="otp-1" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[1]" (ngModelChange)="otpDigits[1]=$event"
+            (input)="onOtpInput(1, $event)" (keydown)="onOtpKeyDown(1, $event)"
+            class="h-[42px] w-[50px] rounded-[6px] border border-[#7CCAF3] text-center text-[16px] font-semibold text-gray-800 outline-none focus:ring-4 focus:ring-[#DBEAFE]" />
+          <input id="otp-2" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[2]" (ngModelChange)="otpDigits[2]=$event"
+            (input)="onOtpInput(2, $event)" (keydown)="onOtpKeyDown(2, $event)"
+            class="h-[42px] w-[50px] rounded-[6px] border border-[#7CCAF3] text-center text-[16px] font-semibold text-gray-800 outline-none focus:ring-4 focus:ring-[#DBEAFE]" />
+          <input id="otp-3" inputmode="numeric" maxlength="1" [ngModel]="otpDigits[3]" (ngModelChange)="otpDigits[3]=$event"
+            (input)="onOtpInput(3, $event)" (keydown)="onOtpKeyDown(3, $event)"
+            class="h-[42px] w-[50px] rounded-[6px] border border-[#7CCAF3] text-center text-[16px] font-semibold text-gray-800 outline-none focus:ring-4 focus:ring-[#DBEAFE]" />
+        </div>
+
+        <div *ngIf="otpError" class="mt-3 text-[12px] font-medium text-red-600">{{ otpError }}</div>
+
+        <button
+          type="button"
+          (click)="verifyOtp()"
+          [disabled]="isVerifying"
+          class="mt-6 inline-flex h-[44px] w-[340px] max-w-full items-center justify-center rounded-full bg-[#0B9BC2] text-[14px] font-semibold text-white hover:bg-[#0A8FB3] disabled:opacity-60"
+        >
+          {{ isVerifying ? 'Verifying...' : 'Verify' }}
+        </button>
+
+        <div class="mt-4 flex items-center justify-center gap-2 text-[12px]">
+          <span class="text-gray-400">Didn’t receive code?</span>
+          <button type="button" (click)="resendOtp()" class="font-semibold text-[#0B9BC2] hover:underline">Resend OTP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ SUCCESS MODAL -->
+  <div *ngIf="showVerifiedModal" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 px-3" role="dialog" aria-modal="true">
+    <div class="w-full max-w-[430px] rounded-[16px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.25)]">
+      <div class="flex flex-col items-center px-8 py-12">
+        <div class="text-[22px] font-semibold text-gray-900">Successfully Verified</div>
+
+        <a
+          [routerLink]="['/steam-mind/login']"
+          class="mt-8 inline-flex h-[42px] w-[250px] max-w-full items-center justify-center rounded-full bg-[#0B9BC2] text-[13px] font-semibold text-white hover:bg-[#0A8FB3]"
+        >
+          Go To Login
+        </a>
+      </div>
+    </div>
+  </div>
+</main>

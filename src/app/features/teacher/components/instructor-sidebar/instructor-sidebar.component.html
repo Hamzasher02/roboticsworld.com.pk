@@ -1,0 +1,30 @@
+<nav
+  class="flex h-screen w-20 flex-col border-r border-gray-200 bg-[#F8F8F8] shadow-xl transition-all duration-300 ease-in-out lg:w-64">
+
+  <div class="flex grow flex-col overflow-y-auto">
+
+    <button
+      *ngFor="let link of sidebarLinks"
+      (click)="selectLink(link)"
+      class="group flex w-full items-center border-l-4 px-4 py-3 transition-all duration-200
+             justify-center lg:justify-start"
+      [ngClass]="{
+        'bg-[#089BC4] text-white border-[#089BC4] font-bold': link.isActive,
+        'text-gray-700 border-transparent hover:bg-[#089BC4] hover:text-white hover:font-bold': !link.isActive
+      }"
+    >
+
+      <img
+        [src]="link.iconPath"
+        class="h-6 w-6 transition-all duration-200 group-hover:brightness-0 group-hover:invert"
+        [ngClass]="{ 'brightness-0 invert': link.isActive }"
+      />
+
+      <span class="ml-4 hidden whitespace-nowrap lg:block">
+        {{ link.label }}
+      </span>
+
+    </button>
+
+  </div>
+</nav>

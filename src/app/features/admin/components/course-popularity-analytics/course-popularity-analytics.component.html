@@ -1,0 +1,341 @@
+<div class="font-inter p-4 md:p-6 lg:p-8 bg-gray-50 min-h-screen">
+  <div class="mb-8">
+    <div class="flex items-center space-x-3 mb-1">
+      <button
+        (click)="goBack()"
+ class="p-2 text-gray-700 cursor-pointer transition duration-200 
+         hover:text-gray-900 hover:bg-gray-200 rounded-full focus:outline-none"      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+      </button>
+
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+        {{ pageTitle }}
+      </h1>
+    </div>
+    <p class="ml-10 text-base text-gray-600">{{ subtitle }}</p>
+  </div>
+  <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md mb-8">
+    <div class="flex flex-wrap items-center gap-4 md:gap-6">
+      <span class="flex items-center text-gray-700 text-sm font-semibold">
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707v7l-4 4v-7a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+          ></path>
+        </svg>
+        Filters:
+      </span>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-2 px-3 text-sm cursor-pointer hover:border-purple-600 transition"
+      >
+        <svg
+          class="w-5 h-5 mr-2 text-purple-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+          ></path>
+        </svg>
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer"
+          [(ngModel)]="selectedDateFilter"
+          (change)="handleFilterChange('Date', selectedDateFilter)"
+        >
+          <option *ngFor="let option of filterOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 ml-2 text-gray-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-2 px-3 text-sm cursor-pointer hover:border-purple-600 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer"
+          [(ngModel)]="selectedCategory"
+          (change)="handleFilterChange('Category', selectedCategory)"
+        >
+          <option *ngFor="let option of categories" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 ml-2 text-gray-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-2 px-3 text-sm cursor-pointer hover:border-purple-600 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer"
+          [(ngModel)]="selectedCourse"
+          (change)="handleFilterChange('Course', selectedCourse)"
+        >
+          <option *ngFor="let option of courses" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 ml-2 text-gray-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <button
+        (click)="resetFilters()"
+        class="flex items-center border border-gray-300 rounded-lg py-2 px-3 text-sm cursor-pointer hover:border-purple-600 transition"
+      >
+        <svg
+          class="w-5 h-5 mr-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div
+      class="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between"
+    >
+      <h3 class="text-gray-800 text-sm font-medium mb-3">Total Enrollments</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ totalEnrollments | number : "1.0-0" }}
+        </p>
+        <img
+          src="/assets/admin/dashboard/tabler_users.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <span
+        class="text-sm font-medium text-green-600 flex items-center mt-3 gap-2"
+      >
+        <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-6 h-6 text-blue-800"
+        />
+        +{{ enrollmentChange }}% vs last month
+      </span>
+    </div>
+
+    <div
+      class="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between"
+    >
+      <h3 class="text-gray-800 text-sm font-medium mb-3">Active Courses</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">{{ activeCourses }}</p>
+        <img
+          src="/assets/admin/dashboard/book.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+
+      <span
+        class="text-sm font-medium text-green-600 flex items-center mt-3 gap-2"
+      >
+        <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-6 h-6 text-blue-800"
+        />
+        +{{ newCourses }} new courses
+      </span>
+    </div>
+
+    <div
+      class="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between"
+    >
+      <h3 class="text-gray-800 text-sm font-medium mb-3">Avg. Enrollment</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">{{ avgEnrollment }}</p>
+      </div>
+      <span
+        class="text-sm font-medium text-red-800 flex items-center mt-3 gap-3"
+      >
+        <img
+          src="/assets/admin/dashboard/redicon.svg"
+          alt="Users Icon"
+          class="w-6 h-6 text-blue-800"
+        />
+        {{ avgEnrollmentChange }}% vs last month
+      </span>
+    </div>
+
+    <div
+      class="bg-white p-6 rounded-xl shadow-md flex flex-col justify-between"
+    >
+      <h3 class="text-gray-800 text-sm font-medium mb-3">Growth rate</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">{{ growthRate }}%</p>
+        <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <span class="text-sm font-medium text-green-600 flex items-center gap-3 mt-3">
+        <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-6 h-6 text-blue-800"
+        />
+        +{{ growthRateImprovement }}% improvement
+      </span>
+    </div>
+  </div>
+  <!-- Bottom Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Most Popular -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex items-center text-green-600 mb-3 gap-3">
+       <img 
+    src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg" 
+    alt="Users Icon" 
+    class="w-6 h-6 text-blue-800" 
+  />
+        <h4 class="text-base font-semibold">Most Popular Courses</h4>
+      </div>
+      <p class="text-xs text-gray-800 mb-4">
+        Courses with highest enrollment growth
+      </p>
+
+      <div class="space-y-3">
+        <div
+          *ngFor="let course of mostPopularCourses"
+          class="flex justify-between items-center bg-green-50 p-3 rounded-lg border border-green-200"
+        >
+          <div>
+            <p class="font-semibold text-sm text-gray-900">
+              {{ course.title }}
+            </p>
+            <p class="text-xs text-gray-600">
+              {{ course.category }} | {{ course.students }} Students Enrolled
+            </p>
+          </div>
+          <span
+            class="text-xs font-semibold text-green-700 bg-green-200 px-2 py-1 rounded-full"
+          >
+            +{{ course.percentage }}%
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Needs Attention -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div class="flex items-center text-red-600 mb-3">
+          <img
+          src="/assets/admin/dashboard/redicon.svg"
+          alt="Users Icon"
+          class="w-[33px] h-5 text-blue-800"
+        />
+        <h4 class="text-base font-semibold">Needs Attention</h4>
+      </div>
+      <p class="text-xs text-gray-800 mb-4">
+        Courses with declining enrollment
+      </p>
+
+      <div class="space-y-3">
+        <div
+          *ngFor="let course of needsAttentionCourses"
+          class="flex justify-between items-center bg-red-50 p-3 rounded-lg border border-red-200"
+        >
+          <div>
+            <p class="font-semibold text-sm text-gray-900">
+              {{ course.title }}
+            </p>
+            <p class="text-xs text-gray-600">
+              {{ course.category }} | {{ course.students }} Students Enrolled
+            </p>
+          </div>
+          <span
+            class="text-xs font-semibold text-white bg-[#F92C2CE0] px-2 py-1 rounded-full"
+          >
+            -{{ course.percentage }}%
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="flex rounded-xl  justify-start items-start width-full p-4 mt-3 bg-white">
+  <app-course-popularity></app-course-popularity>
+</div>
+</div>

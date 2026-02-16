@@ -1,0 +1,101 @@
+<section class="w-full bg-[#F7F8FA] px-4 py-4 sm:px-6">
+  <!-- Header Row -->
+  <div class="flex w-full flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
+    <h1 class="text-[18px] font-semibold leading-[26px] text-[#111827]">
+      Quiz and Assignment Management
+    </h1>
+
+    <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
+      <button
+        type="button"
+        class="flex h-[34px] w-full items-center justify-center gap-2 rounded-[6px] border border-[#E5E7EB] bg-white px-4 text-[13px] font-medium text-[#374151]
+               shadow-[0_1px_0_rgba(16,24,40,0.04)] hover:bg-[#F9FAFB] sm:w-auto"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#6B7280]" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M8 11l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        Export Report
+      </button>
+
+      <button
+        type="button"
+        class="flex h-[34px] w-full items-center justify-center gap-2 rounded-[6px] bg-[#923D8C] px-4 text-[13px] font-semibold text-white
+               shadow-[0_1px_0_rgba(16,24,40,0.04)] hover:bg-[#7C2F77] sm:w-auto"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+          <path d="M12 16V6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M8 10l4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        Upload Quiz
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs Row -->
+  <div class="flex w-full flex-col bg-white sm:flex-row sm:items-center sm:rounded-t-lg sm:gap-8 sm:border-t sm:border-[#F3F4F6] sm:px-6">
+    <div class="flex w-full items-center gap-6 overflow-x-auto border-t border-[#F3F4F6] px-4 sm:border-t-0 sm:px-0">
+      <!-- Overview -->
+      <button
+        type="button"
+        (click)="setTab('overview')"
+        class="cursor-pointer relative flex shrink-0 items-center gap-2 py-3 text-[13px] font-medium"
+        [ngClass]="isTab('overview') ? 'text-[#923D8C]' : 'text-[#6B7280] hover:text-[#923D8C]'"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M1 2.5C1 1.67157 1.67157 1 2.5 1H5.5C6.32843 1 7 1.67157 7 2.5V5.5C7 6.32843 6.32843 7 5.5 7H2.5C1.67157 7 1 6.32843 1 5.5V2.5Z
+               M9 2.5C9 1.67157 9.67157 1 10.5 1H13.5C14.3284 1 15 1.67157 15 2.5V5.5C15 6.32843 14.3284 7 13.5 7H10.5C9.67157 7 9 6.32843 9 5.5V2.5Z
+               M1 10.5C1 9.67157 1.67157 9 2.5 9H5.5C6.32843 9 7 9.67157 7 10.5V13.5C7 14.3284 6.32843 15 5.5 15H2.5C1.67157 15 1 14.3284 1 13.5V10.5Z
+               M9 10.5C9 9.67157 9.67157 9 10.5 9H13.5C14.3284 9 15 9.67157 15 10.5V13.5C15 14.3284 14.3284 15 13.5 15H10.5C9.67157 15 9 14.3284 9 13.5V10.5Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+          />
+        </svg>
+
+        Overview
+        <span *ngIf="isTab('overview')" class="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#923D8C]"></span>
+      </button>
+
+      <!-- All Quizzes -->
+      <button
+        type="button"
+        (click)="setTab('all')"
+        class="cursor-pointer relative flex shrink-0 items-center gap-2 py-3 text-[13px] font-medium"
+        [ngClass]="isTab('all') ? 'text-[#923D8C]' : 'text-[#6B7280] hover:text-[#923D8C]'"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M8 7h8M8 11h8M8 15h6" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" stroke-width="1.6" />
+        </svg>
+        All Quizzes
+        <span *ngIf="isTab('all')" class="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#923D8C]"></span>
+      </button>
+
+      <!-- Analytics -->
+      <button
+        type="button"
+        (click)="setTab('analytics')"
+        class="cursor-pointer relative flex shrink-0 items-center gap-2 py-3 text-[13px] font-medium"
+        [ngClass]="isTab('analytics') ? 'text-[#923D8C]' : 'text-[#6B7280] hover:text-[#923D8C]'"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 16V10" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M12 16V6" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M18 16v-8" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        Analytics
+        <span *ngIf="isTab('analytics')" class="absolute left-0 bottom-0 h-[2px] w-full rounded-full bg-[#923D8C]"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ✅ Render only active tab component -->
+  <div class="mt-0.5">
+    <app-overview *ngIf="isTab('overview')"></app-overview>
+    <app-all-quiz *ngIf="isTab('all')"></app-all-quiz>
+    <app-analytics *ngIf="isTab('analytics')"></app-analytics>
+  </div>
+</section>

@@ -1,0 +1,1027 @@
+<main class="w-full bg-white">
+  <!-- hero section  -->
+  <section class="w-full bg-white">
+    <div class="mx-auto flex w-full max-w-[1380px] flex-col px-0">
+      <div class="relative w-full overflow-hidden">
+        <!-- BACKGROUND SLIDES -->
+        <div class="relative w-full">
+          @for (slide of slides; track trackByIdx($index)) {
+            <img
+              [src]="slide.img"
+              alt="Hero banner"
+              class="absolute inset-0 h-[320px] w-full object-cover sm:h-[420px] md:h-[520px] lg:h-[640px] transition-opacity duration-[900ms] ease-in-out"
+              [class.opacity-100]="$index === activeIndex"
+              [class.opacity-0]="$index !== activeIndex"
+              [class.pointer-events-none]="$index !== activeIndex"
+              loading="eager"
+            />
+          }
+          <div
+            class="h-[320px] w-full sm:h-[420px] md:h-[520px] lg:h-[570px]"
+          ></div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="absolute inset-0 flex items-center">
+          <div
+            class="mx-auto flex w-full max-w-[1320px] flex-col px-4 sm:px-8 lg:px-6"
+          >
+            <div class="flex w-full max-w-[560px] flex-col">
+              <h1
+                class="text-[30px] font-extrabold leading-[1.05] text-white sm:text-[44px] md:text-[70px]"
+              >
+                <!-- ✅ WORD SCROLL (Always UP like real scrolling) -->
+                <span class="relative block overflow-hidden">
+                  <span class="invisible block">Inspiring</span>
+
+                  @for (item of wordItems; track trackByWordId($index, item)) {
+                    <span
+                      class="absolute left-0 top-0 block will-change-transform will-change-opacity"
+                      [@wordScroll]="{ value: item.id, params: animParams }"
+                    >
+                      {{ item.word }}
+                      <span class="mt-2 block h-[3px] w-[22px] bg-white"></span>
+                    </span>
+                  }
+                </span>
+                <span class="block">Future Innovators</span>
+              </h1>
+
+              <div class="mt-6 flex flex-wrap items-center gap-3">
+                <a
+                  routerLink="/"
+                  class="flex h-[52px] items-center justify-center rounded-full bg-[#FF6A3D] px-6 text-[14px] font-semibold text-white border border-transparent hover:bg-transparent hover:text-orange-500 hover:border-orange-500 transition-colors cursor-pointer sm:w-auto"
+                >
+                  Book A Free Demo
+                </a>
+
+                <a
+                  routerLink="/courses"
+                  class="flex h-[52px] items-center justify-center rounded-full bg-white px-6 text-[14px] font-semibold text-[#111827] cursor-pointer sm:w-auto"
+                >
+                  Explore Courses
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="w-full bg-gray-100">
+    <!-- AI Button (same) -->
+    <div
+      class="fixed bottom-6 right-4 z-[70] flex flex-col items-end sm:right-6"
+    >
+      <div *ngIf="isAiOpen" class="mb-4 flex w-full justify-end">
+        <app-ai-assistant (close)="isAiOpen = false"></app-ai-assistant>
+      </div>
+
+      <button
+        #aiBtn
+        type="button"
+        aria-label="AI Assistant"
+        (click)="isAiOpen = !isAiOpen"
+        class="ai-btn flex items-center gap-2 whitespace-nowrap rounded-full bg-[#FF6A3D] px-4 h-10 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(0,0,0,0.22)] transition-all duration-300 cursor-pointer"
+      >
+        <span
+          class="flex h-6 w-6 items-center justify-center rounded-full bg-white/20"
+        >
+          <img
+            src="assets/steam-mind/steam-mind-home/AiIcon.svg"
+            alt=""
+            class="h-4 w-4"
+          />
+        </span>
+        <span class="whitespace-nowrap">AI Assistant</span>
+      </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="mx-auto flex w-full max-w-[1420px] flex-col px-4 py-7 sm:px-8">
+      <h2 class="text-center text-[22px] font-semibold text-[#111827]">
+        Events
+      </h2>
+
+      <!-- ✅ Responsive row -->
+      <div
+        class="mt-10 flex w-full flex-wrap justify-center gap-6 sm:gap-8 lg:justify-between lg:gap-6"
+      >
+        <!-- Event 1 -->
+        <div
+          class="group relative flex w-full overflow-hidden max-w-[520px] sm:max-w-none sm:basis-[calc(50%-16px)] lg:basis-[calc(25%-18px)] cursor-pointer"
+          (click)="toggleEventOverlay(1)"
+        >
+          <img
+            src="assets/steam-mind/steam-mind-home/cto.svg"
+            alt="Event"
+            class="h-[320px] w-full object-cover sm:h-[320px] lg:h-[300px]"
+            draggable="false"
+          />
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center bg-[#7B2CBF]/55 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            [class.opacity-100]="activeEventId === 1"
+          >
+            <div class="text-center text-white px-4">
+              <div class="text-[18px] font-semibold leading-tight">
+                Web Summit Vancouver
+              </div>
+              <div class="mt-1 text-[14px] opacity-90">2025, Canada</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div
+          class="group relative flex w-full overflow-hidden max-w-[520px] sm:max-w-none sm:basis-[calc(50%-16px)] lg:basis-[calc(25%-18px)] cursor-pointer"
+          (click)="toggleEventOverlay(2)"
+        >
+          <img
+            src="assets/steam-mind/steam-mind-home/presentingProject.svg"
+            alt="Event"
+            class="h-[360px] w-full object-cover sm:h-[420px] lg:h-[360px]"
+            draggable="false"
+          />
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center bg-[#7B2CBF]/55 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            [class.opacity-100]="activeEventId === 2"
+          >
+            <div class="flex flex-col items-center text-center text-white px-4">
+              <div
+                class="text-[20px] font-semibold leading-tight lg:text-[18px]"
+              >
+                Dublin Tech Summit 2024
+              </div>
+              <div class="mt-1 text-[14px] font-normal opacity-90">
+                Dublin, Ireland
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div
+          class="group relative flex w-full overflow-hidden max-w-[520px] sm:max-w-none sm:basis-[calc(50%-16px)] lg:basis-[calc(25%-18px)] cursor-pointer"
+          (click)="toggleEventOverlay(3)"
+        >
+          <img
+            src="assets/steam-mind/steam-mind-home/ceo.svg"
+            alt="Event"
+            class="h-[360px] w-full object-cover sm:h-[420px] lg:h-[360px]"
+            draggable="false"
+          />
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center bg-[#7B2CBF]/55 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            [class.opacity-100]="activeEventId === 3"
+          >
+            <div class="flex flex-col items-center text-center text-white px-4">
+              <div
+                class="text-[20px] font-semibold leading-tight lg:text-[18px]"
+              >
+                Web Summit Lisbon
+              </div>
+              <div class="mt-1 text-[14px] font-normal opacity-90">
+                2023, Portugal
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div
+          class="group relative flex w-full overflow-hidden max-w-[520px] sm:max-w-none sm:basis-[calc(50%-16px)] lg:basis-[calc(25%-18px)] cursor-pointer"
+          (click)="toggleEventOverlay(4)"
+        >
+          <img
+            src="assets/steam-mind/steam-mind-home/teamMemmber.svg"
+            alt="Event"
+            class="h-[320px] w-full object-cover sm:h-[320px] lg:h-[300px]"
+            draggable="false"
+          />
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center bg-[#7B2CBF]/55 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+            [class.opacity-100]="activeEventId === 4"
+          >
+            <div class="flex flex-col items-center text-center text-white px-4">
+              <div class="text-[18px] font-semibold leading-tight">
+                London Tech Week
+              </div>
+              <div class="mt-1 text-[14px] font-medium opacity-90">
+                2024 – United Kingdom
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--   EXPLORE OUR COURSES  -->
+  <section class="w-full bg-white">
+    <div
+      class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-14 sm:px-8 lg:px-6"
+    >
+      <div class="flex w-full flex-col items-center">
+        <h2 class="text-center text-[22px] font-semibold text-[#111827]">
+          Explore Our Courses
+        </h2>
+
+        <p
+          class="mt-2 max-w-[760px] text-center text-[11px] leading-4 text-black sm:text-[11px]"
+        >
+          The world is changing fast — it’s not just about learning anymore.
+          It’s about staying relevant. Choose the course of your liking and
+          start building what’s next.
+        </p>
+
+        <!-- Tabs -->
+        <div
+          class="mt-6 flex w-full flex-wrap items-center justify-center gap-4 sm:gap-10"
+        >
+          @for (cat of categories; track cat) {
+            <button
+              type="button"
+              (click)="setCategory(cat)"
+              class="rounded-full px-5 py-1.5 text-[13px] font-semibold transition-all duration-200 ease-out hover:bg-[#FF6A3D] hover:text-white"
+              [class.bg-[#FF6A3D]]="activeCategory === cat"
+              [class.text-white]="activeCategory === cat"
+              [class.text-[#111827]]="activeCategory !== cat"
+            >
+              {{ cat }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Course cards row -->
+      <div
+        class="mt-10 flex w-full flex-wrap items-stretch justify-center gap-4 sm:gap-5 lg:gap-6 lg:justify-start"
+      >
+        <!-- Card 1 -->
+        <article
+          class="flex w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-16px)] xl:basis-[calc(25%-18px)]"
+        >
+          <div class="relative w-full">
+            <img
+              src="/assets/steam-mind/steam-mind-home/courseImage.svg"
+              alt="Web Development"
+              class="h-[160px] w-full object-cover sm:h-[170px]"
+              draggable="false"
+            />
+          </div>
+
+          <div class="flex flex-1 flex-col px-4 pb-4 pt-4">
+            <h3 class="text-[14px] font-bold text-[#111827]">
+              Web Development
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-4 text-[#6B7280]">
+              Learn the fundamentals of building modern, responsive websites
+              from scratch. This course covers HTML, CSS, JavaScript, and
+              hands-on projects to turn your ideas into fully functional web
+              pages.
+            </p>
+
+            <div class="mt-3 text-[12px] font-semibold text-[#111827]">
+              Details:
+            </div>
+
+            <div class="mt-2 flex flex-col gap-2 text-[12px] text-[#374151]">
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/age-group-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Age Group: 13–35 years</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/clock-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Duration: 8 weeks</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/book.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Lessons: 16 interactive lessons</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/activities-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span
+                  >Activities: Website building projects, coding challenges, and
+                  live Q&amp;A sessions</span
+                >
+              </div>
+            </div>
+
+            <a
+              [routerLink]="['/steam-mind/course-detail']"
+              class="mt-4 flex h-[38px] w-full items-center justify-center rounded-xl border border-[#FF6A3D] bg-[#FF6A3D] text-[11px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#FF6A3D]"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article
+          class="flex w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-16px)] xl:basis-[calc(25%-18px)]"
+        >
+          <div class="relative w-full">
+            <img
+              src="/assets/steam-mind/steam-mind-home/courseImage.svg"
+              alt="Web Development"
+              class="h-[160px] w-full object-cover sm:h-[170px]"
+              draggable="false"
+            />
+          </div>
+
+          <div class="flex flex-1 flex-col px-4 pb-4 pt-4">
+            <h3 class="text-[14px] font-bold text-[#111827]">
+              Web Development
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-4 text-[#6B7280]">
+              Learn the fundamentals of building modern, responsive websites
+              from scratch. This course covers HTML, CSS, JavaScript, and
+              hands-on projects to turn your ideas into fully functional web
+              pages.
+            </p>
+
+            <div class="mt-3 text-[12px] font-semibold text-[#111827]">
+              Details:
+            </div>
+
+            <div class="mt-2 flex flex-col gap-2 text-[12px] text-[#374151]">
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/age-group-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Age Group: 13–35 years</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/clock-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Duration: 8 weeks</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/book.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Lessons: 16 interactive lessons</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/activities-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span
+                  >Activities: Website building projects, coding challenges, and
+                  live Q&amp;A sessions</span
+                >
+              </div>
+            </div>
+
+            <a
+              routerLink="/courses/web-development"
+              class="mt-4 flex h-[38px] w-full items-center justify-center rounded-xl border border-[#FF6A3D] bg-[#FF6A3D] text-[11px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#FF6A3D)"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article
+          class="flex w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-16px)] xl:basis-[calc(25%-18px)]"
+        >
+          <div class="relative w-full">
+            <img
+              src="/assets/steam-mind/steam-mind-home/courseImage.svg"
+              alt="Web Development"
+              class="h-[160px] w-full object-cover sm:h-[170px]"
+              draggable="false"
+            />
+          </div>
+
+          <div class="flex flex-1 flex-col px-4 pb-4 pt-4">
+            <h3 class="text-[14px] font-bold text-[#111827]">
+              Web Development
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-4 text-[#6B7280]">
+              Learn the fundamentals of building modern, responsive websites
+              from scratch. This course covers HTML, CSS, JavaScript, and
+              hands-on projects to turn your ideas into fully functional web
+              pages.
+            </p>
+
+            <div class="mt-3 text-[12px] font-semibold text-[#111827]">
+              Details:
+            </div>
+
+            <div class="mt-2 flex flex-col gap-2 text-[12px] text-[#374151]">
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/age-group-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Age Group: 13–35 years</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/clock-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Duration: 8 weeks</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/book.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Lessons: 16 interactive lessons</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/activities-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span
+                  >Activities: Website building projects, coding challenges, and
+                  live Q&amp;A sessions</span
+                >
+              </div>
+            </div>
+
+            <a
+              routerLink="/courses/web-development"
+              class="mt-4 flex h-[38px] w-full items-center justify-center rounded-xl border border-[#FF6A3D] bg-[#FF6A3D] text-[11px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#FF6A3D]"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article
+          class="flex w-full flex-col overflow-hidden rounded-[10px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] basis-full sm:basis-[calc(50%-10px)] lg:basis-[calc(33.333%-16px)] xl:basis-[calc(25%-18px)]"
+        >
+          <div class="relative w-full">
+            <img
+              src="/assets/steam-mind/steam-mind-home/courseImage.svg"
+              alt="Web Development"
+              class="h-[160px] w-full object-cover sm:h-[170px]"
+              draggable="false"
+            />
+          </div>
+
+          <div class="flex flex-1 flex-col px-4 pb-4 pt-4">
+            <h3 class="text-[14px] font-bold text-[#111827]">
+              Web Development
+            </h3>
+
+            <p class="mt-2 text-[12px] leading-4 text-[#6B7280]">
+              Learn the fundamentals of building modern, responsive websites
+              from scratch. This course covers HTML, CSS, JavaScript, and
+              hands-on projects to turn your ideas into fully functional web
+              pages.
+            </p>
+
+            <div class="mt-3 text-[12px] font-semibold text-[#111827]">
+              Details:
+            </div>
+
+            <div class="mt-2 flex flex-col gap-2 text-[12px] text-[#374151]">
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/age-group-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Age Group: 13–35 years</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/clock-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Duration: 8 weeks</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/book.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span>Lessons: 16 interactive lessons</span>
+              </div>
+
+              <div class="flex items-start gap-2">
+                <span class="mt-[2px] flex h-4 w-4 items-center justify-center">
+                  <img
+                    src="/assets/steam-mind/steam-mind-home/activities-icon.svg"
+                    alt=""
+                    class="h-3 w-3"
+                  />
+                </span>
+                <span
+                  >Activities: Website building projects, coding challenges, and
+                  live Q&amp;A sessions</span
+                >
+              </div>
+            </div>
+
+            <a
+              routerLink="/courses/web-development"
+              class="mt-4 flex h-[38px] w-full items-center justify-center rounded-xl border border-[#FF6A3D] bg-[#FF6A3D] text-[11px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#FF6A3D]"
+            >
+              Learn More
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+  ABOUT US + FEATURE CARDS
+  ========================= -->
+  <section class="w-full bg-white">
+    <div
+      class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-14 sm:px-8 lg:px-6"
+    >
+      <div
+        class="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:justify-between"
+      >
+        <!-- Left -->
+        <div
+          class="flex w-full flex-col lg:flex-1 lg:min-w-[360px] xl:max-w-[420px]"
+        >
+          <h2 class="text-start text-[22px] font-bold text-[#111827]">
+            About us
+          </h2>
+
+          <p class="mt-3 text-[14px] leading-5 text-black">
+            STEAM Minds is an innovative EdTech company that provides AI-powered
+            personalized, interactive, simulative and adaptive gamified learning
+            experiences. The company offers STEAM solutions for K12 through the
+            use of advanced technology, including virtual, augmented, and mixed
+            realities based web applications.
+          </p>
+
+          <div class="mt-6 text-start text-[20px] font-semibold text-[#111827]">
+            Brand Features
+          </div>
+
+          <div class="mt-4 flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+              <span
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-black"
+              >
+                <img
+                  src="assets/steam-mind/steam-mind-home/vr-science-lab.svg"
+                  alt=""
+                  class="h-6 w-6"
+                />
+              </span>
+              <span class="text-[12px] font-medium text-black"
+                >VR-Enabled Science Labs</span
+              >
+            </div>
+
+            <div class="flex items-center gap-3">
+              <span
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-black"
+              >
+                <img
+                  src="assets/steam-mind/steam-mind-home/AI-power-lms.svg"
+                  alt=""
+                  class="h-6 w-6"
+                />
+              </span>
+              <span class="text-[12px] font-medium text-black"
+                >AI-Powered LMS</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Right cards -->
+        <div
+          class="flex w-full flex-col gap-8 lg:flex-[2] lg:flex-row lg:flex-wrap lg:justify-end"
+        >
+          <!-- Card 1 -->
+          <article
+            class="relative flex w-full flex-col overflow-hidden border border-[#E5E7EB] bg-white lg:basis-[calc(50%-16px)] lg:max-w-[460px]"
+          >
+            <div
+              class="flex w-full items-center justify-center bg-[#D1D5DB]/40"
+            >
+              <img
+                src="assets/steam-mind/steam-mind-home/VR.svg"
+                alt="VR-enabled science labs"
+                class="h-[220px] w-full object-cover sm:h-[250px]"
+              />
+            </div>
+
+            <div class="flex flex-1 flex-col px-6 pb-6 pt-6 gap-y-5">
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#923D8C]"
+                >
+                  <img
+                    src="assets/steam-mind/steam-mind-home/vr-science-lab.svg"
+                    alt=""
+                    class="h-5 w-5"
+                  />
+                </div>
+                <h3 class="text-[16px] font-bold leading-none text-black">
+                  VR-Enabled Science Labs
+                </h3>
+              </div>
+
+              <p class="text-[13px] leading-5 text-black">
+                Immersive 3D simulations for science experiments. Safe,
+                cost-effective alternative to physical labs with guided
+                interactions. Aligned with international curricula and national
+                SLOs. Accessible via VR headsets or standard devices.
+              </p>
+
+              <a
+                routerLink="/features/vr-labs"
+                class="mt-auto flex h-[44px] w-full items-center justify-center rounded-full border border-[#923D8C] bg-[#923D8C] text-[14px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#923D8C]"
+              >
+                See More
+              </a>
+            </div>
+
+            <div
+              class="pointer-events-none absolute left-1/2 bottom-[-1px] h-[4px] w-[100%] -translate-x-1/2 rounded-full bg-black/30 blur-[2px]"
+            ></div>
+          </article>
+
+          <!-- Card 2 -->
+          <article
+            class="relative flex w-full flex-col overflow-hidden border border-[#E5E7EB] bg-white lg:basis-[calc(50%-16px)] lg:max-w-[460px]"
+          >
+            <div
+              class="flex w-full items-center justify-center bg-[#D1D5DB]/40"
+            >
+              <img
+                src="assets/steam-mind/steam-mind-home/LMS.svg"
+                alt="AI-powered LMS"
+                class="h-[220px] w-full object-cover sm:h-[250px]"
+              />
+            </div>
+
+            <div class="flex flex-1 flex-col px-6 pb-6 pt-6 gap-y-5">
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#923D8C]"
+                >
+                  <img
+                    src="assets/steam-mind/steam-mind-home/AI-power-lms.svg"
+                    alt=""
+                    class="h-5 w-5"
+                  />
+                </div>
+                <h3 class="text-[16px] font-bold leading-none text-black">
+                  AI-Powered LMS
+                </h3>
+              </div>
+
+              <p class="text-[13px] leading-5 text-black">
+                A personalized learning management system that adapts to each
+                student's pace. Features an AI powered student portal for
+                personalized tracking and management and Teachers' Portal with
+                AI powered automated tools for quiz drafting, checking and
+                comprehensive teaching suite.
+              </p>
+
+              <a
+                routerLink="/features/lms"
+                class="mt-auto flex h-[44px] w-full items-center justify-center rounded-full border border-[#923D8C] bg-[#923D8C] text-[14px] font-semibold text-white transition-all duration-200 ease-out hover:bg-white hover:text-[#923D8C]"
+              >
+                See More
+              </a>
+            </div>
+
+            <div
+              class="pointer-events-none absolute left-1/2 bottom-[-1px] h-[4px] w-[100%] -translate-x-1/2 rounded-full bg-black/30 blur-[2px]"
+            ></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS  -->
+  <section class="w-full bg-gray-100">
+    <div
+      class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-14 sm:px-8 lg:px-6"
+    >
+      <div class="mt-6 flex w-full flex-col items-center">
+        <h2 class="text-center text-[18px] font-bold text-black sm:text-[22px]">
+          What Our Students Say
+        </h2>
+        <p
+          class="mt-2 max-w-[760px] text-center text-[12px] leading-4 text-black"
+        >
+          Our students love the hands-on experience and personalized guidance
+          they receive in our courses. Here’s what some of them have to say
+          about their learning journey with us
+        </p>
+      </div>
+
+      <div class="mt-10 flex w-full items-center justify-center">
+        <p-carousel
+          class="w-full"
+          [value]="cards"
+          [numVisible]="4"
+          [numScroll]="1"
+          [circular]="false"
+          [responsiveOptions]="testimonialResponsive"
+        >
+          <ng-template pTemplate="item" let-card>
+            <div class="flex w-full justify-center px-2">
+              <article
+                class="mt-5 group relative flex w-full max-w-[300px] flex-col rounded-[10px] border border-[#E5E7EB] bg-white px-6 py-6 text-[#111827] hover:border-transparent hover:bg-[#8E3A8E] hover:text-white"
+              >
+                <!-- top badge (centered like your screenshot) -->
+                <div
+                  class="absolute -top-5 left-1/6 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-[#FF6A3D] shadow-md transition-colors duration-200 group-hover:bg-white"
+                >
+                  <img
+                    src="assets/steam-mind/steam-mind-home/QMarks-white.svg"
+                    alt=""
+                    class="h-5 w-5 opacity-100 transition-opacity duration-200 group-hover:opacity-0"
+                  />
+                  <img
+                    src="assets/steam-mind/steam-mind-home/QMarks-purple.svg"
+                    alt=""
+                    class="absolute h-5 w-5 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                  />
+                </div>
+
+                <!-- stars -->
+                <div class="mt-6 flex items-center gap-1.5">
+                  <img
+                    src="assets/steam-mind/steam-mind-home/gold-start.svg"
+                    alt=""
+                    class="h-4 w-4"
+                  />
+                  <img
+                    src="assets/steam-mind/steam-mind-home/gold-start.svg"
+                    alt=""
+                    class="h-4 w-4"
+                  />
+                  <img
+                    src="assets/steam-mind/steam-mind-home/gold-start.svg"
+                    alt=""
+                    class="h-4 w-4"
+                  />
+                  <img
+                    src="assets/steam-mind/steam-mind-home/gold-start.svg"
+                    alt=""
+                    class="h-4 w-4"
+                  />
+                  <img
+                    src="assets/steam-mind/steam-mind-home/gold-start.svg"
+                    alt=""
+                    class="h-4 w-4"
+                  />
+                </div>
+
+                <p class="mt-4 text-[12px] leading-4 group-hover:text-white">
+                  {{ card.text }}
+                </p>
+
+                <div class="mt-6 flex items-center gap-4">
+                  <div
+                    class="flex h-[66px] w-[66px] items-center justify-center rounded-full border border-[#111827] bg-white group-hover:border-white"
+                  >
+                    <img
+                      [src]="card.avatar"
+                      [alt]="card.name"
+                      class="h-[62px] w-[62px] rounded-full object-cover"
+                    />
+                  </div>
+
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-bold group-hover:text-white">
+                      {{ card.name }}
+                    </div>
+                    <div
+                      class="text-[10px] leading-4 text-[#111827]/90 group-hover:text-white/90"
+                    >
+                      {{ card.role }} at<br />{{ card.company }}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / WE'RE HERE FOR YOU  -->
+  <section class="w-full bg-white">
+    <div
+      class="mx-auto flex w-full max-w-[1320px] flex-col px-4 pb-16 pt-2 sm:px-8 lg:px-6"
+    >
+      <div class="flex w-full flex-col items-center">
+        <h2 class="text-center text-[18px] font-bold text-black sm:text-[22px]">
+          We’re Here For You
+        </h2>
+        <p class="mt-3 text-center text-[12px] text-black">
+          Drop your number and we’ll connect with you directly.
+        </p>
+      </div>
+
+      <div class="mt-8 flex w-full items-center justify-center px-0 sm:px-4">
+        <section
+          class="relative flex w-full max-w-[913px] flex-col items-center justify-center overflow-hidden rounded-[18px] bg-[#8E3A8E] px-4 pt-16 pb-16 min-[910px]:pt-8 min-[910px]:pb-8 sm:px-12 sm:py-12"
+          aria-label="Subscribe"
+        >
+          <!-- AVATARS -->
+
+          <!-- 1) std-1  (TOP LEFT always) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-8 w-8 sm:h-12 sm:w-12 max-[909px]:left-4 max-[909px]:top-4 min-[910px]:left-2 min-[910px]:top-3 sm:min-[910px]:left-10 sm:min-[910px]:top-9"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-1.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- 2) std-2  (<910 TOP CENTER, >=910 decorative middle-left) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-7 w-7 sm:h-12 sm:w-12 max-[909px]:left-1/2 max-[909px]:top-4 max-[909px]:-translate-x-1/2 min-[910px]:left-10 min-[910px]:top-14 min-[910px]:translate-x-0 sm:min-[910px]:left-[120px] sm:min-[910px]:top-[86px]"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-2.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- 3) std-3  (<910 TOP RIGHT, >=910 top-right) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-8 w-8 sm:h-12 sm:w-12 max-[909px]:right-4 max-[909px]:top-4 min-[910px]:right-2 min-[910px]:top-3 sm:min-[910px]:right-10 sm:min-[910px]:top-9"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-3.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- 4) std-3  (<910 BOTTOM LEFT, >=910 bottom-left) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-7 w-7 sm:h-12 sm:w-12 max-[909px]:left-4 max-[909px]:bottom-4 min-[910px]:left-3 min-[910px]:bottom-4 sm:min-[910px]:left-10 sm:min-[910px]:bottom-10"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-3.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- 5) std-5  (<910 BOTTOM CENTER, >=910 decorative middle-right) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-7 w-7 sm:h-12 sm:w-12 max-[909px]:left-1/2 max-[909px]:bottom-4 max-[909px]:-translate-x-1/2 min-[910px]:right-10 min-[910px]:top-14 min-[910px]:translate-x-0 sm:min-[910px]:right-[120px] sm:min-[910px]:top-[92px]"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-5.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- 6) std-4  (BOTTOM RIGHT always) -->
+          <span
+            class="absolute flex items-center justify-center overflow-hidden rounded-full h-7 w-7 sm:h-12 sm:w-12 max-[909px]:right-4 max-[909px]:bottom-4 min-[910px]:right-3 min-[910px]:bottom-4 sm:min-[910px]:right-10 sm:min-[910px]:bottom-10"
+          >
+            <img
+              src="assets/steam-mind/steam-mind-home/std-4.svg"
+              alt=""
+              class="h-full w-full rounded-full object-cover"
+            />
+          </span>
+
+          <!-- CONTENT -->
+          <div
+            class="relative flex w-full max-w-[640px] flex-col items-center px-2 sm:px-0"
+          >
+            <h3
+              class="text-center text-[18px] font-semibold text-white sm:text-[26px]"
+            >
+              Do you still have any questions?
+            </h3>
+
+            <p
+              class="mt-3 max-w-[520px] text-center text-[12px] leading-5 text-white/85 sm:text-[13px]"
+            >
+              Don’t hesitate to leave us your phone number. We will contact you
+              to discuss any questions you may have
+            </p>
+
+            <div class="mt-6 flex w-full items-center justify-center">
+              <div
+                class="flex w-full max-w-[520px] flex-col items-center overflow-hidden rounded-[10px] bg-white/20 sm:flex-row"
+              >
+                <input
+                  type="text"
+                  placeholder="Enter your phone number"
+                  class="h-[42px] w-full bg-transparent px-4 text-[12px] text-white placeholder:text-white/70 focus:outline-none"
+                />
+
+                <button
+                  type="button"
+                  class="h-[42px] w-full shrink-0 rounded-[10px] bg-white text-[12px] font-semibold text-[#FF6A3D] sm:w-[140px]"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,351 @@
+<div
+  class="font-inter p-6 md:p-8 lg:p-10 bg-gray-50 min-h-screen text-gray-800"
+>
+  <div class="mb-8">
+    <div class="flex items-center space-x-3 mb-1">
+      <button
+        (click)="goBack()"
+ class="p-2 text-gray-700 cursor-pointer transition duration-200 
+         hover:text-gray-900 hover:bg-gray-200 rounded-full focus:outline-none"      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+      </button>
+
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+        {{ pageTitle }}
+      </h1>
+    </div>
+    <p class="ml-10 text-base text-gray-600">{{ subtitle }}</p>
+  </div>
+
+  <div
+    class="bg-white p-4 sm:p-5 rounded-xl shadow-md mb-8 border border-gray-200"
+  >
+    <div class="flex flex-wrap items-center gap-4 md:gap-5">
+      <span class="flex items-center text-gray-700 text-sm font-semibold">
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707v7l-4 4v-7a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+          ></path>
+        </svg>
+        Filters:
+      </span>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5"
+          [(ngModel)]="selectedDateFilter"
+          (change)="handleFilterChange('Date', selectedDateFilter)"
+        >
+          <option *ngFor="let option of filterOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 -ml-4 text-gray-500 pointer-events-none"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5"
+          [(ngModel)]="selectedCategory"
+          (change)="handleFilterChange('Category', selectedCategory)"
+        >
+          <option *ngFor="let option of categories" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 -ml-4 text-gray-500 pointer-events-none"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5"
+          [(ngModel)]="selectedCourse"
+          (change)="handleFilterChange('Course', selectedCourse)"
+        >
+          <option *ngFor="let option of courses" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 -ml-4 text-gray-500 pointer-events-none"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <button
+        (click)="resetFilters()"
+        class="flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm text-gray-700 cursor-pointer hover:border-purple-600 transition hover:text-purple-600"
+      >
+        <svg
+          class="w-5 h-5 mr-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        Reset
+      </button>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Total Students</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ totalStudents }}
+        </p>
+       <img
+          src="/assets/admin/dashboard/tabler_users.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-green-600">+{{ totalStudentsGrowth }}% growth</span>
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Average Rating</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ avgRating | number : "1.1-1" }}
+        </p>
+      <img
+          src="/assets/admin/dashboard/star.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-green-600 flex gap-2"
+        
+          >
+                <img
+          src="/assets/admin/dashboard/smallstar.svg"
+          alt="Users Icon"
+          class="w-[15px] h-[15px] text-blue-800"
+        />
+
+          +{{ avgRatingChange | number : "1.1-1" }} vs last month
+          </span
+        >
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Avg. Satisfaction</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">{{ avgSatisfaction }}%</p>
+    <img
+          src="/assets/admin/dashboard/verified.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3 ">
+        <span class="text-green-600 flex items-center gap-2">
+         <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-[24px] h-[24px] text-blue-800"
+        />
+          +{{ avgSatisfactionImprovement }}% improvement
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Total Sessions</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">{{ totalSessions }}</p>
+    <img
+          src="/assets/admin/dashboard/clock.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+      <span class="text-green-600 flex items-center gap-2">
+                   <img
+          src="/assets/admin/dashboard/clock.svg"
+          alt="Users Icon"
+          class="w-[15px] h-[15px] text-blue-800"
+        />+{{ totalSessionsChange }} this month</span
+        >
+      </div>
+    </div>
+  </div>
+
+<div class="bg-white rounded-lg p-4">
+  <div class="mb-8">
+  <div class="flex items-center text-orange-500 mb-2">
+     
+    <h2 class="flex gap-2 text-xl font-bold text-gray-900">
+       <img
+          src="/assets/admin/dashboard/verifiedbadge.svg"
+          alt="Users Icon"
+          class="w-[23px] h-[33px] text-blue-800"
+        />
+      Top Performing Instructors
+    </h2>
+  </div>
+  <p class="text-sm text-gray-600 ml-8">
+    Highest rated instructors based on student feedback and effectiveness
+  </p>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div
+    *ngFor="let instructor of topInstructors"
+    class="bg-gradient-to-r from-[#EFF5FF] to-[#F9F5FF] p-4 rounded-xl shadow-md border border-gray-200 flex flex-col w-full"
+  >
+    <!-- Avatar + Name + Rating in one row that wraps -->
+    <div class="flex flex-wrap items-center mb-4">
+
+      <!-- Avatar -->
+      <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0 mb-2 sm:mb-0">
+        <img *ngIf="instructor.avatar" [src]="instructor.avatar" alt="{{ instructor.name }}" class="w-full h-full object-cover"/>
+        <span *ngIf="!instructor.avatar" class="text-gray-400 text-xs">N/A</span>
+      </div>
+
+      <!-- Name & Rating -->
+      <div class="flex items-center justify-between flex-grow ml-0 sm:ml-3 w-full sm:w-auto">
+        <h3 class="text-base font-semibold text-gray-900 truncate">
+          {{ instructor.name }}
+        </h3>
+
+        <div class="flex items-center text-yellow-400 ml-2">
+          <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 17.75l-6.172 3.245 1.179-6.873-5-4.867 6.9-1 3.086-6.315 3.086 6.313 6.9 1-5 4.868 1.179 6.873z"/>
+          </svg>
+          <span class="font-bold text-sm">{{ instructor.rating | number:'1.1-1' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="w-full text-sm space-y-1">
+      <p class="flex justify-between text-gray-900">
+        <span class="font-normal">Students:</span>
+        <span class="font-semibold">{{ instructor.students | number:'1.0-0' }}</span>
+      </p>
+
+      <p class="flex justify-between text-gray-900">
+        <span class="font-normal">Sessions:</span>
+        <span class="font-semibold">{{ instructor.sessions }}</span>
+      </p>
+
+      <p class="flex justify-between text-gray-900">
+        <span class="font-normal">Satisfaction:</span>
+        <span class="font-semibold">{{ instructor.satisfaction }}%</span>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+
+</div>
+<div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 mt-6">
+  <!-- Chart Title & Subtitle -->
+  <div class="mb-4">
+    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Instructor Performance Comparison</h2>
+    <p class="text-sm md:text-base text-gray-600">Multi-metric comparison across all instructors</p>
+  </div>
+
+  <!-- Chart -->
+  <apx-chart 
+    #chart 
+    [series]="instructorPerformanceChartOptions.series"
+    [chart]="instructorPerformanceChartOptions.chart"
+    [xaxis]="instructorPerformanceChartOptions.xaxis"
+    [yaxis]="instructorPerformanceChartOptions.yaxis"
+    [dataLabels]="instructorPerformanceChartOptions.dataLabels"
+    [plotOptions]="instructorPerformanceChartOptions.plotOptions"
+    [grid]="instructorPerformanceChartOptions.grid"
+    [colors]="instructorPerformanceChartOptions.colors">
+  </apx-chart>
+</div>
+
+</div>

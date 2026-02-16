@@ -1,0 +1,262 @@
+<!-- =========================================
+     courses-session-detail.component.html (COMPLETE)
+     - FLEX ONLY (no grid)
+     - Live variant shows Course Schedule block
+     ========================================= -->
+
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 px-3 py-4"
+>
+  <!-- Modal -->
+  <div
+    class="flex w-full max-w-[620px] min-h-[80vh] flex-col overflow-hidden rounded-[12px] bg-white
+           shadow-[0_20px_45px_rgba(0,0,0,0.15)]"
+  >
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+      <h2 class="text-[18px] font-semibold text-gray-900">Session Details</h2>
+
+      <button
+        type="button"
+        (click)="onClose()"
+        class="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="flex-1 max-h-[calc(100vh-180px)] overflow-y-auto px-6 py-6 text-[13px] text-gray-700">
+      <!-- Session Information -->
+      <div>
+        <div class="text-[14px] font-semibold text-gray-900">Session Information</div>
+
+        <div class="mt-4 flex flex-wrap">
+          <!-- Left col -->
+          <div class="w-full sm:w-1/2">
+            <div class="flex flex-col gap-6 pr-0 sm:pr-10">
+              <div>
+                <div class="text-[12px] text-gray-500">Session ID:</div>
+                <div class="mt-1 font-semibold text-gray-900">{{ data?.sessionId || '—' }}</div>
+              </div>
+
+              <div>
+                <div class="text-[12px] text-gray-500">Course:</div>
+                <div class="mt-1 font-medium text-gray-900">{{ data?.course || '—' }}</div>
+              </div>
+
+              <div>
+                <div class="text-[12px] text-gray-500">Date:</div>
+                <div class="mt-1 font-semibold text-gray-900">{{ data?.date || '—' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right col -->
+          <div class="mt-6 w-full sm:mt-0 sm:w-1/2">
+            <div class="flex flex-col gap-6">
+              <div>
+                <div class="text-[12px] text-gray-500">Type:</div>
+                <div class="mt-1 font-semibold text-gray-900">{{ data?.type || '—' }}</div>
+              </div>
+
+              <div>
+                <div class="text-[12px] text-gray-500">Level:</div>
+                <div class="mt-1 font-semibold text-gray-900">{{ data?.level || '—' }}</div>
+              </div>
+
+              <div>
+                <div class="text-[12px] text-gray-500">Time:</div>
+                <div class="mt-1 font-semibold text-gray-900">{{ data?.time || '—' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ Course Schedule (ONLY for Live) -->
+      <div *ngIf="variant === 'live'" class="mt-7">
+        <div class="text-[14px] font-semibold text-gray-900">Course Schedule</div>
+
+        <div class="mt-4 rounded-[10px] bg-[#F7F3FF] px-5 py-5">
+          <div class="flex flex-wrap">
+            <!-- Left col -->
+            <div class="w-full sm:w-1/2">
+              <div class="flex flex-col gap-6 pr-0 sm:pr-10">
+                <div>
+                  <div class="text-[12px] text-gray-500">Course Start Date:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.courseStartDate || '—' }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Session Frequency:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.sessionFrequency || '—' }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Progress:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.progressText || '—' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right col -->
+            <div class="mt-6 w-full sm:mt-0 sm:w-1/2">
+              <div class="flex flex-col gap-6">
+                <div>
+                  <div class="text-[12px] text-gray-500">First Session:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.firstSession || '—' }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Fixed Time Slot:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.fixedTimeSlot || '—' }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Module:</div>
+                  <div class="mt-1 font-semibold text-gray-900">
+                    {{ data?.courseSchedule?.module || '—' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Details -->
+      <div class="mt-7">
+        <div class="text-[14px] font-semibold text-gray-900">Student Details</div>
+
+        <div class="mt-4 rounded-[10px] bg-[#F9FAFB] px-5 py-5">
+          <div class="flex flex-wrap">
+            <!-- Left col -->
+            <div class="w-full sm:w-1/2">
+              <div class="flex flex-col gap-6 pr-0 sm:pr-10">
+                <div>
+                  <div class="text-[12px] text-gray-500">Name:</div>
+                  <div class="mt-1 font-medium text-gray-900">{{ data?.student?.name || '—' }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Grade:</div>
+                  <div class="mt-1 font-semibold text-gray-900">{{ data?.student?.grade || '—' }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right col -->
+            <div class="mt-6 w-full sm:mt-0 sm:w-1/2">
+              <div class="flex flex-col gap-6">
+                <div>
+                  <div class="text-[12px] text-gray-500">Email:</div>
+                  <div class="mt-1 font-semibold text-gray-900 break-all">{{ data?.student?.email || '—' }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[12px] text-gray-500">Age:</div>
+                  <div class="mt-1 font-semibold text-gray-900">{{ data?.student?.age || '—' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <div class="text-[12px] text-gray-500">Learning Preferences:</div>
+            <div class="mt-2 font-semibold text-gray-900">
+              {{ data?.student?.learningPreferences || '—' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meeting Information -->
+     <!-- Meeting Information -->
+<div class="mt-7">
+  <div class="text-[14px] font-semibold text-gray-900">Meeting Information</div>
+
+  <div class="mt-4 rounded-[10px] bg-[#EEF6FF] px-5 py-4">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <!-- Link side -->
+      <div class="min-w-0 flex-1">
+        <div class="text-[12px] text-gray-500">Meeting Link:</div>
+
+        <a
+          *ngIf="data?.meetingLink; else noLink"
+          [href]="data?.meetingLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-1 block truncate text-[14px] font-semibold text-[#1D4ED8] hover:underline"
+        >
+          {{ data?.meetingLink }}
+        </a>
+
+        <ng-template #noLink>
+          <div class="mt-1 text-[12px] text-gray-600">No meeting link available.</div>
+        </ng-template>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap items-center justify-end gap-3">
+        <!-- Copy link (always) -->
+        <button
+          type="button"
+          (click)="copyLink()"
+          class="h-[34px] rounded-[8px] bg-[#1D4ED8] px-4 text-[12px] font-semibold text-white
+                 hover:bg-[#1E40AF] focus:outline-none focus:ring-4 focus:ring-blue-200"
+        >
+          Copy Link
+        </button>
+
+        <!-- ✅ Add to Calendar (LIVE ONLY) -->
+        <button
+          *ngIf="variant === 'live'"
+          type="button"
+          (click)="addToCalendar()"
+          class="flex h-[34px] items-center gap-2 rounded-[8px] bg-[#16A34A] px-4 text-[12px] font-semibold text-white
+                 hover:bg-[#15803D] focus:outline-none focus:ring-4 focus:ring-green-200"
+        >
+          <span class="text-[14px] leading-none">📅</span>
+          Add to Calendar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="flex items-center justify-end gap-3 border-t border-gray-200 px-6 py-4">
+      <button
+        type="button"
+        (click)="onClose()"
+        class="h-[38px] rounded-[10px] border border-gray-300 bg-white px-7 text-[13px] font-medium text-gray-700 hover:bg-gray-50"
+      >
+        Close
+      </button>
+
+      <button
+        type="button"
+        (click)="openMeeting(); onJoin()"
+        class="h-[38px] rounded-[10px] bg-[#089BC4] px-7 text-[13px] font-semibold text-white hover:bg-[#078BB0]
+               focus:outline-none focus:ring-4 focus:ring-[#089BC4]/20"
+      >
+        Join Meeting
+      </button>
+    </div>
+  </div>
+</div>

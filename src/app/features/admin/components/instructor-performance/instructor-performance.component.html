@@ -1,0 +1,29 @@
+<div class="w-full max-w-sm bg-white p-4 rounded-xl shadow-md mx-auto cursor-pointer"     (click)="goToAnalytics()">
+  <h3 class="text-lg md:text-xl font-semibold ">Instructor Performance</h3>
+
+  <div class="w-full">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [xaxis]="chartOptions.xaxis"
+      [legend]="chartOptions.legend"
+      [colors]="chartOptions.colors"
+      [grid]="chartOptions.grid"
+    ></apx-chart>
+  </div>
+
+</div>
+  <div class="mt-6 text-sm text-gray-700 space-y-1">
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-500">Top Rated:</span>
+      <span class="font-semibold">{{ topRated.name }} ({{ topRated.rating }})</span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="font-medium text-gray-500">Needs Improvement:</span>
+      <span class="font-semibold">{{ needsImprovement.name }} ({{ needsImprovement.rating }})</span>
+    </div>
+  </div>

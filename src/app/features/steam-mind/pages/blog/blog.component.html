@@ -1,0 +1,240 @@
+<!-- HERO -->
+<section
+  class="w-full bg-[radial-gradient(ellipse_at_center,_#F7ECFA_0%,_#F1E2F6_55%,_#EAD6F1_100%)]"
+  aria-label="STEAM Minds Blog hero"
+>
+  <div
+    class="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center px-4 py-10 sm:py-14 lg:py-16"
+  >
+    <h1
+      class="text-center text-[30px] font-extrabold leading-[1.1] tracking-[-0.02em] text-[#111827] sm:text-[42px] lg:text-[46px]"
+    >
+      {{ hero.title }}
+    </h1>
+
+    <p
+      class="mt-3 max-w-[680px] text-center text-[12px] font-medium leading-[1.55] text-[#4B5563] sm:mt-4 sm:text-[13px] lg:text-[14px]"
+    >
+      {{ hero.subtitle }}
+    </p>
+
+    <form
+      class="mt-6 flex w-full max-w-[520px] items-center justify-center sm:mt-7"
+      role="search"
+      (submit)="onSearch($event)"
+    >
+      <div
+        class="flex w-full items-center rounded-full bg-white shadow-[0_10px_28px_rgba(17,24,39,0.10)] ring-1 ring-black/5"
+      >
+        <label class="sr-only" for="blogSearch">Search articles</label>
+
+        <input
+          id="blogSearch"
+          type="search"
+          [(ngModel)]="searchTerm"
+          name="search"
+          [placeholder]="hero.placeholder"
+          class="w-full bg-transparent px-6 py-3 text-[12px] font-medium text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none"
+        />
+
+        <button
+          type="submit"
+          aria-label="Search"
+          class="mr-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7E1F86] cursor-pointer"
+        >
+          <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.5 16.5 21 21"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- RECENT ARTICLES -->
+<section class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col px-4 pb-12 pt-8 sm:pb-14 sm:pt-10">
+    <!-- Title -->
+    <div class="flex w-full flex-col">
+      <h2 class="text-[22px] font-extrabold text-[#111827] sm:text-[24px]">
+        Recent Articles
+      </h2>
+
+      <!-- Pills -->
+      <div class="mt-3 flex w-full flex-wrap items-center gap-2">
+        <button
+          type="button"
+          (click)="setCategory('All')"
+          class="inline-flex h-7 items-center justify-center rounded-full px-4 text-[11px] font-semibold transition-colors cursor-pointer"
+          [class.bg-[#7E1F86]]="activeCategory === 'All'"
+          [class.text-white]="activeCategory === 'All'"
+          [class.bg-[#F3F4F6]]="activeCategory !== 'All'"
+          [class.text-[#111827]]="activeCategory !== 'All'"
+        >
+          All
+        </button>
+
+        <button
+          *ngFor="let c of categories; trackBy: trackByText"
+          type="button"
+          (click)="setCategory(c)"
+          class="inline-flex h-7 items-center justify-center rounded-full px-4 text-[11px] font-semibold transition-colors cursor-pointer"
+          [class.bg-[#7E1F86]]="activeCategory === c"
+          [class.text-white]="activeCategory === c"
+          [class.bg-[#F3F4F6]]="activeCategory !== c"
+          [class.text-[#111827]]="activeCategory !== c"
+        >
+          {{ c }}
+        </button>
+      </div>
+
+      <!-- divider -->
+      <div class="mt-4 h-px w-full bg-[#EEF0F3]"></div>
+    </div>
+
+    <!-- Cards Row -->
+    <div class="mt-6 flex w-full flex-wrap gap-6">
+      <article
+        *ngFor="let a of filteredArticles; trackBy: trackBySlug"
+        class="flex w-full flex-col overflow-hidden rounded-[12px] bg-white shadow-[0_10px_30px_rgba(17,24,39,0.08)] ring-1 ring-black/5 basis-full sm:basis-[calc(50%-12px)] lg:basis-[calc(33.333%-16px)] xl:basis-[calc(25%-18px)]"
+      >
+        <!-- Image (clickable) -->
+        <button
+          type="button"
+          (click)="openArticle(a)"
+          class="relative flex w-full items-start justify-start cursor-pointer"
+          aria-label="Open article"
+        >
+          <img
+            [src]="a.image"
+            [alt]="a.title"
+            class="h-[150px] w-full object-cover sm:h-[160px]"
+            draggable="false"
+          />
+
+          <!-- Category badge -->
+          <span
+            class="absolute left-3 top-3 inline-flex h-5 items-center justify-center rounded-full px-3 text-[10px] font-semibold text-white"
+            [class.bg-[#FF6A3D]]="a.category === 'Science'"
+            [class.bg-[#7E1F86]]="a.category !== 'Science'"
+          >
+            {{ a.category }}
+          </span>
+        </button>
+
+        <!-- Body -->
+        <div class="flex w-full flex-col px-5 pb-4 pt-4">
+          <!-- meta -->
+          <div class="flex w-full items-center gap-3 text-[10px] font-medium text-[#6B7280]">
+            <div class="flex items-center gap-2">
+              <span class="flex h-4 w-4 items-center justify-center text-[#6B7280]">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                  <path
+                    d="M8 2v3M16 2v3M3.5 9h17M5 6h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span>{{ a.date }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="flex h-4 w-4 items-center justify-center text-[#6B7280]">
+                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                  <path
+                    d="M12 7v6l4 2"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span>{{ a.readTime }}</span>
+            </div>
+          </div>
+
+          <!-- title (clickable + cursor) -->
+          <button
+            type="button"
+            (click)="openArticle(a)"
+            class="mt-3 flex w-full text-left cursor-pointer"
+            aria-label="Open article title"
+          >
+            <span class="text-[13px] font-extrabold leading-[1.35] text-[#111827]">
+              {{ a.title }}
+            </span>
+          </button>
+
+          <!-- excerpt -->
+          <p class="mt-2 text-[11px] leading-[1.55] text-[#6B7280]">
+            {{ a.excerpt }}
+          </p>
+
+          <!-- footer -->
+          <div class="mt-4 flex w-full items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div
+                class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#E5E7EB]"
+              >
+                <img
+                  *ngIf="a.authorAvatar"
+                  [src]="a.authorAvatar"
+                  alt=""
+                  class="h-full w-full object-cover"
+                  draggable="false"
+                />
+              </div>
+              <span class="text-[10px] font-semibold text-[#111827]">
+                {{ a.author }}
+              </span>
+            </div>
+
+            <!-- Read More (clickable + cursor) -->
+            <button
+              type="button"
+              (click)="openArticle(a)"
+              class="flex items-center gap-2 text-[10px] font-bold text-[#FF6A3D] cursor-pointer"
+              aria-label="Read more"
+            >
+              Read More
+              <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" aria-hidden="true">
+                <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path
+                  d="M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

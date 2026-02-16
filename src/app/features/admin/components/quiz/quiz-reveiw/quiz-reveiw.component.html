@@ -1,0 +1,522 @@
+<!-- Wrapper -->
+<div class="flex w-full flex-col bg-white">
+  <!-- Header -->
+  <div class="flex items-start justify-between px-5 py-4">
+    <div class="flex flex-col">
+      <div class="text-[14px] font-semibold text-[#111827]">Review Quiz</div>
+      <div class="mt-1 text-[11px] text-[#6B7280]">{{ quiz?.title }}</div>
+    </div>
+
+    <button
+      type="button"
+      aria-label="Close"
+      (click)="close.emit()"
+      class="cursor-pointer flex h-9 w-9 items-center justify-center rounded-[6px] text-[#9CA3AF] hover:bg-gray-100"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="h-px bg-[#E5E7EB]"></div>
+
+  <!-- Tabs -->
+<div class="flex w-full flex-row flex-nowrap items-center gap-8 overflow-x-auto px-5 pt-4">
+  <button
+    type="button"
+    (click)="setTab('overview')"
+    class="flex cursor-pointer flex-row items-center gap-2 pb-3 text-[12px] font-medium whitespace-nowrap transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'overview' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle>
+        <circle cx="12" cy="8.5" r="1.2" fill="currentColor"></circle>
+        <path d="M12 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+    </span>
+    Overview
+  </button>
+
+  <button
+    type="button"
+    (click)="setTab('questions')"
+    class="flex cursor-pointer flex-row items-center gap-2 pb-3 text-[12px] font-medium whitespace-nowrap transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'questions' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle>
+        <path d="M9.5 9a2.6 2.6 0 0 1 5.2 0c0 1.7-1.6 2.2-2.4 2.8-.6.4-.8.8-.8 1.7"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <circle cx="12" cy="17" r="1.2" fill="currentColor"></circle>
+      </svg>
+    </span>
+    Questions
+  </button>
+
+  <button
+    type="button"
+    (click)="setTab('settings')"
+    class="flex cursor-pointer flex-row items-center gap-2 pb-3 text-[12px] font-medium whitespace-nowrap transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'settings' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <path d="M12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z" stroke="currentColor" stroke-width="2"/>
+        <path
+          d="M19 12a7 7 0 01-.1 1l2 1.5-2 3.5-2.3-1a7.5 7.5 0 01-1.7 1l-.3 2.5H9.4L9.1 19a7.5 7.5 0 01-1.7-1l-2.3 1-2-3.5 2-1.5A7 7 0 015 12c0-.35.03-.7.1-1l-2-1.5 2-3.5 2.3 1a7.5 7.5 0 011.7-1L9.4 2.5h5.2L14.9 5a7.5 7.5 0 011.7 1l2.3-1 2 3.5-2 1.5c.07.3.1.65.1 1z"
+          stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    Settings
+  </button>
+</div>
+
+
+  <!-- Active tab underline -->
+  <div class="px-5">
+    <div class="h-px bg-[#E5E7EB]"></div>
+    <div class="flex">
+      <div class="w-[88px]" *ngIf="activeTab === 'overview'"></div>
+      <div class="w-[96px]" *ngIf="activeTab === 'questions'"></div>
+      <div class="w-[88px]" *ngIf="activeTab === 'settings'"></div>
+    </div>
+  </div>
+
+  <!-- Content area -->
+  <div class="flex max-h-[64vh] flex-col overflow-auto px-5 py-5">
+    <!-- ================== OVERVIEW ================== -->
+    <ng-container *ngIf="activeTab === 'overview'">
+      <!-- top overview block -->
+      <ng-container *ngIf="!sendBackMode; else sendBackBlock">
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <!-- left column -->
+            <div class="flex flex-1 flex-col gap-4">
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Quiz Title</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.title }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Instructor</div>
+                <div class="flex items-center gap-2">
+                  <img [src]="quiz?.instructorAvatar" alt="" class="h-6 w-6 rounded-full object-cover" />
+                  <div class="text-[12px] text-[#111827]">{{ quiz?.instructor }}</div>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Course</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.course }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Created Date</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.date }}</div>
+              </div>
+            </div>
+
+            <!-- right column -->
+            <div class="flex flex-1 flex-col gap-4 sm:items-start">
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Total Questions</div>
+                <div class="text-[12px] text-[#111827]">{{ totalQuestions }} questions</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Total Points</div>
+                <div class="text-[12px] text-[#111827]">{{ totalPoints }} points</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Estimated Duration</div>
+                <div class="text-[12px] text-[#111827]">{{ estimatedDuration }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Difficulty Distribution</div>
+                <div class="text-[12px] text-[#111827]">
+                  Easy: {{ difficulty.easy }} &nbsp; Medium: {{ difficulty.medium }} &nbsp; Hard: {{ difficulty.hard }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Send back view (2nd screenshot) -->
+      <ng-template #sendBackBlock>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <!-- left column -->
+            <div class="flex flex-1 flex-col gap-4">
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Quiz Title</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.title }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Instructor</div>
+                <div class="flex items-center gap-2">
+                  <img [src]="quiz?.instructorAvatar" alt="" class="h-6 w-6 rounded-full object-cover" />
+                  <div class="text-[12px] text-[#111827]">{{ quiz?.instructor }}</div>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Course</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.course }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Created Date</div>
+                <div class="text-[12px] text-[#111827]">{{ quiz?.date }}</div>
+              </div>
+            </div>
+
+            <!-- right column -->
+            <div class="flex flex-1 flex-col gap-4">
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Total Questions</div>
+                <div class="text-[12px] text-[#111827]">{{ totalQuestions }} questions</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Total Points</div>
+                <div class="text-[12px] text-[#111827]">{{ totalPoints }} points</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Estimated Duration</div>
+                <div class="text-[12px] text-[#111827]">{{ estimatedDuration }}</div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <div class="text-[11px] font-medium text-[#6B7280]">Difficulty Distribution</div>
+                <div class="text-[12px] text-[#111827]">
+                  Easy: {{ difficulty.easy }} &nbsp; Medium: {{ difficulty.medium }} &nbsp; Hard: {{ difficulty.hard }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="h-px bg-[#E5E7EB]"></div>
+
+          <div class="flex flex-col gap-2">
+            <div class="text-[12px] font-semibold text-[#111827]">Send Back to Instructor</div>
+
+            <div class="text-[11px] font-medium text-[#6B7280]">Comments for Instructor</div>
+
+            <textarea
+              [(ngModel)]="comments"
+              rows="5"
+              class="w-full resize-none rounded-[6px] border border-[#E5E7EB] bg-white px-3 py-2 text-[12px] text-[#111827]
+                     outline-none placeholder:text-[#9CA3AF] focus:border-[#7C3AED]"
+              placeholder="Provide feedback and suggestions for improvement..."
+            ></textarea>
+
+            <div class="text-[10px] text-[#9CA3AF]">0/500 characters</div>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- ================== QUESTIONS ================== -->
+    <ng-container *ngIf="activeTab === 'questions'">
+      <div class="flex flex-col gap-4">
+        <div
+          *ngFor="let q of questions"
+          class="flex flex-col rounded-[6px] border border-[#E5E7EB] bg-white"
+        >
+          <div class="flex flex-wrap items-center gap-2 px-4 py-3">
+            <span class="rounded-[4px] bg-[#EEF2FF] px-2 py-1 text-[10px] font-semibold text-[#4F46E5]">
+              {{ q.no }}
+            </span>
+
+            <span class="rounded-full border border-[#E5E7EB] bg-white px-2 py-1 text-[10px] font-medium text-[#111827]">
+              {{ q.type }}
+            </span>
+
+            <span
+              class="rounded-full border px-2 py-1 text-[10px] font-semibold"
+              [ngClass]="badgeClassesDifficulty(q.difficulty)"
+            >
+              {{ q.difficulty }}
+            </span>
+
+            <span class="text-[10px] font-medium text-[#6B7280]">{{ q.points }}</span>
+          </div>
+
+          <div class="px-4 pb-2 text-[12px] font-semibold text-[#111827]">
+            {{ q.text }}
+          </div>
+
+          <div class="flex flex-col gap-2 px-4 pb-4">
+            <div
+              *ngFor="let opt of q.options"
+              class="flex items-center gap-3 rounded-[6px] border border-[#E5E7EB] px-3 py-2"
+              [ngClass]="opt.correct ? 'bg-[#ECFDF3] border-[#BBF7D0]' : 'bg-white'"
+            >
+              <div class="text-[11px] font-medium text-[#111827]">{{ opt.text }}</div>
+
+              <div class="ms-auto" *ngIf="opt.correct">
+                <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#16A34A]" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- ================== SETTINGS ================== -->
+    <ng-container *ngIf="activeTab === 'settings'">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <!-- left -->
+          <div class="flex flex-1 flex-col gap-4">
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">Attempts Allowed</div>
+              <select
+                [(ngModel)]="attemptsAllowed"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              >
+                <option>1 attempt</option>
+                <option>2 attempts</option>
+                <option>3 attempts</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">Passing Score (%)</div>
+              <input
+                type="number"
+                [(ngModel)]="passingScore"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              />
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">Question Randomization</div>
+              <select
+                [(ngModel)]="randomization"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              >
+                <option>Enabled</option>
+                <option>Disabled</option>
+              </select>
+              <div class="text-[10px] text-[#9CA3AF]">Randomize question order for each attempt</div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+              <div class="text-[12px] font-semibold text-[#111827]">Advanced Settings</div>
+
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <div class="text-[11px] font-medium text-[#111827]">Shuffle Answer Options</div>
+                  <div class="text-[10px] text-[#9CA3AF]">Randomize answer order for multiple choice questions</div>
+                </div>
+
+                <label class="relative inline-flex items-center">
+                  <input type="checkbox" [(ngModel)]="shuffleAnswers" class="peer sr-only">
+                  <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#7C3AED] transition"></span>
+                  <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white peer-checked:translate-x-4 transition"></span>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <div class="text-[11px] font-medium text-[#111827]">Auto-Save Responses</div>
+                  <div class="text-[10px] text-[#9CA3AF]">Automatically save student responses as they progress</div>
+                </div>
+
+                <label class="relative inline-flex items-center">
+                  <input type="checkbox" [(ngModel)]="autoSaveResponses" class="peer sr-only">
+                  <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#7C3AED] transition"></span>
+                  <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white peer-checked:translate-x-4 transition"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2">
+              <div class="text-[12px] font-semibold text-[#111827]">Security & Access</div>
+
+              <div class="flex flex-col gap-2">
+                <div class="text-[11px] font-medium text-[#6B7280]">Access Code</div>
+                <input
+                  type="text"
+                  [(ngModel)]="accessCode"
+                  class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+                  placeholder="Optional access code"
+                />
+                <div class="text-[10px] text-[#9CA3AF]">Students need this code to access the quiz</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- right -->
+          <div class="flex flex-1 flex-col gap-4">
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">After all attempts</div>
+              <select
+                [(ngModel)]="gradingRelease"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              >
+                <option>After all attempts</option>
+                <option>After first attempt</option>
+                <option>Immediately</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">Late Submission</div>
+              <select
+                [(ngModel)]="lateSubmission"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              >
+                <option>Not allowed</option>
+                <option>Allowed</option>
+              </select>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">Proctoring</div>
+              <select
+                [(ngModel)]="proctoring"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+              >
+                <option>Disabled</option>
+                <option>Enabled</option>
+              </select>
+              <div class="text-[10px] text-[#9CA3AF]">Monitor student during quiz attempts</div>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2">
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <div class="text-[11px] font-medium text-[#111827]">Show Progress Bar</div>
+                  <div class="text-[10px] text-[#9CA3AF]">Display question progress to students</div>
+                </div>
+
+                <label class="relative inline-flex items-center">
+                  <input type="checkbox" [(ngModel)]="showProgressBar" class="peer sr-only">
+                  <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#7C3AED] transition"></span>
+                  <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white peer-checked:translate-x-4 transition"></span>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <div class="text-[11px] font-medium text-[#111827]">Allow Review Before Submit</div>
+                  <div class="text-[10px] text-[#9CA3AF]">Let students review answers before final submission</div>
+                </div>
+
+                <label class="relative inline-flex items-center">
+                  <input type="checkbox" [(ngModel)]="allowReviewBeforeSubmit" class="peer sr-only">
+                  <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#7C3AED] transition"></span>
+                  <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white peer-checked:translate-x-4 transition"></span>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                  <div class="text-[11px] font-medium text-[#111827]">Show Answer Review</div>
+                  <div class="text-[10px] text-[#9CA3AF]">Allow review after submission</div>
+                </div>
+
+                <label class="relative inline-flex items-center">
+                  <input type="checkbox" [(ngModel)]="showAnswerReview" class="peer sr-only">
+                  <span class="h-5 w-9 rounded-full bg-gray-200 peer-checked:bg-[#7C3AED] transition"></span>
+                  <span class="absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white peer-checked:translate-x-4 transition"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 pt-2">
+              <div class="text-[11px] font-medium text-[#6B7280]">IP Restrictions</div>
+              <input
+                type="text"
+                [(ngModel)]="ipRestrictions"
+                class="h-9 w-full rounded-[6px] border border-[#E5E7EB] bg-white px-3 text-[12px] text-[#111827] outline-none focus:border-[#7C3AED]"
+                placeholder="e.g., 192.168.1.0/24"
+              />
+              <div class="text-[10px] text-[#9CA3AF]">Restrict access to specific IP ranges</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Footer -->
+  <div class="h-px bg-[#E5E7EB]"></div>
+
+  <div class="flex flex-wrap items-center justify-end gap-3 px-5 py-4">
+    <!-- Overview send back mode footer (2nd screenshot) -->
+    <ng-container *ngIf="activeTab === 'overview' && sendBackMode; else normalFooter">
+      <button
+        type="button"
+        (click)="submitSendBack()"
+        class="cursor-pointer inline-flex h-9 items-center justify-center rounded-[6px] bg-[#F97316] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+      >
+        Send Back
+      </button>
+
+      <button
+        type="button"
+        (click)="cancelSendBack()"
+        class="cursor-pointer inline-flex h-9 items-center justify-center rounded-[6px] bg-[#E5E7EB] px-4 text-[12px] font-semibold text-[#111827] hover:bg-[#D1D5DB]"
+      >
+        Cancel
+      </button>
+    </ng-container>
+
+    <!-- Default footer (1st/3rd/4th screenshots) -->
+    <ng-template #normalFooter>
+      <button
+        type="button"
+        (click)="openSendBack()"
+        class="cursor-pointer inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#F97316] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+      >
+        <span class="flex h-4 w-4 items-center justify-center">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+            <path d="M10 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 12h10a6 6 0 016 6v0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Send Back
+      </button>
+
+      <button
+        type="button"
+        (click)="editQuiz()"
+        class="cursor-pointer inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#2563EB] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+      >
+        <span class="flex h-4 w-4 items-center justify-center">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+            <path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Edit Quiz
+      </button>
+
+      <button
+        type="button"
+        (click)="approveAndPublish()"
+        class="cursor-pointer inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#16A34A] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+      >
+        <span class="flex h-4 w-4 items-center justify-center">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Approve &amp; Publish
+      </button>
+    </ng-template>
+  </div>
+</div>

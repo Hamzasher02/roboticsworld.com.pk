@@ -1,0 +1,166 @@
+﻿<!-- Choose Learning Path -->
+<section class="w-full bg-white">
+  <div class="mx-auto w-full max-w-[1100px]   sm:px-6 lg:px-8">
+
+
+    <div class="flex w-full items-start">
+      <button type="button" (click)="goBack()"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-full text-black/80 hover:bg-black/5">
+        <img src="assets\student\forum\LeftArrow.svg" alt="" class="h-5 w-5">
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header class="text-center">
+      <h1 class="text-[26px] font-extrabold tracking-tight text-[#111827] sm:text-[35px]">
+        Choose Your Learning Path
+      </h1>
+      <p class="mt-2 text-[12px] text-[#6B7280] sm:text-[15px]">
+        {{ courseData?.course?.courseTitle }}
+      </p>
+    </header>
+
+    <!-- Cards -->
+    <div class="mt-10 flex justify-center">
+      <!-- Live Classes -->
+      <article *ngIf="courseData?.course?.courseEnrollementType === 'live'"
+        class="w-full max-w-[420px] rounded-[14px] border border-[#E5E7EB] bg-white shadow-[0_18px_40px_rgba(17,24,39,0.12)]"
+        aria-label="Live Classes plan">
+        <div class="px-8 py-8">
+          <!-- Title Row -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-9 w-9 items-center justify-center">
+                <!-- icon -->
+                <img src="assets\student\buy course\OrangeMultipleUsersSilhouette.svg" alt="" class="h-7 w-7" />
+              </span>
+              <h2 class="text-[18px] font-semibold text-[#111827]">Live Classes</h2>
+            </div>
+
+            <span
+              class="inline-flex items-center rounded-full bg-[#fcec87] px-4 py-1.5 text-[14px] font-semibold text-[#111827]">
+              Popular
+            </span>
+          </div>
+
+          <!-- Bullets -->
+          <ul class="mt-7 space-y-4 text-[14px] text-[#111827]">
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Interactive sessions with instructor</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Real-time Q&amp;A and discussions</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Scheduled daily classes</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Certificate upon completion</span>
+            </li>
+          </ul>
+
+          <!-- Price -->
+          <div class="mt-10">
+            <div class="flex items-end gap-5">
+              <div class="text-[28px] font-semibold text-[#111827]">$ {{ coursePrice }}</div>
+              <!-- <div class="pb-[5px] text-[12px] text-[#9CA3AF] line-through">$399</div> -->
+            </div>
+            <div class="mt-1 text-[12px] text-[#9CA3AF]">One-time payment</div>
+          </div>
+
+          <!-- CTA -->
+          <button type="button" (click)="selectLiveClasses()"
+            class="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[2px] bg-[#FF6A3D] px-5 py-3 text-[14px] font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[#FF6A3D]/25">
+            <span class="inline-flex h-5 w-5 items-center justify-center">
+              <img src="assets\student\buy course\Clock (2).svg" alt="" class="h-4 w-4" />
+            </span>
+            Choose Live Classes
+          </button>
+        </div>
+      </article>
+
+      <!-- Recorded Classes -->
+      <article *ngIf="courseData?.course?.courseEnrollementType === 'recorded'"
+        class="w-full max-w-[420px] rounded-[14px] border border-[#E5E7EB] bg-white shadow-[0_18px_40px_rgba(17,24,39,0.12)]"
+        aria-label="Recorded Classes plan">
+        <div class="px-8 py-8">
+          <!-- Title Row -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-9 w-9 items-center justify-center">
+                <!-- icon -->
+                <img src="assets\student\buy course\orangVideoCamera.svg" alt="" class="h-7 w-7" />
+              </span>
+              <h2 class="text-[18px] font-semibold text-[#111827]">Recorded Classes</h2>
+            </div>
+          </div>
+
+          <!-- Bullets -->
+          <ul class="mt-7 space-y-4 text-[14px] text-[#111827]">
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Learn at your own pace</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">High-quality video lessons</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">4 Months access to content</span>
+            </li>
+
+            <li class="flex items-start gap-3">
+              <span class="mt-[2px] inline-flex h-5 w-5 items-center justify-center">
+                <img src="assets/student\courseImage\Select.svg" alt="" class="h-5 w-5" />
+              </span>
+              <span class="leading-6">Certificate upon completion</span>
+            </li>
+          </ul>
+
+          <!-- Price -->
+          <div class="mt-10">
+            <div class="flex items-end gap-5">
+              <div class="text-[28px] font-semibold text-[#111827]">$ {{ coursePrice }}</div>
+              <!-- <div class="pb-[5px] text-[12px] text-[#9CA3AF] line-through">$299</div> -->
+            </div>
+            <div class="mt-1 text-[12px] text-[#9CA3AF]">One-time payment</div>
+          </div>
+
+          <!-- CTA -->
+          <button type="button" (click)="selectRecordedClasses()"
+            class="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-[2px] bg-[#FF6A3D] px-5 py-3 text-[14px] font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[#FF6A3D]/25">
+            <span class="inline-flex h-5 w-5 items-center justify-center">
+              <img src="assets\student\forum\VideoCameraWhite.svg" alt="" class="h-5 w-5" />
+            </span>
+            Choose Recorded Classes
+          </button>
+
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,565 @@
+<div class="min-h-screen bg-white">
+  <div class="mx-auto w-full max-w-[1120px] px-4 py-6 sm:px-6">
+    <!-- Header -->
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div class="min-w-0">
+        <h1 class="text-[16px] font-semibold text-[#111827]">Instructor Quiz Management</h1>
+        <p class="mt-1 text-[11px] text-[#6B7280]">
+          Create, manage, and track course quizzes with AI assistance
+        </p>
+      </div>
+
+      <button type="button" (click)="createQuiz()" class="inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#0EA5B7] px-4 text-[11px] font-semibold text-white
+         shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100">
+        <span class="text-[14px] leading-none">+</span>
+        Create New Quiz
+      </button>
+
+    </div>
+
+    <!-- Stat cards -->
+    <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-[10px] border border-[#EEF2F7] bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-[#6B7280]">Total Quizzes</div>
+            <div class="mt-0.5 text-[18px] font-semibold text-[#111827]">{{ stats.totalQuizzes }}</div>
+          </div>
+          <div class="flex h-9 w-9 items-center justify-center rounded-[6px] bg-[#EEF2FF]">
+            <img src="/assets/instructor-images/quiz/Icon-142.svg" alt="Total quizzes" class="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[10px] border border-[#EEF2F7] bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-[#6B7280]">Pending Drafts</div>
+            <div class="mt-0.5 text-[18px] font-semibold text-[#F97316]">{{ stats.pendingDrafts }}</div>
+          </div>
+          <div class="flex h-9 w-9 items-center justify-center rounded-[6px] bg-[#FFF7ED]">
+            <img src="/assets/instructor-images/quiz/Group.svg" alt="Pending drafts" class="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[10px] border border-[#EEF2F7] bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-[#6B7280]">Scheduled Releases</div>
+            <div class="mt-0.5 text-[18px] font-semibold text-[#16A34A]">{{ stats.scheduledReleases }}</div>
+          </div>
+          <div class="flex h-9 w-9 items-center justify-center rounded-[6px] bg-[#DCFCE7]">
+            <img src="/assets/instructor-images/quiz/Group (1).svg" alt="Scheduled releases" class="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[10px] border border-[#EEF2F7] bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-[#6B7280]">Avg. Completion</div>
+            <div class="mt-0.5 text-[18px] font-semibold text-[#0EA5B7]">{{ stats.avgCompletion }}%</div>
+          </div>
+          <div class="flex h-9 w-9 items-center justify-center rounded-[6px] bg-[#F3E8FF]">
+            <img src="/assets/instructor-images/quiz/Group (2).svg" alt="Avg completion" class="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main card -->
+    <div class="mt-5 rounded-[12px] border border-[#EEF2F7] bg-white shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+      <!-- Tabs -->
+      <div class="px-4 pt-4 sm:px-6">
+        <div class="flex items-center gap-6 border-b border-[#EEF2F7]">
+          <button type="button" class="relative flex items-center gap-2 pb-3 text-[11px] font-semibold text-[#0EA5B7]">
+            <img src="/assets/instructor-images/quiz/Group (3).svg" alt="Quiz overview" class="h-3.5 w-3.5" />
+            Quiz Overview
+            <span class="absolute bottom-[-1px] left-0 h-[2px] w-full rounded-full bg-[#0EA5B7]"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters row -->
+      <div class="px-4 py-4 sm:px-6">
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-medium text-[#374151]">Course:</span>
+            <div class="relative">
+              <select [(ngModel)]="selectedCourse" class="h-8 w-[160px] appearance-none rounded-[6px] border border-[#E5E7EB] bg-white pl-3 pr-8 text-[10px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <option>All Courses</option>
+              </select>
+              <img src="/assets/instructor-images/quiz/down.svg" alt=""
+                class="pointer-events-none absolute right-2 top-1/2 h-2 w-2 -translate-y-1/2" />
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-medium text-[#374151]">Status:</span>
+            <div class="relative">
+              <select [(ngModel)]="selectedStatus" class="h-8 w-[120px] appearance-none rounded-[6px] border border-[#E5E7EB] bg-white pl-3 pr-8 text-[10px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <option>All Status</option>
+              </select>
+              <img src="/assets/instructor-images/quiz/down.svg" alt=""
+                class="pointer-events-none absolute right-2 top-1/2 h-2 w-2 -translate-y-1/2" />
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-[10px] font-medium text-[#374151]">Date Range:</span>
+
+            <div class="relative">
+              <input [(ngModel)]="startDate" type="date" class="date-input h-8 w-[110px] rounded-[6px] border border-[#E5E7EB]
+             bg-white px-3 pr-9 text-[10px] text-[#111827]
+             focus:outline-none focus:ring-4 focus:ring-gray-100" />
+            </div>
+
+            <span class="text-[10px] text-[#6B7280]">to</span>
+
+            <div class="relative">
+              <input [(ngModel)]="endDate" type="date" class="date-input h-8 w-[110px] rounded-[6px] border border-[#E5E7EB]
+             bg-white px-3 pr-9 text-[10px] text-[#111827]
+             focus:outline-none focus:ring-4 focus:ring-gray-100" />
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <div class="h-px bg-[#EEF2F7]"></div>
+
+      <!-- Table header row (title + sort) -->
+      <div class="px-4 py-4 sm:px-6">
+        <div class="flex items-center justify-between gap-3">
+          <div class="text-[12px] font-semibold text-[#111827]">Quiz Overview</div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-medium text-[#374151]">Sort by:</span>
+            <div class="relative">
+              <select [(ngModel)]="selectedCourse" class="h-8 w-[160px] appearance-none rounded-[6px] border border-[#E5E7EB] bg-white pl-3 pr-8 text-[10px] text-[#111827]
+           focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <option>All Courses</option>
+              </select>
+
+              <!-- ✅ down arrow -->
+              <img src="/assets/instructor-images/quiz/down.svg" alt=""
+                class="pointer-events-none absolute right-2 top-1/2 h-2 w-2 -translate-y-1/2" />
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="mt-3 overflow-hidden rounded-[10px] border border-[#EEF2F7]">
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[920px]">
+              <thead class="bg-[#F9FAFB]">
+                <tr class="text-left">
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Quiz Details</th>
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Status</th>
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Course</th>
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Release Info</th>
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Performance</th>
+                  <th class="px-4 py-3 text-[10px] font-semibold text-[#6B7280]">Actions</th>
+                </tr>
+              </thead>
+
+              <!-- ✅ Dynamic rows -->
+              <tbody class="divide-y divide-[#EEF2F7] bg-white">
+                <tr *ngFor="let q of quizzes">
+                  <td class="px-4 py-4">
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2">
+                        <div class="truncate text-[11px] font-semibold text-[#111827]">
+                          {{ q.title }}
+                        </div>
+
+                        <span *ngIf="q.saved"
+                          class="rounded-full bg-[#E8F0FF] px-2 py-0.5 text-[9px] font-semibold text-[#2F6BFF]">
+                          Saved
+                        </span>
+                      </div>
+
+                      <div class="mt-1 text-[9px] text-[#6B7280]">
+                        {{ q.questions }} questions • {{ q.duration }}
+                      </div>
+                      <div class="mt-0.5 text-[9px] text-[#9CA3AF]">
+                        Created: {{ q.created }}
+                      </div>
+                    </div>
+                  </td>
+
+                  <td class="px-4 py-4">
+                    <span class="rounded-full px-2.5 py-1 text-[9px] font-semibold"
+                      [ngClass]="statusBadgeClass(q.status)">
+                      {{ q.status }}
+                    </span>
+                  </td>
+
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] font-semibold text-[#111827]">{{ q.course }}</div>
+                    <div class="text-[9px] text-[#6B7280]">{{ q.module }}</div>
+                  </td>
+
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] text-[#111827]">{{ q.releaseLine1 }}</div>
+                    <div *ngIf="q.releaseLine2" class="mt-0.5 text-[9px] text-[#6B7280]">
+                      {{ q.releaseLine2 }}
+                    </div>
+                  </td>
+
+                  <td class="px-4 py-4">
+                    <div class="text-[10px] text-[#111827]">{{ q.attempts }} attempts</div>
+                  </td>
+
+                  <td class="px-4 py-4">
+                    <div class="flex items-center gap-3">
+                      <!-- ✅ Edit opens Manage Published Quiz popup -->
+                      <button type="button" (click)="onEditClick(q)"
+                        class="inline-flex h-7 w-7 items-center cursor-pointer justify-center rounded-[6px] hover:bg-gray-50">
+                        <img src="/assets/instructor-images/quiz/Group (4).svg" alt="Edit" class="h-3.5 w-3.5" />
+                      </button>
+
+
+                      <button type="button" (click)="viewQuiz(q)"
+                        class="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-[6px] hover:bg-gray-50"
+                        aria-label="View Quiz">
+                        <img src="/assets/instructor-images/quiz/Icon-304.svg" alt="View" class="h-3.5 w-3.5" />
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating AI Assistant button -->
+    <button type="button" (click)="toggleAiAssistant()"
+      class="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-4 py-2 text-[11px] font-semibold text-white
+             shadow-[0_10px_22px_rgba(37,99,235,0.25)] hover:bg-[#1D4ED8] focus:outline-none focus:ring-4 focus:ring-blue-100" aria-label="AI Assistant">
+      <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
+        <img src="/assets/instructor-images/quiz/Vector (2).svg" alt="" class="h-3.5 w-3.5" />
+      </span>
+      AI Assistant
+    </button>
+
+    <!-- ✅ AI Assistant Popup (image-like) -->
+    <div *ngIf="showAiAssistant" class="fixed bottom-[88px] right-6 z-50 w-[340px] overflow-hidden rounded-[14px] bg-white
+             shadow-[0_18px_45px_rgba(0,0,0,0.22)]">
+      <!-- Top bar -->
+      <div class="flex items-center justify-between bg-[#1E40AF] px-4 py-3">
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white/15">
+            <img src="/assets/instructor-images/quiz/Vector (2).svg" alt="AI" class="h-4 w-4" />
+          </div>
+          <div>
+            <div class="text-[12px] font-semibold text-white">AI Assistant</div>
+            <div class="text-[10px] text-white/80">Online</div>
+          </div>
+        </div>
+
+        <button type="button" (click)="closeAiAssistant()"
+          class="inline-flex h-7 w-7 items-center justify-center rounded-full text-white/90 hover:bg-white/10"
+          aria-label="Close">
+          ✕
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="h-[300px] bg-[#F3F4F6] px-4 py-4">
+        <div
+          class="w-fit max-w-[260px] rounded-[12px] bg-white px-4 py-3 text-[12px] text-gray-800 shadow-[0_1px_0_rgba(0,0,0,0.05)]">
+          Hello Zarmina, I'm your AI Assistant 🤖.<br />
+          Describe your question please.
+        </div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="flex items-center gap-3 bg-white px-4 py-3">
+        <div class="flex flex-1 items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-4 py-2">
+          <input type="text"
+            class="w-full bg-transparent text-[12px] text-gray-700 placeholder:text-gray-400 focus:outline-none"
+            placeholder="Type your legal question here..." />
+          <button type="button" class="h-6 w-6 rounded-full hover:bg-gray-50" aria-label="Mic">
+            <img src="/assets/instructor-images/quiz/voice.svg" alt="Mic" class="h-4 w-4" />
+          </button>
+        </div>
+
+        <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1E40AF] text-white
+                 hover:bg-[#1D4ED8] focus:outline-none focus:ring-4 focus:ring-blue-100" aria-label="Send">
+          <img src="/assets/instructor-images/quiz/Vector (28).svg" alt="Send" class="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+
+    <!-- ✅ Manage Published Quiz Popup  -->
+    <div *ngIf="showManagePublishedQuiz"
+      class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/30 px-3 sm:px-4" role="dialog"
+      aria-modal="true" aria-label="Manage Published Quiz">
+      <div class="w-full max-w-[620px] overflow-hidden rounded-[6px] bg-white shadow-[0_18px_45px_rgba(0,0,0,0.18)]">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 py-3">
+          <h2 class="text-[14px] font-semibold text-[#111827]">Manage Published Quiz</h2>
+
+          <button type="button" (click)="closeManagePublishedQuiz()"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-[6px] text-[#6B7280] hover:bg-gray-50"
+            aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="h-px bg-[#E5E7EB]"></div>
+
+        <!-- Body -->
+        <div class="px-4 py-4">
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+            <!-- Left -->
+            <div>
+              <div class="text-[12px] font-semibold text-[#111827]">Quiz Information</div>
+
+              <div class="mt-5 space-y-5">
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Title</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.title }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Course</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.course }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Module</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.module }}
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <div class="text-[11px] text-[#6B7280]">Status</div>
+                  <span
+                    class="inline-flex items-center rounded-full bg-[#D1FAE5] px-2.5 py-0.5 text-[10px] font-semibold text-[#047857]">
+                    {{ selectedQuiz?.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div>
+              <div class="text-[12px] font-semibold text-[#111827]">Quiz Settings</div>
+
+              <div class="mt-5 space-y-5">
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Questions</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.questions }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Time Limit</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.timeLimit }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Difficulty</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.difficulty }}
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Created</div>
+                  <div class="mt-1 text-[12px] text-[#111827]">
+                    {{ selectedQuiz?.created }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between px-4 pb-4">
+          <div class="flex items-center gap-3">
+            <button type="button" (click)="archiveQuiz(selectedQuiz)"
+              class="inline-flex h-9 items-center justify-center rounded-[6px] bg-[#F97316] px-4 text-[12px] font-semibold text-white
+                     shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#EA580C] focus:outline-none focus:ring-4 focus:ring-orange-100">
+              Archive Quiz
+            </button>
+
+            <button type="button" (click)="duplicateQuiz(selectedQuiz)"
+              class="inline-flex h-9 items-center justify-center rounded-[6px] bg-[#0EA5B7] px-4 text-[12px] font-semibold text-white
+                     shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100">
+              Duplicate Quiz
+            </button>
+          </div>
+
+          <button type="button" (click)="closeManagePublishedQuiz()" class="inline-flex h-9 items-center justify-center rounded-[6px] border border-[#D1D5DB] bg-white px-5 text-[12px] font-medium text-[#111827]
+                   hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- ✅ Scheduled Quiz Modal (fixed height + scroll) -->
+    <div *ngIf="showScheduledQuizModal"
+      class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/30 px-3 sm:px-4" role="dialog"
+      aria-modal="true" aria-label="Edit Scheduled Quiz">
+      <!-- ✅ Modal wrapper: responsive width + max height -->
+      <div class="w-full max-w-[720px] max-h-[92vh]
+           overflow-hidden rounded-[6px] bg-white
+           shadow-[0_18px_45px_rgba(0,0,0,0.18)]">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-5 py-4">
+          <div class="text-[16px] font-semibold text-[#111827]">Edit Scheduled Quiz</div>
+
+          <button type="button" (click)="closeScheduledQuizModal()"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-[6px] text-[#6B7280] hover:bg-gray-50"
+            aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="h-px bg-[#E5E7EB]"></div>
+
+        <!-- ✅ Body scroll area -->
+        <div class="overflow-y-auto px-5 py-5 max-h-[calc(92vh-132px)]">
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <!-- Left -->
+            <div>
+              <div class="text-[13px] font-semibold text-[#111827]">Quiz Information</div>
+
+              <div class="mt-4 space-y-5">
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Title</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.title }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Course</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.course }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Module</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.module }}</div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <div class="text-[11px] text-[#6B7280]">Status</div>
+                  <span class="rounded-full bg-[#DBEAFE] px-2.5 py-1 text-[10px] font-semibold text-[#1D4ED8]">
+                    {{ scheduledQuiz?.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div>
+              <div class="text-[13px] font-semibold text-[#111827]">Quiz Settings</div>
+
+              <div class="mt-4 space-y-5">
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Questions</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.questions }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Time Limit</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.duration }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Difficulty</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.difficulty }}</div>
+                </div>
+
+                <div>
+                  <div class="text-[11px] text-[#6B7280]">Created</div>
+                  <div class="mt-1 text-[13px] text-[#111827]">{{ scheduledQuiz?.created }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule Settings Card -->
+          <div class="mt-6 rounded-[10px] bg-[#EFF6FF] p-4">
+            <div class="text-[14px] font-semibold text-[#1D4ED8]">Schedule Settings</div>
+
+            <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <!-- Release Type -->
+              <div>
+                <label class="text-[11px] font-medium text-[#1D4ED8]">Release Type</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="scheduleForm.releaseType" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#93C5FD] bg-white px-4 pr-10 text-[13px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    <option>Release Immediately</option>
+                    <option>Schedule Release</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+              </div>
+
+              <!-- Release Date -->
+              <div>
+                <label class="text-[11px] font-medium text-[#1D4ED8]">Release Date</label>
+                <div class="relative mt-2">
+                  <input type="date" [(ngModel)]="scheduleForm.releaseDate" class="h-[40px] w-full rounded-[8px] border border-[#93C5FD] bg-white px-4 pr-10 text-[13px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-blue-100" />
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">📅</span>
+                </div>
+              </div>
+
+              <!-- Release Time -->
+              <div class="md:col-span-1">
+                <label class="text-[11px] font-medium text-[#1D4ED8]">Release Time</label>
+                <input type="time" [(ngModel)]="scheduleForm.releaseTime" class="mt-2 h-[40px] w-full rounded-[8px] border border-[#93C5FD] bg-white px-4 text-[13px] text-[#111827]
+                     focus:outline-none focus:ring-4 focus:ring-blue-100" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-px bg-[#E5E7EB]"></div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between px-5 py-4">
+          <div class="flex items-center gap-3">
+            <button type="button" (click)="publishNowScheduled()" class="inline-flex h-9 items-center justify-center rounded-[8px] bg-[#16A34A] px-4 text-[13px] font-semibold text-white
+                 hover:bg-[#15803D] focus:outline-none focus:ring-4 focus:ring-green-100">
+              Publish Now
+            </button>
+
+            <button type="button" (click)="saveSchedule()" class="inline-flex h-9 items-center justify-center rounded-[8px] bg-[#0EA5B7] px-4 text-[13px] font-semibold text-white
+                 hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100">
+              Save Schedule
+            </button>
+          </div>
+
+          <button type="button" (click)="closeScheduledQuizModal()" class="inline-flex h-9 items-center justify-center rounded-[8px] border border-[#D1D5DB] bg-white px-5 text-[13px] font-medium text-[#111827]
+               hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

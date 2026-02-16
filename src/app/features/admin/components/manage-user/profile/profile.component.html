@@ -1,0 +1,441 @@
+<!-- instructor-header.component.html -->
+<div class="p-4 bg-[#D9D9D924]">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 bg-white border-2 border-gray-50">
+  <!-- Title -->
+  <div class="flex items-center gap-2 sm:gap-3 mb-3">
+      <button
+          (click)="goBack()"
+          class="p-2 text-gray-700 cursor-pointer transition hover:text-gray-900 hover:bg-gray-200 rounded-full focus:outline-none"
+        >
+          <img
+            src="/assets/admin/backicon.svg"
+            alt="Back"
+            class="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+          />
+        </button>
+
+    <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+      Instructor Profile
+    </h1>
+  </div>
+
+  <!-- Header Row -->
+  <div
+    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+  >
+    <!-- Left block -->
+    <div class="flex items-center gap-3">
+      <!-- Avatar -->
+      <div
+        class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-200 overflow-hidden"
+      >
+        <img
+          src="assets/admin/Admin.svg"
+          class="w-full h-full rounded-full object-cover"
+        />
+      </div>
+
+      <!-- Name / Status / ID -->
+      <div>
+        <!-- Name + Status -->
+        <div class="flex flex-wrap items-center gap-2">
+          <span
+            class="text-base sm:text-[18px] font-medium text-gray-900 leading-tight"
+          >
+            {{ instructor.name }}
+          </span>
+
+          <span
+            class="inline-flex items-center px-3 py-0.5
+                   rounded-full text-[10px] sm:text-[12px]
+                   font-medium bg-green-100 text-green-700
+                   border border-green-200"
+          >
+            {{ instructor.status }}
+          </span>
+        </div>
+
+        <!-- ID -->
+        <div class="text-xs sm:text-[13px] text-gray-600 mt-0.5">
+          {{ instructor.id }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right block -->
+    <div class="flex justify-start sm:justify-end">
+      <button
+        type="button"
+        class="w-full sm:w-auto
+               px-4 sm:px-6 py-1.5
+               rounded-md text-xs sm:text-[14px]
+               font-medium bg-purple-600 text-white
+               hover:bg-purple-700 transition-colors"
+      >
+        {{ actionButton.label }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-6xl mt-3 px-2 sm:px-0"
+>
+  <!-- Profile Information -->
+  <div class="bg-white p-4 sm:p-6 rounded-lg border border-gray-200 shadow-sm">
+    <h2 class="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-gray-800">
+      Profile Information
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 sm:gap-y-6 gap-x-3 sm:gap-x-4">
+
+      <!-- ITEM -->
+      <div class="flex items-start gap-2 sm:gap-3">
+        <img src="/assets/admin/user-manage/email.svg" class="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+        <div>
+          <p class="text-gray-500 font-medium text-sm sm:text-lg leading-tight">
+            Email
+          </p>
+          <p class="text-gray-700 text-xs sm:text-base">
+            {{ profile.email }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 sm:gap-3">
+        <img src="/assets/admin/user-manage/phone.svg" class="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+        <div>
+          <p class="text-gray-500 font-medium text-sm sm:text-lg leading-tight">
+            Phone
+          </p>
+          <p class="text-gray-700 text-xs sm:text-base">
+            {{ profile.phone }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 sm:gap-3">
+        <img src="/assets/admin/user-manage/location.svg" class="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+        <div>
+          <p class="text-gray-500 font-medium text-sm sm:text-lg leading-tight">
+            Location
+          </p>
+          <p class="text-gray-700 text-xs sm:text-base">
+            {{ profile.location }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 sm:gap-3">
+        <img src="/assets/admin/user-manage/user.svg" class="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+        <div>
+          <p class="text-gray-500 font-medium text-sm sm:text-lg leading-tight">
+            Total Students
+          </p>
+          <p class="text-gray-700 text-xs sm:text-base">
+            {{ profile.totalStudents }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2 sm:gap-3">
+        <img src="/assets/admin/user-manage/date.svg" class="w-4 h-4 sm:w-5 sm:h-5 mt-1" />
+        <div>
+          <p class="text-gray-500 font-medium text-sm sm:text-lg leading-tight">
+            Joined Date
+          </p>
+          <p class="text-gray-700 text-xs sm:text-base">
+            {{ profile.joinedDate }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Availability -->
+  <div class="bg-white p-4 sm:p-6 rounded-lg border border-gray-200 shadow-sm">
+    <h2 class="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-gray-800">
+      Available Time Slots
+    </h2>
+
+    <div class="space-y-2 sm:space-y-3">
+      <div
+        *ngFor="let day of availability"
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2"
+      >
+        <span
+          class="font-medium text-xs sm:text-sm"
+          [ngClass]="day.notAvailable ? 'text-red-500' : 'text-gray-700'"
+        >
+          {{ day.day }}
+        </span>
+
+        <!-- Available Slots -->
+        <div *ngIf="day.slots" class="flex flex-wrap gap-1 sm:gap-2">
+          <span
+            *ngFor="let slot of day.slots"
+            class="bg-[#923D8C33] text-[#4A4A68]
+                   px-2 sm:px-3 py-0.5 sm:py-1
+                   rounded text-[10px] sm:text-sm font-medium"
+          >
+            {{ slot.start }} - {{ slot.end }}
+          </span>
+        </div>
+
+        <!-- Not Available -->
+        <span
+          *ngIf="day.notAvailable"
+          class="bg-[#DC262633] text-[#DC2626]
+                 px-4 sm:px-8 py-0.5 sm:py-1
+                 rounded text-[10px] sm:text-sm font-medium text-center"
+        >
+          Not Available
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div
+    class="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-4 mt-2 px-2 sm:px-0"
+  >
+    <!-- Live Sessions -->
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+      <h2 class="text-base font-bold text-gray-800 mb-4">Live Sessions</h2>
+
+      <div class="space-y-2">
+        <div
+          *ngFor="let session of liveSessions"
+          class="border border-gray-100 rounded-lg p-4"
+        >
+          <!-- Header -->
+          <div class="flex flex-wrap justify-between gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-sm font-semibold text-gray-800">
+                {{ session.title }}
+              </h3>
+
+              <span
+                class="px-2 py-0.5 rounded-full border border-purple-200 bg-[#923D8C33] text-[#923D8C] text-[10px] font-semibold italic"
+              >
+                {{ session.level }}
+              </span>
+            </div>
+
+            <span
+              [class]="
+                'px-2 py-0.5 rounded-full border text-[10px] font-bold uppercase ' +
+                session.statusClass
+              "
+            >
+              {{ session.status }}
+            </span>
+          </div>
+
+          <!-- Details -->
+          <div class="mt-2 text-gray-500 text-xs space-y-0.5">
+            <p>
+              Student:
+              <span class="text-gray-600">{{ session.student }}</span>
+            </p>
+            <p>Module: {{ session.module }}</p>
+          </div>
+
+          <!-- Footer -->
+          <div class="mt-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-4 text-gray-400">
+              <div class="flex items-center gap-1">
+                <img
+                  src="/assets/admin/user-manage/clander.svg"
+                  class="w-3 h-3"
+                  alt="date"
+                />
+                <span class="text-xs">{{ session.date }}</span>
+              </div>
+
+              <div class="flex items-center gap-1">
+                <img
+                  src="/assets/admin/user-manage/clock.svg"
+                  class="w-3 h-3"
+                  alt="time"
+                />
+                <span class="text-xs">{{ session.time }}</span>
+              </div>
+            </div>
+
+            <a
+              class="text-[#923D8C] text-xs font-medium hover:underline cursor-pointer"
+            >
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="mt-4 flex justify-center">
+        <button
+          class="py-1.5 px-10 rounded-lg bg-[#EDEDED] border border-[#923D8C] text-[#923D8C] font-semibold text-xs hover:bg-gray-100 transition"
+        >
+          View All Sessions
+        </button>
+      </div>
+    </div>
+
+    <!-- Assigned Courses -->
+    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+      <h2 class="text-base font-bold text-gray-800 mb-4">Assigned Courses</h2>
+
+      <div class="space-y-3">
+        <div
+          *ngFor="let course of assignedCourses"
+          class="border border-gray-100 rounded-lg p-4"
+        >
+          <div class="flex flex-wrap justify-between gap-2">
+            <h3 class="text-sm font-semibold text-gray-800">
+              {{ course.title }}
+            </h3>
+
+            <span
+              class="px-2 py-0.5 rounded-full border border-blue-200 bg-[#589FF233] text-[#589FF2] text-[10px] font-bold"
+            >
+              {{ course.students }} Students
+            </span>
+          </div>
+
+          <p class="mt-1 text-gray-500 text-xs">
+            Sessions: {{ course.sessions }}
+          </p>
+
+          <div class="mt-3 flex justify-end">
+            <a
+              class="text-[#923D8C] text-xs font-medium hover:underline cursor-pointer"
+            >
+              View Course Details
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 mt-3">
+    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+      <h2 class="text-lg font-bold text-gray-800 mb-6">Recent Uploads</h2>
+
+      <div class="space-y-3">
+        <div
+          *ngFor="let file of uploads"
+          class="flex items-center justify-between p-3 bg-gray-50 rounded-md border border-transparent hover:border-gray-200 transition-all"
+        >
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded text-purple-700">
+              <img
+                src="/assets/admin/user-manage/file.svg"
+                class="w-4 h-4"
+                alt="date"
+              />
+            </div>
+            <span class="text-sm font-semibold text-gray-700">{{
+              file.name
+            }}</span>
+          </div>
+          <span class="text-xs font-medium text-gray-500">{{ file.date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+      <h2 class="text-lg font-bold text-gray-800 mb-6">Expertise</h2>
+
+      <div class="flex flex-wrap gap-3">
+        <div
+          *ngFor="let item of expertises"
+          class="inline-flex items-center bg-purple-50 px-3 py-1.5 rounded-full border border-purple-100"
+        >
+          <span class="text-xs font-bold text-[#923D8C]">
+            {{ item.subject }} |
+            <span
+              class="text-gray-400 font-medium ml-1 text-[10px] uppercase tracking-wide"
+            >
+              {{ item.level }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <div class="max-w-7xl mx-auto mt-3">
+  <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+
+    <!-- Header -->
+    <div class="mb-6">
+      <h2 class="text-xl font-bold">Students Feedback and Ratings</h2>
+
+      <!-- Overall Rating -->
+      <div class="flex items-center gap-3 mt-2">
+        <div class="flex text-yellow-400 text-lg sm:text-xl">
+          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+            <span>{{ i < overallRating ? '★' : '☆' }}</span>
+          </ng-container>
+        </div>
+
+        <span class="text-sm font-bold">
+          {{ overallRating }}/5.0
+          <span class="text-gray-400 font-normal">
+            ({{ reviews.length }} Reviews)
+          </span>
+        </span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-100 h-2 rounded-full mt-4 overflow-hidden">
+        <div
+          class="bg-[#923D8C] h-full"
+          [style.width.%]="overallRating * 20"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="space-y-4">
+      <div
+        *ngFor="let r of reviews"
+        class="border border-gray-100 rounded-lg p-5"
+      >
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="font-bold text-gray-900">{{ r.name }}</h3>
+
+          <!-- Dynamic Stars (Bigger) -->
+          <div class="flex flex-col items-end">
+            <div class="flex text-yellow-400 text-base sm:text-lg mb-1">
+              <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+                <span>{{ i < r.rating ? '★' : '☆' }}</span>
+              </ng-container>
+            </div>
+
+            <span class="text-[10px] text-gray-300">
+              Date: {{ r.date }}
+            </span>
+          </div>
+        </div>
+
+        <p class="text-xs sm:text-sm text-gray-400 italic leading-relaxed">
+          {{ r.comment }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div>
+

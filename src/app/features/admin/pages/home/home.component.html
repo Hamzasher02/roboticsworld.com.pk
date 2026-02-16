@@ -1,0 +1,14 @@
+<div class="flex h-screen overflow-hidden">
+  <app-side-bar 
+    class="shrink-0 transition-all duration-300 ease-in-out"
+  ></app-side-bar>
+
+  <div class="flex flex-col flex-1 overflow-hidden">
+<app-header class="border-b-2 border-t-0 border-gray-300"></app-header>
+
+
+    <main class="flex-1 overflow-y-auto bg-white">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

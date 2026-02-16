@@ -1,0 +1,463 @@
+<!-- Student Progress Report (Fully Responsive + Professional) -->
+<div class="min-h-screen bg-[#F3F4F6]">
+  <div class="mx-auto flex w-full max-w-[1180px] flex-col px-3 py-4 sm:px-4 sm:py-6 lg:px-6">
+    <!-- TOP HEADER CARD -->
+    <div class="flex w-full flex-col rounded-[12px] bg-white px-4 py-4 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-6 sm:py-4">
+      <!-- Row 1: Back + Title -->
+      <div class="flex w-full items-center gap-3">
+        <button
+          type="button"
+          (click)="goBack()"
+          class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full text-[#6B7280] hover:bg-[#F3F4F6] focus:outline-none focus:ring-2 focus:ring-[#923D8C]/20"
+          aria-label="Back"
+        >
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M15 18 9 12l6-6"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <h1 class="text-[15px] font-semibold text-[#111827] sm:text-[16px] lg:text-[18px]">
+          Student Progress Report
+        </h1>
+      </div>
+
+      <!-- Row 2: Student + Filters -->
+      <div class="mt-4 flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <!-- Student -->
+        <div class="flex w-full items-center gap-3">
+          <img
+            [src]="student.avatar"
+            (error)="onImgError($event)"
+            class="h-10 w-10 shrink-0 rounded-full object-cover sm:h-11 sm:w-11"
+            alt="Student"
+          />
+          <div class="flex min-w-0 flex-col">
+            <div class="truncate text-[13px] font-semibold text-[#111827] sm:text-[14px]">
+              {{ student.name }}
+            </div>
+            <div class="truncate text-[11px] font-medium text-[#6B7280] sm:text-[12px]">
+              {{ student.email }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end sm:gap-4">
+          <!-- Category (only on session & completion) -->
+          <ng-container *ngIf="activeTab !== 'overview'">
+            <div class="flex w-full flex-col gap-1.5 sm:w-auto">
+              <span class="text-[11px] font-medium text-[#111827] sm:text-[12px]">Category</span>
+
+              <div class="relative w-full sm:w-[200px]">
+                <select
+                  [(ngModel)]="category"
+                  class="h-[38px] w-full cursor-pointer appearance-none rounded-[10px] border border-[#D1D5DB] bg-white px-3 pr-9 text-[12px] font-medium text-[#111827] outline-none focus:border-[#923D8C] focus:ring-2 focus:ring-[#923D8C]/20"
+                  aria-label="Category"
+                >
+                  <option *ngFor="let cat of categoryOptions" [value]="cat">
+                    {{ cat }}
+                  </option>
+                </select>
+
+                <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Course (always) -->
+          <div class="flex w-full flex-col gap-1.5 sm:w-auto">
+            <span class="text-[11px] font-medium text-[#111827] sm:text-[12px]">Course</span>
+
+            <div class="relative w-full sm:w-[220px]">
+              <select
+                [(ngModel)]="course"
+                class="h-[38px] w-full cursor-pointer appearance-none rounded-[10px] border border-[#D1D5DB] bg-white px-3 pr-9 text-[12px] font-medium text-[#111827] outline-none focus:border-[#923D8C] focus:ring-2 focus:ring-[#923D8C]/20"
+                aria-label="Course"
+              >
+                <option *ngFor="let c of courseOptions" [value]="c">
+                  {{ c }}
+                </option>
+              </select>
+
+              <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="mt-3 flex w-full items-center">
+      <div class="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
+        <div class="inline-flex w-full flex-col gap-2 rounded-[12px] bg-[#FAFAFA] p-2 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:w-auto sm:flex-row sm:gap-2 sm:p-2">
+          <button
+            type="button"
+            (click)="setTab('overview')"
+            class="flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] px-4 text-[12px] font-semibold leading-none focus:outline-none focus:ring-2 focus:ring-[#923D8C]/20 sm:h-9 sm:w-auto"
+            [ngClass]="activeTab === 'overview'
+              ? 'bg-[#923D8C] text-white'
+              : 'bg-transparent text-[#111827] hover:bg-white'"
+          >
+            Student Overview
+          </button>
+
+          <button
+            type="button"
+            (click)="setTab('session')"
+            class="flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] px-4 text-[12px] font-semibold leading-none focus:outline-none focus:ring-2 focus:ring-[#923D8C]/20 sm:h-9 sm:w-auto"
+            [ngClass]="activeTab === 'session'
+              ? 'bg-[#923D8C] text-white'
+              : 'bg-transparent text-[#111827] hover:bg-white'"
+          >
+            Session Progress
+          </button>
+
+          <button
+            type="button"
+            (click)="setTab('completion')"
+            class="flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] px-4 text-[12px] font-semibold leading-none focus:outline-none focus:ring-2 focus:ring-[#923D8C]/20 sm:h-9 sm:w-auto"
+            [ngClass]="activeTab === 'completion'
+              ? 'bg-[#923D8C] text-white'
+              : 'bg-transparent text-[#111827] hover:bg-white'"
+          >
+            Course Completion
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="mt-5 flex w-full flex-col gap-5">
+      <!-- ===================== TAB: OVERVIEW ===================== -->
+      <ng-container *ngIf="activeTab === 'overview'">
+        <!-- Student Info -->
+        <div class="flex w-full flex-col rounded-[12px] bg-white px-4 py-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-6">
+          <div class="text-[14px] font-semibold text-[#111827]">Student Information</div>
+          <div class="mt-1 text-[11px] font-medium text-[#6B7280]">
+            Overview of the student’s enrollment details
+          </div>
+
+          <div class="mt-5 flex w-full items-center gap-4">
+            <img
+              [src]="student.avatarLarge"
+              (error)="onImgError($event)"
+              class="h-12 w-12 shrink-0 rounded-full object-cover sm:h-14 sm:w-14"
+              alt="Student Avatar"
+            />
+            <div class="flex min-w-0 flex-col">
+              <div class="truncate text-[14px] font-semibold text-[#111827] sm:text-[15px]">
+                {{ student.name }}
+              </div>
+              <div class="truncate text-[12px] font-medium text-[#7B7FB4]">
+                {{ student.email }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="mt-6 flex w-full flex-col gap-5 lg:flex-row lg:gap-10">
+            <!-- Left -->
+            <div class="flex w-full flex-col gap-4 lg:max-w-[420px]">
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Learning Path</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.plan }}</div>
+              </div>
+
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Enrollment Date</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.enrolledOn }}</div>
+              </div>
+
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Instructor</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.instructor }}</div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div class="flex w-full flex-col gap-4 lg:max-w-[420px]">
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Enrolled Course</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.course }}</div>
+              </div>
+
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Valid Until</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.validUntil }}</div>
+              </div>
+
+              <div class="flex w-full flex-col gap-1">
+                <div class="text-[12px] font-medium text-[#6B7280]">Certificate Status</div>
+                <div class="text-[13px] font-semibold text-[#111827]">{{ info.certificate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Summary -->
+        <div class="flex w-full flex-col rounded-[12px] bg-white px-4 py-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-6">
+          <div class="text-[14px] font-semibold text-[#111827]">Course Progress Summary</div>
+          <div class="mt-1 text-[11px] font-medium text-[#6B7280]">Overall progress in the enrolled course</div>
+
+          <div class="mt-4 flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div class="text-[12px] font-semibold text-[#111827]">Session Progress</div>
+            <div class="text-[12px] font-semibold text-[#111827]">
+              {{ progress.completed }}/{{ progress.total }} Sessions Completed
+            </div>
+          </div>
+
+          <div class="mt-3 h-3 w-full rounded-full bg-gray-200">
+            <div class="h-3 rounded-full bg-[#923D8C]" [style.width.%]="progressPercent"></div>
+          </div>
+
+          <!-- Stat Cards -->
+          <div class="mt-5 flex w-full flex-col gap-4 sm:flex-row sm:flex-wrap">
+            <div class="flex w-full flex-col rounded-[12px] border border-[#923D8C] bg-[#923D8C12] px-6 py-5 sm:w-[260px]">
+              <div class="text-[13px] font-medium text-[#111827]">Course Completion</div>
+              <div class="mt-4 text-[22px] font-bold text-[#923D8C]">{{ stats.courseCompletion }}%</div>
+            </div>
+
+            <div class="flex w-full flex-col rounded-[12px] border border-[#4DA3FF] bg-[#EAF5FF] px-6 py-5 sm:w-[260px]">
+              <div class="text-[13px] font-medium text-[#111827]">Attendance Rate</div>
+              <div class="mt-4 text-[22px] font-bold text-[#2F6BFF]">{{ stats.attendanceRate }}%</div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ===================== TAB: SESSION ===================== -->
+      <ng-container *ngIf="activeTab === 'session'">
+        <div class="flex w-full flex-col rounded-[12px] bg-white px-4 py-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-6">
+          <div class="text-[14px] font-semibold text-[#111827]">Session Progress Tracker</div>
+          <div class="mt-1 text-[11px] font-medium text-[#6B7280]">Track progress through all course sessions</div>
+
+          <div class="mt-4 flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div class="text-[12px] font-semibold text-[#111827]">Overall Course Progress</div>
+            <div class="text-[12px] font-semibold text-[#111827]">
+              {{ progress.completed }}/{{ progress.total }} Sessions Completed
+            </div>
+          </div>
+
+          <div class="mt-3 h-3 w-full rounded-full bg-gray-200">
+            <div class="h-3 rounded-full bg-[#923D8C]" [style.width.%]="progressPercent"></div>
+          </div>
+
+          <div class="mt-4 flex w-full flex-col gap-3">
+            <div
+              *ngFor="let row of sessionRows"
+              class="flex w-full flex-col rounded-[12px] border border-gray-200 bg-white px-4 py-4 sm:px-5"
+            >
+              <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <!-- Left -->
+                <div class="flex min-w-0 items-start gap-3">
+                  <div class="mt-0.5">
+                    <ng-container *ngIf="row.icon === 'check'">
+                      <div class="flex h-6 w-6 items-center justify-center rounded-full border border-[#22C55E] text-[#22C55E]">
+                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                          <path d="M16 6l-7 8-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="row.icon === 'clock'">
+                      <div class="flex h-6 w-6 items-center justify-center rounded-full border border-[#0EA5E9] text-[#0EA5E9]">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M12 8v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 10 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    </ng-container>
+                  </div>
+
+                  <div class="min-w-0">
+                    <div class="truncate text-[12px] font-semibold text-[#111827]">{{ row.title }}</div>
+                    <div class="mt-1 text-[11px] font-medium text-[#6B7280]">{{ row.date }}</div>
+                    <div class="mt-1 text-[11px] font-medium text-gray-600">
+                      Feedback: <span class="text-gray-600">{{ row.feedback }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right badges -->
+                <div class="flex items-center gap-2">
+                  <ng-container *ngIf="row.status === 'Completed'">
+                    <span class="rounded-full border border-[#34C759] bg-[#EFFFF4] px-3 py-1 text-[10px] font-semibold text-[#168A3E]">
+                      Completed
+                    </span>
+                  </ng-container>
+
+                  <ng-container *ngIf="row.attendance === 'Present'">
+                    <span class="rounded-full border border-[#34C759] bg-[#EFFFF4] px-3 py-1 text-[10px] font-semibold text-[#168A3E]">
+                      Present
+                    </span>
+                  </ng-container>
+
+                  <ng-container *ngIf="row.status === 'Upcoming'">
+                    <span class="rounded-full border border-[#BBD3FF] bg-[#E8F0FF] px-3 py-1 text-[10px] font-semibold text-[#2F6BFF]">
+                      Upcoming
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ===================== TAB: COMPLETION ===================== -->
+      <ng-container *ngIf="activeTab === 'completion'">
+        <div class="flex w-full flex-col rounded-[12px] bg-white px-4 py-5 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-6">
+          <div class="text-[14px] font-semibold text-[#111827]">Course Completion Summary</div>
+          <div class="mt-1 text-[11px] font-medium text-[#6B7280]">Overall course performance and feedback</div>
+
+          <div class="mt-4 flex w-full flex-col gap-4 lg:flex-row lg:flex-wrap">
+            <!-- Donut -->
+            <div class="flex w-full flex-col rounded-[12px] bg-[#F7F2F8] p-5 lg:w-[320px]">
+              <div class="flex flex-col items-center">
+                <div class="relative h-24 w-24">
+                  <svg class="h-24 w-24 -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle cx="50" cy="50" r="36" fill="none" stroke="#E5E7EB" stroke-width="10"></circle>
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="36"
+                      fill="none"
+                      stroke="#923D8C"
+                      stroke-width="10"
+                      stroke-linecap="round"
+                      [attr.stroke-dasharray]="completionDasharray"
+                    ></circle>
+                  </svg>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-[18px] font-bold text-[#923D8C]">{{ completion.percent }}%</div>
+                  </div>
+                </div>
+
+                <div class="mt-3 text-[12px] font-semibold text-[#111827]">Course Completion</div>
+                <div class="mt-0.5 text-[11px] font-medium text-[#6B7280]">
+                  {{ completion.completed }} of {{ completion.total }} Sessions
+                </div>
+              </div>
+            </div>
+
+            <!-- Attendance -->
+            <div class="flex w-full flex-col rounded-[12px] border border-gray-200 bg-white p-5 lg:w-[320px]">
+              <div class="text-[13px] font-semibold text-[#111827]">Attendance Statistics</div>
+
+              <div class="mt-4 flex w-full flex-col gap-4">
+                <div class="flex w-full flex-col">
+                  <div class="flex w-full items-center justify-between text-[11px] font-medium text-gray-600">
+                    <span>Present</span>
+                    <span class="text-gray-500">{{ attendance.presentLabel }}</span>
+                  </div>
+                  <div class="mt-2 h-2 w-full rounded-full bg-gray-100">
+                    <div class="h-2 rounded-full bg-[#22C55E]" [style.width.%]="attendance.presentPercent"></div>
+                  </div>
+                </div>
+
+                <div class="flex w-full flex-col">
+                  <div class="flex w-full items-center justify-between text-[11px] font-medium text-gray-600">
+                    <span>Absent</span>
+                    <span class="text-gray-500">{{ attendance.absentLabel }}</span>
+                  </div>
+                  <div class="mt-2 h-2 w-full rounded-full bg-gray-100">
+                    <div class="h-2 rounded-full bg-[#EF4444]" [style.width.%]="attendance.absentPercent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Module Performance -->
+            <div class="flex w-full flex-col rounded-[12px] border border-gray-200 bg-white p-5 lg:w-[320px]">
+              <div class="text-[13px] font-semibold text-[#111827]">Module Performance</div>
+
+              <div class="mt-4 flex w-full flex-col gap-4">
+                <div *ngFor="let m of modulePerformance" class="flex w-full flex-col">
+                  <div class="flex w-full items-center justify-between text-[11px] font-medium text-gray-600">
+                    <span class="truncate">{{ m.name }}</span>
+                    <span class="text-gray-500">{{ m.percent }}%</span>
+                  </div>
+                  <div class="mt-2 h-2 w-full rounded-full bg-gray-100">
+                    <div class="h-2 rounded-full bg-[#0EA5E9]" [style.width.%]="m.percent"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructor Remarks -->
+          <div class="mt-5">
+            <div class="text-[12px] font-semibold text-[#111827]">Instructor Remarks</div>
+            <div class="mt-2 rounded-[12px] border border-gray-200 bg-white px-5 py-6">
+              <p class="text-center text-[12px] italic text-gray-500">
+                {{ instructorRemarks }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Students Feedback -->
+          <div class="mt-5">
+            <div class="text-[12px] font-semibold text-[#111827]">Students Feedback</div>
+
+            <div class="mt-3 flex w-full flex-col gap-3">
+              <div
+                *ngFor="let fb of studentsFeedback"
+                class="rounded-[12px] border border-gray-200 bg-white px-5 py-4"
+              >
+                <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="min-w-0">
+                    <div class="text-[12px] font-semibold text-[#111827]">{{ fb.module }}</div>
+                    <p class="mt-2 text-[11px] font-medium leading-[18px] text-gray-600">
+                      “{{ fb.message }}”
+                    </p>
+                    <div class="mt-2 text-[10px] font-medium text-gray-400">Date: {{ fb.date }}</div>
+                  </div>
+
+                  <div class="flex items-center gap-0.5">
+                    <ng-container *ngFor="let filled of starsArray(fb.rating)">
+                      <svg
+                        class="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        [attr.fill]="filled ? '#FBBF24' : 'none'"
+                        [attr.stroke]="filled ? '#FBBF24' : '#D1D5DB'"
+                        stroke-width="1.2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M10 1.6l2.47 5.36 5.83.5-4.4 3.82 1.32 5.7L10 14.9 4.78 17l1.32-5.7-4.4-3.82 5.83-.5L10 1.6z"
+                        />
+                      </svg>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

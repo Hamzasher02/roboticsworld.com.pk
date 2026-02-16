@@ -1,0 +1,179 @@
+<header class="w-full bg-white border-b border-gray-100">
+    <div class="h-px w-full bg-[#E5E7EB]"></div>
+
+    <!-- TOP BAR -->
+    <div class="mx-auto flex w-full max-w-[1320px] items-center justify-between px-6 py-3 sm:px-8">
+        <!-- ✅ LEFT GROUP (logo + nav) -->
+        <div class="flex items-center justify-between gap-15">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a routerLink="/" aria-label="Home" class="flex items-center">
+                    <img src="assets/steam-mind/about-us/RW-logo.png" alt="Logo"
+                        class="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12" loading="eager" />
+                </a>
+            </div>
+
+            <div class="hidden items-center lg:flex">
+                <nav aria-label="Primary" class="flex items-center">
+                    <div class="flex items-center gap-10 whitespace-nowrap">
+                        <a [routerLink]="['/steam-mind/course']" routerLinkActive="bg-[#FF6A3D] text-white"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            class="rounded-full px-5 py-2 text-[13px] font-semibold text-[#111827]">Courses</a>
+
+                        <a routerLink="/steam-mind/productandservices" routerLinkActive="bg-[#FF6A3D] text-white"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            class="rounded-full px-5 py-2 text-[13px] font-semibold text-[#111827]">
+                            Products &amp; Services
+                        </a>
+
+                        <!-- Camps Dropdown (Desktop) -->
+                        <div class="relative" (click)="$event.stopPropagation()">
+
+                            <div class="flex items-center rounded-full px-5 py-2 text-[13px] font-semibold text-[#111827]"
+                                routerLinkActive="bg-[#FF6A3D] text-white" [routerLinkActiveOptions]="{ exact: true }">
+                                <a routerLink="/steam-mind/summercamp" class="hidden"></a>
+                                <a routerLink="/steam-mind/wintercamp" class="hidden"></a>
+
+                                <button type="button" class="flex items-center gap-1.5 text-[13px] font-semibold"
+                                    aria-haspopup="menu" [attr.aria-expanded]="isCampsOpen" (click)="toggleCamps()">
+                                    <span>Camps</span>
+                                    <img src="assets/steam-mind/header/ArrowDownNavigate.svg" alt="" class="h-2 w-2" />
+                                </button>
+                            </div>
+
+                            @if (isCampsOpen) {
+                            <div class="absolute left-1/2 top-[46px] z-50 w-[160px] -translate-x-1/2 overflow-hidden rounded-[2px] bg-white shadow-[0_6px_18px_rgba(0,0,0,0.16)]"
+                                role="menu" aria-label="Camps menu">
+                                <a routerLink="/steam-mind/summercamp" role="menuitem"
+                                    routerLinkActive="bg-[#FF6A3D] text-white"
+                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    class="flex h-[42px] w-full items-center justify-center px-4 text-[12px] font-medium text-[#111827] hover:bg-[#F3F4F6]"
+                                    (click)="closeAllMenus()">
+                                    Summer Camps
+                                </a>
+
+                                <div class="h-px w-full bg-[#E5E7EB]"></div>
+
+                                <a routerLink="/steam-mind/wintercamp" role="menuitem"
+                                    routerLinkActive="bg-[#FF6A3D] text-white"
+                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    class="flex h-[42px] w-full items-center justify-center px-4 text-[12px] font-medium text-[#111827] hover:bg-[#F3F4F6]"
+                                    (click)="closeAllMenus()">
+                                    Winter Camps
+                                </a>
+                            </div>
+                            }
+                        </div>
+
+
+
+                        <a routerLink="/steam-mind/competition" routerLinkActive="bg-[#FF6A3D] text-white"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            class="rounded-full  px-5 py-2 text-[12px] font-semibold text-black" aria-current="page">
+                            Competitions
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- ✅ RIGHT GROUP (login/signup on lg+, hamburger on mobile+tablet) -->
+        <div class="flex items-center gap-3">
+            <!-- Desktop Auth (ONLY lg+) -->
+            <div class="hidden items-center gap-3 lg:flex">
+                <a [routerLink]="['/steam-mind/login']"
+                    class="flex h-[34px] items-center justify-center rounded-full bg-[#FF6A3D] px-6 text-[12px] font-semibold text-white">
+                    Log In
+                </a>
+
+                <a [routerLink]="['/steam-mind/signup']"
+                    class="flex h-[34px] items-center justify-center rounded-full bg-[#7B2CBF] px-6 text-[12px] font-semibold text-white">
+                    Sign Up
+                </a>
+            </div>
+
+            <!-- Hamburger (mobile + tablet) -->
+            <button type="button"
+                class="flex h-9 w-9 items-center justify-center rounded-full border border-[#E5E7EB] text-[#111827] lg:hidden"
+                aria-label="Open menu" [attr.aria-expanded]="isMobileMenuOpen" (click)="toggleMobileMenu($event)">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- MOBILE/TABLET MENU PANEL (below lg) -->
+    @if (isMobileMenuOpen) {
+    <div class="lg:hidden">
+        <div class="mx-auto flex w-full max-w-[1320px] flex-col px-6 pb-6 sm:px-8">
+            <nav aria-label="Primary mobile" class="flex w-full flex-col">
+                <a [routerLink]="['/steam-mind/course']"
+                    class="flex h-12 w-full items-center border-b border-[#E5E7EB] text-[13px] font-semibold text-[#111827]"
+                    (click)="closeAllMenus()">
+                    Courses
+                </a>
+
+                <a routerLink="/steam-mind/productandservices"
+                    class="flex h-12 w-full items-center border-b border-[#E5E7EB] text-[13px] font-semibold text-[#111827]"
+                    (click)="closeAllMenus()">
+                    Products &amp; Services
+                </a>
+
+                <!-- Camps (accordion) -->
+                <div class="flex w-full flex-col border-b border-[#E5E7EB]" (click)="$event.stopPropagation()">
+                    <div class="flex w-full" routerLinkActive="bg-[#FF6A3D] text-white"
+                        [routerLinkActiveOptions]="{ exact: false }">
+                        <button type="button"
+                            class="flex h-12 w-full items-center justify-between text-[13px] font-semibold text-[#111827]"
+                            aria-haspopup="menu" [attr.aria-expanded]="isCampsOpen" (click)="toggleCamps()">
+                            <span>Camps</span>
+                            <img src="assets/steam-mind/header/ArrowDownNavigate.svg" alt="" class="h-2 w-2" />
+                        </button>
+                    </div>
+
+                    @if (isCampsOpen) {
+                    <div class="flex w-full flex-col pb-2">
+                        <a routerLink="/steam-mind/summercamp"
+                            class="flex h-10 w-full items-center px-3 text-[12px] font-medium text-[#111827] hover:bg-[#F3F4F6]"
+                            (click)="closeAllMenus()">
+                            Summer Camps
+                        </a>
+
+                        <a routerLink="/steam-mind/wintercamp"
+                            class="flex h-10 w-full items-center px-3 text-[12px] font-medium text-[#111827] hover:bg-[#F3F4F6]"
+                            (click)="closeAllMenus()">
+                            Winter Camps
+                        </a>
+                    </div>
+                    }
+                </div>
+
+                <a routerLink="/steam-mind/competition"
+                    class="flex h-12 w-full items-center border-b border-[#E5E7EB] text-[13px] font-semibold text-[#111827]"
+                    (click)="closeAllMenus()">
+                    Competitions
+                </a>
+
+                <!-- Auth (MD=50/50, SM=full width column) -->
+                <div class="mt-4 flex w-full flex-col gap-3 sm:flex-row md:gap-4">
+                    <a [routerLink]="['/steam-mind/login']"
+                        class="flex w-full items-center justify-center rounded-full bg-[#FF6A3D] px-5 py-2 text-[14px] font-semibold text-white md:w-1/2"
+                        (click)="closeAllMenus()">
+                        Log In
+                    </a>
+
+                    <a [routerLink]="['/steam-mind/signup']"
+                        class="flex w-full items-center justify-center rounded-full bg-[#7B2CBF] px-5 py-2 text-[14px] font-semibold text-white md:w-1/2"
+                        (click)="closeAllMenus()">
+                        Sign Up
+                    </a>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+    }
+</header>

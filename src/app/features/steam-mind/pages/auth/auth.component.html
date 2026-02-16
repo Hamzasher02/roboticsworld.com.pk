@@ -1,0 +1,134 @@
+<section class="min-h-screen w-full bg-[#EEF0FF]">
+  <!-- Center Wrapper -->
+  <div class="flex min-h-screen w-full items-center justify-center px-4 py-10">
+    <!-- Card -->
+    <div
+      class="flex w-full max-w-[420px] flex-col rounded-[10px] bg-white px-8 py-10 shadow-[0_10px_30px_rgba(17,24,39,0.12)] sm:px-10">
+      <!-- ===================== SIGNUP ===================== -->
+      <ng-container *ngIf="mode === 'signup'">
+        <h2 class="text-center text-[18px] font-semibold text-[#111827] sm:text-[20px]">
+          Unlock the Future with STEM<br />
+          Sign Up Now!
+        </h2>
+
+        <div class="mt-8 flex w-full flex-col gap-5">
+          <!-- Email -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Email*</label>
+            <input [(ngModel)]="signupForm.email" type="email" placeholder="Enter your email"
+              class="h-[44px] w-full rounded-[6px] border border-[#C084FC] px-4 text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#A855F7]" />
+          </div>
+
+          <!-- Phone -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Phone&nbsp; No*</label>
+
+            <div class="flex h-[44px] w-full items-center rounded-[6px] border border-[#E5E7EB] bg-[#EEF6F8] px-3">
+              <!-- flag + arrow -->
+              <div class="flex items-center gap-2 pr-2">
+                <span class="flex h-[18px] w-[26px] items-center justify-center overflow-hidden rounded-[2px] bg-white">
+                  <!-- Use your flag image if you have -->
+                  <img src="assets/steam-mind/camp/Pakistan.svg" alt="PK" class="h-full w-full object-cover"
+                    onerror="this.style.display='none'" />
+                </span>
+
+                <svg class="h-3 w-3 text-[#111827]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+
+              <span class="mr-2 text-[13px] text-[#6B7280]">+92</span>
+
+              <input [(ngModel)]="signupForm.phone" type="tel" placeholder=""
+                class="h-full flex-1 bg-transparent text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF]" />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Password*</label>
+            <input [(ngModel)]="signupForm.password" type="password" placeholder="Enter password"
+              class="h-[44px] w-full rounded-[6px] border border-[#C084FC] px-4 text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#A855F7]" />
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Confirm Password*</label>
+            <input [(ngModel)]="signupForm.confirmPassword" type="password" placeholder="Confirm password"
+              class="h-[44px] w-full rounded-[6px] border border-[#C084FC] px-4 text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#A855F7]" />
+          </div>
+
+          <!-- Checkbox -->
+          <label class="mt-1 flex w-full items-start gap-3">
+            <input [(ngModel)]="signupForm.agree" type="checkbox"
+              class="mt-1 h-4 w-4 rounded border border-[#D1D5DB] accent-[#7C3AED]" />
+            <span class="text-[12px] leading-4 text-[#111827]">
+              I agree to the Terms &amp; Conditions and<br />
+              Privacy Policy.
+            </span>
+          </label>
+
+          <!-- Next Button -->
+          <button (click)="onSignupNext()"
+            class="mt-2 flex h-[44px] w-full items-center justify-center rounded-[999px] bg-[#7A2E8D] text-[13px] font-semibold text-white hover:opacity-95">
+            Next
+          </button>
+
+          <!-- Bottom Link -->
+          <div class="mt-2 flex w-full items-center justify-center gap-2 text-[12px] text-[#111827]">
+            <span>Already have an account?</span>
+            <button type="button" (click)="showLogin()" class="font-semibold text-[#7A2E8D] hover:underline">
+              Login
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ===================== LOGIN ===================== -->
+      <ng-container *ngIf="mode === 'login'">
+        <h2 class="text-center text-[18px] font-semibold text-[#111827] sm:text-[20px]">
+          Log in to Get Started
+        </h2>
+
+        <div class="mt-10 flex w-full flex-col gap-5">
+          <!-- Email -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Email*</label>
+            <input [(ngModel)]="loginForm.email" type="email" placeholder="Registered email"
+              class="h-[44px] w-full rounded-[6px] border border-[#C084FC] px-4 text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#A855F7]" />
+          </div>
+
+          <!-- Password -->
+          <div class="flex w-full flex-col gap-2">
+            <label class="text-[13px] font-semibold text-[#111827]">Password*</label>
+            <input [(ngModel)]="loginForm.password" type="password" placeholder="Enter password"
+              class="h-[44px] w-full rounded-[6px] border border-[#C084FC] px-4 text-[13px] text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#A855F7]" />
+
+            <div class="flex w-full justify-end">
+              <a [routerLink]="'[/steam-mind/forget-password]'"
+                class="mt-1 text-[12px] font-medium text-[#1D4ED8] hover:underline">
+                Forget Password?
+              </a>
+            </div>
+          </div>
+
+          <!-- Login Button -->
+          <button (click)="onLogin()"
+            class="mt-2 flex h-[44px] w-full items-center justify-center rounded-[999px] bg-[#7A2E8D] text-[13px] font-semibold text-white hover:opacity-95">
+            Login
+          </button>
+
+          <!-- Bottom Link -->
+          <div class="mt-2 flex w-full items-center justify-center gap-2 text-[12px] text-[#111827]">
+            <span>Create an account?</span>
+            <button type="button" (click)="showSignup()" class="font-semibold text-[#7A2E8D] hover:underline">
+              Sign up
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>

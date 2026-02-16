@@ -1,0 +1,148 @@
+﻿<!-- PAGE WRAPPER -->
+<div class="min-h-screen bg-white md:p-6">
+
+    <!-- BACK -->
+    <div class="mb-4">
+        <a aria-label="Back" [routerLink]="['/student/forum']" class="inline-flex items-center justify-center">
+            <img src="assets/student/forum/LeftArrow.svg" alt="Back" class="h-4 w-4 cursor-pointer" />
+        </a>
+    </div>
+
+    <div *ngIf="loading" class="text-center py-20">
+        <p class="text-gray-500">Loading discussion...</p>
+    </div>
+
+    <div *ngIf="error" class="text-center py-20">
+        <p class="text-red-500">{{error}}</p>
+    </div>
+
+    <!-- QUESTION CARD -->
+    <div *ngIf="post" class="bg-white border rounded-md p-5 mb-6">
+
+        <!-- HEADER -->
+        <div class="flex items-center gap-3 mb-2">
+            <span class="w-3 h-3 bg-black rounded-full shrink-0"></span>
+
+            <h2 class="font-semibold text-gray-900 text-base truncate">
+                {{post.title}}
+            </h2>
+        </div>
+
+        <!-- QUESTION TEXT -->
+        <p class="text-sm text-gray-600 leading-relaxed mb-4 whitespace-pre-wrap">
+            {{post.content || post.descriptionPreview || post.excerpt}}
+        </p>
+
+        <!-- META -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-gray-500">
+
+            <!-- LEFT -->
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <img [src]="post.author.profilePicture || post.author.avatarUrl || 'assets/student/forum/userImage.svg'"
+                        class="w-7 h-7 rounded-full"
+                        (error)="$any($event.target).src='assets/student/forum/userImage.svg'">
+                    <span class="font-medium text-gray-700">
+                        {{post.author.firstName}} {{post.author.lastName}}
+                    </span>
+                </div>
+
+                <span *ngIf="post.category" class="bg-gray-100 px-2 py-0.5 rounded-full text-xs">
+                    {{post.category.categoryName || post.category.name || post.category.category || 'Unnamed Category'}}
+                </span>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="flex items-center gap-5">
+                <span class="flex items-center gap-1">
+                    <img src="assets/student/forum/SpeechBubble.svg" class="w-4 h-4">
+                    {{post.commentCount}}
+                </span>
+                <span class="flex items-center gap-1 cursor-pointer" (click)="togglePostLike()">
+                    <img [src]="post.isLikedByUser ? 'assets/student/header/favIcone.svg' : 'assets/student/forum/Like.svg'"
+                        class="w-4 h-4">
+                    {{post.likeCount}}
+                </span>
+                <span class="flex items-center gap-1">
+                    <img src="assets/student/forum/ClockIcon.svg" class="w-4 h-4">
+                    {{post.createdAt | date:'MM/dd/yy, h:mm a'}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANSWERS COUNT -->
+    <h3 *ngIf="post" class="text-sm font-medium text-gray-700 mb-3">
+        {{comments.length}} {{ comments.length === 1 ? 'Answer' : 'Answers' }}
+    </h3>
+
+    <!-- Loading Comments -->
+    <div *ngIf="loadingComments" class="text-center py-10">
+        <p class="text-gray-500">Loading comments...</p>
+    </div>
+
+    <!-- COMMENTS LIST -->
+    <div *ngFor="let comment of comments" class="bg-white p-4 mb-4 shadow-[0_2px_20px_rgba(0,0,0,0.12)]">
+
+        <div class="flex items-start gap-3 mb-2">
+            <img [src]="comment.author.profilePicture || comment.author.avatarUrl || 'assets/student/forum/userImage.svg'"
+                class="w-7 h-7 rounded-full" (error)="$any($event.target).src='assets/student/forum/userImage.svg'">
+
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                    <span class="font-medium text-gray-700 text-sm">
+                        {{comment.author.firstName}} {{comment.author.lastName}}
+                    </span>
+                    <span *ngIf="comment.isAcceptedAnswer"
+                        class="bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                        Accepted Answer
+                    </span>
+                </div>
+
+                <span class="flex items-center gap-1 text-xs text-gray-400">
+                    <img src="assets/student/forum/ClockIcon.svg" class="w-3 h-3">
+                    {{comment.createdAt | date:'MM/dd/yy, h:mm a'}}
+                </span>
+            </div>
+
+            <div class="ml-auto flex items-center gap-3">
+                <!-- Accept Answer Button (Only if post owner) -->
+                <button *ngIf="isAuthor && !comment.isAcceptedAnswer && post?.status !== 'answered'"
+                    (click)="acceptAnswer(comment)" class="text-xs text-orange-500 hover:underline">
+                    Accept Answer
+                </button>
+
+                <span class="flex items-center gap-1 text-xs text-gray-400 cursor-pointer"
+                    (click)="toggleCommentLike(comment)">
+                    <img [src]="comment.isLikedByUser ? 'assets/student/header/favIcone.svg' : 'assets/student/forum/Like.svg'"
+                        class="w-4 h-4">
+                    {{comment.likeCount}}
+                </span>
+            </div>
+        </div>
+
+        <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+            {{comment.content}}
+        </p>
+    </div>
+
+    <!-- YOUR ANSWER -->
+    <div *ngIf="post" class="bg-white p-6 sm:p-12 shadow-[0_2px_20px_rgba(0,0,0,0.12)]">
+
+        <h4 class="text-sm font-medium text-gray-700 mb-2">
+            Your Answer
+        </h4>
+
+        <textarea class="w-full border p-4 sm:p-5 text-sm resize-none focus:outline-none" rows="5"
+            [(ngModel)]="newCommentContent" placeholder="Write your Answer here">
+        </textarea>
+
+        <div class="flex justify-end mt-3">
+            <button class="bg-orange-500 text-white text-sm px-4 py-2 disabled:bg-gray-400"
+                [disabled]="submittingComment || !newCommentContent.trim()" (click)="addComment()">
+                {{ submittingComment ? 'Posting...' : 'Post Answer' }}
+            </button>
+        </div>
+    </div>
+
+</div>

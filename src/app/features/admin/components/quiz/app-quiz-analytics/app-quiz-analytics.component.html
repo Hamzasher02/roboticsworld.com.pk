@@ -1,0 +1,397 @@
+<div class="flex w-full flex-col bg-white">
+  <!-- Header -->
+  <div class="flex items-start justify-between px-5 py-4">
+    <div class="flex flex-col">
+      <div class="text-[14px] font-semibold text-[#111827]">Quiz Analytics</div>
+      <div class="mt-1 text-[11px] text-[#6B7280]">{{ quiz?.title }}</div>
+    </div>
+
+    <button
+      type="button"
+      aria-label="Close"
+      (click)="close.emit()"
+      class="cursor-pointer flex h-9 w-9 items-center justify-center rounded-[6px] text-[#9CA3AF] hover:bg-gray-100"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="h-px bg-[#E5E7EB]"></div>
+
+  <!-- Tabs -->
+<!-- Tabs (single line, active color #923D8C) -->
+<div
+  class="flex w-full flex-nowrap items-center gap-8 overflow-x-auto px-5 pt-4"
+>
+  <!-- Analytics -->
+  <button
+    type="button"
+    (click)="setTab('analytics')"
+    class="flex cursor-pointer items-center gap-2 whitespace-nowrap pb-3 text-[12px] font-medium
+           transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'analytics' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <path d="M6 16V8M12 16V4M18 16v-6"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </span>
+    Analytics
+  </button>
+
+  <!-- Performance -->
+  <button
+    type="button"
+    (click)="setTab('performance')"
+    class="flex cursor-pointer items-center gap-2 whitespace-nowrap pb-3 text-[12px] font-medium
+           transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'performance' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           class="h-4 w-4" fill="none" aria-hidden="true">
+        <path d="M3 7h2v6H3z" fill="currentColor"/>
+        <path d="M19 7h2v6h-2z" fill="currentColor"/>
+        <path d="M6 5h12v5c0 4-3 7-6 7s-6-3-6-7V5z"
+              stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M12 17v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </span>
+    Performance
+  </button>
+
+  <!-- Questions -->
+  <button
+    type="button"
+    (click)="setTab('questions')"
+    class="flex cursor-pointer items-center gap-2 whitespace-nowrap pb-3 text-[12px] font-medium
+           transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'questions' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           class="h-4 w-4" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+        <path
+          d="M9.5 9a2.6 2.6 0 0 1 5.2 0c0 1.7-1.6 2.2-2.4 2.8-.6.4-.8.8-.8 1.7"
+          stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="17" r="1.2" fill="currentColor"/>
+      </svg>
+    </span>
+    Questions
+  </button>
+
+  <!-- Settings -->
+  <button
+    type="button"
+    (click)="setTab('settings')"
+    class="flex cursor-pointer items-center gap-2 whitespace-nowrap pb-3 text-[12px] font-medium
+           transition hover:text-[#111827]"
+    [ngClass]="activeTab === 'settings' ? 'text-[#923D8C]' : 'text-[#6B7280]'"
+  >
+    <span class="flex h-4 w-4 items-center justify-center">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <path d="M12 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"
+              stroke="currentColor" stroke-width="2"/>
+        <path
+          d="M19 12a7 7 0 01-.1 1l2 1.5-2 3.5-2.3-1a7.5 7.5 0 01-1.7 1l-.3 2.5H9.4L9.1 19
+             a7.5 7.5 0 01-1.7-1l-2.3 1-2-3.5 2-1.5A7 7 0 015 12
+             c0-.35.03-.7.1-1l-2-1.5 2-3.5 2.3 1
+             a7.5 7.5 0 011.7-1L9.4 2.5h5.2L14.9 5
+             a7.5 7.5 0 011.7 1l2.3-1 2 3.5-2 1.5
+             c.07.3.1.65.1 1z"
+          stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    Settings
+  </button>
+</div>
+
+
+  <div class="h-px bg-[#E5E7EB]"></div>
+
+  <!-- Content -->
+  <div class="flex max-h-[64vh] flex-col overflow-auto px-5 py-5">
+    <!-- =================== ANALYTICS TAB =================== -->
+    <ng-container *ngIf="activeTab === 'analytics'">
+      <!-- Top stat cards -->
+      <div class="flex flex-wrap gap-3">
+        <div class="flex min-w-[180px] flex-1 flex-col rounded-[8px] bg-[#EEF2FF] px-4 py-3">
+          <div class="flex items-center justify-between">
+            <div class="text-[11px] font-medium text-[#4F46E5]">Total Attempts</div>
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#4F46E5]" fill="none" aria-hidden="true">
+              <path d="M16 8a4 4 0 10-8 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 20a8 8 0 0116 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="mt-1 text-[18px] font-semibold text-[#111827]">{{ totalAttempts }}</div>
+        </div>
+
+        <div class="flex min-w-[180px] flex-1 flex-col rounded-[8px] bg-[#ECFDF3] px-4 py-3">
+          <div class="flex items-center justify-between">
+            <div class="text-[11px] font-medium text-[#16A34A]">Average Score</div>
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#16A34A]" fill="none" aria-hidden="true">
+              <path d="M20 12a8 8 0 11-16 0 8 8 0 0116 0z" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 12l2.5 2.5L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="mt-1 text-[18px] font-semibold text-[#111827]">{{ avgScore }}%</div>
+        </div>
+
+        <div class="flex min-w-[180px] flex-1 flex-col rounded-[8px] bg-[#F5F3FF] px-4 py-3">
+          <div class="flex items-center justify-between">
+            <div class="text-[11px] font-medium text-[#7C3AED]">Completion Rate</div>
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#7C3AED]" fill="none" aria-hidden="true">
+              <path d="M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 6v12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="mt-1 text-[18px] font-semibold text-[#111827]">{{ completionRate }}%</div>
+        </div>
+
+        <div class="flex min-w-[180px] flex-1 flex-col rounded-[8px] bg-[#FFF7ED] px-4 py-3">
+          <div class="flex items-center justify-between">
+            <div class="text-[11px] font-medium text-[#F97316]">Avg Time</div>
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#F97316]" fill="none" aria-hidden="true">
+              <path d="M12 8v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="mt-1 text-[18px] font-semibold text-[#111827]">{{ avgTimeLabel }}</div>
+        </div>
+      </div>
+
+      <!-- Score Distribution -->
+      <div class="mt-4 flex flex-col rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-4">
+        <div class="text-[12px] font-semibold text-[#111827]">Score Distribution</div>
+
+        <div class="mt-3 flex flex-col gap-3">
+          <div *ngFor="let r of dist" class="flex items-center gap-3">
+            <div class="w-[70px] text-[11px] text-[#6B7280]">{{ r.label }}</div>
+
+            <div class="flex flex-1 items-center rounded-full bg-[#E5E7EB]">
+              <div
+                class="flex items-center justify-end rounded-full bg-[#7C2D8A] px-2 py-1 text-[10px] font-semibold text-white"
+                [ngStyle]="{ width: r.percent + '%' }"
+              >
+                {{ r.value }}
+              </div>
+            </div>
+
+            <div class="w-[44px] text-right text-[11px] text-[#6B7280]">{{ r.percent }}%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom cards -->
+      <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-stretch sm:justify-between">
+        <div class="flex flex-1 flex-col rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-4">
+          <div class="text-[12px] font-semibold text-[#111827]">Peak Activity Hours</div>
+
+          <div class="mt-3 flex flex-col gap-3">
+            <div *ngFor="let p of peakHours" class="flex items-center justify-between">
+              <div class="text-[11px] text-[#111827]">{{ p.range }}</div>
+              <div class="text-[11px] font-medium text-[#7C3AED]">{{ p.tag }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-1 flex-col rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-4">
+          <div class="text-[12px] font-semibold text-[#111827]">Performance Metrics</div>
+
+          <div class="mt-3 flex flex-col gap-3">
+            <div *ngFor="let m of metrics" class="flex items-center justify-between">
+              <div class="text-[11px] text-[#6B7280]">{{ m.label }}</div>
+              <div class="text-[11px] font-semibold" [ngClass]="metricColor(m.color)">
+                {{ m.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- =================== PERFORMANCE TAB =================== -->
+    <ng-container *ngIf="activeTab === 'performance'">
+      <div class="text-[12px] font-semibold text-[#111827]">Question-Level Performance</div>
+
+      <div class="mt-3 flex flex-col gap-4">
+        <div *ngFor="let row of qPerf" class="flex flex-col rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-[4px] bg-[#EEF2FF] px-2 py-1 text-[10px] font-semibold text-[#4F46E5]">{{ row.no }}</span>
+
+            <span class="rounded-full border border-[#E5E7EB] bg-white px-2 py-1 text-[10px] font-medium text-[#111827]">{{ row.type }}</span>
+
+            <span class="rounded-full border px-2 py-1 text-[10px] font-semibold" [ngClass]="pillClass(row.difficulty)">
+              {{ row.difficulty }}
+            </span>
+
+            <span class="text-[10px] font-medium text-[#6B7280]">{{ row.pts }}</span>
+
+            <div class="ms-auto flex flex-col items-end">
+              <div class="text-[12px] font-semibold text-[#16A34A]">{{ row.successRate }}%</div>
+              <div class="text-[10px] text-[#6B7280]">Success Rate</div>
+            </div>
+          </div>
+
+          <div class="mt-3 text-[12px] font-semibold text-[#111827]">
+            {{ row.question }}
+          </div>
+
+          <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-stretch sm:justify-between">
+            <div class="flex flex-1 flex-col rounded-[6px] bg-[#F9FAFB] px-3 py-3">
+              <div class="text-[10px] text-[#6B7280]">Avg Time Spent</div>
+              <div class="mt-1 text-[11px] font-semibold text-[#111827]">{{ row.avgTime }}</div>
+            </div>
+
+            <div class="flex flex-1 flex-col rounded-[6px] bg-[#F9FAFB] px-3 py-3">
+              <div class="text-[10px] text-[#6B7280]">Difficulty Rating</div>
+              <div class="mt-1 text-[11px] font-semibold text-[#111827]">{{ row.difficultyRating }}</div>
+            </div>
+
+            <div class="flex flex-1 flex-col rounded-[6px] bg-[#F9FAFB] px-3 py-3">
+              <div class="text-[10px] text-[#6B7280]">Performance</div>
+              <div class="mt-1 text-[11px] font-semibold" [ngClass]="perfToneClass(row.performance.tone)">
+                {{ row.performance.label }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- =================== QUESTIONS TAB =================== -->
+    <ng-container *ngIf="activeTab === 'questions'">
+      <div class="flex flex-col gap-4">
+        <div *ngFor="let q of qDetail" class="flex flex-col gap-3 rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-[4px] bg-[#EEF2FF] px-2 py-1 text-[10px] font-semibold text-[#4F46E5]">{{ q.no }}</span>
+
+            <span class="rounded-full border border-[#E5E7EB] bg-white px-2 py-1 text-[10px] font-medium text-[#111827]">{{ q.type }}</span>
+
+            <span class="rounded-full border px-2 py-1 text-[10px] font-semibold" [ngClass]="pillClass(q.difficulty)">
+              {{ q.difficulty }}
+            </span>
+
+            <span class="text-[10px] font-medium text-[#6B7280]">{{ q.pts }}</span>
+
+            <div class="ms-auto text-[11px] font-semibold text-[#16A34A]">
+              {{ q.successRate }}% success
+            </div>
+          </div>
+
+          <div class="text-[12px] font-semibold text-[#111827]">{{ q.question }}</div>
+
+          <div class="flex flex-col gap-2">
+            <div *ngFor="let o of q.options"
+              class="flex items-center gap-3 rounded-[6px] border border-[#E5E7EB] px-3 py-2"
+              [ngClass]="o.correct ? 'bg-[#ECFDF3] border-[#BBF7D0]' : 'bg-white'"
+            >
+              <div class="flex h-5 w-5 items-center justify-center rounded-[4px] bg-[#F3F4F6] text-[10px] font-semibold text-[#111827]">
+                {{ o.key }}
+              </div>
+
+              <div class="text-[11px] font-medium text-[#111827]">{{ o.text }}</div>
+
+              <div class="ms-auto" *ngIf="o.correct">
+                <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#16A34A]" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- =================== SETTINGS TAB =================== -->
+    <ng-container *ngIf="activeTab === 'settings'">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div class="flex flex-1 flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Time Limit</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ timeLimit }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Attempts Allowed</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ attemptsAllowed }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Passing Score</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ passingScore }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Question Randomization</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ questionRandomization }}</div>
+            </div>
+          </div>
+
+          <div class="flex flex-1 flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Show Results</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ showResults }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Show Correct Answers</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ showCorrectAnswers }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Late Submission</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ lateSubmission }}</div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <div class="text-[11px] font-medium text-[#6B7280]">Proctoring</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ proctoring }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Footer -->
+  <div class="h-px bg-[#E5E7EB]"></div>
+
+  <div class="flex flex-wrap items-center justify-end gap-3 px-5 py-4">
+    <button
+      type="button"
+      (click)="editQuiz()"
+      class="cursor-pointer inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#2563EB] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+    >
+      <span class="flex h-4 w-4 items-center justify-center">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+          <path d="M12 20h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Edit Quiz
+    </button>
+
+    <button
+      type="button"
+      (click)="exportData()"
+      class="cursor-pointer inline-flex h-9 items-center justify-center gap-2 rounded-[6px] bg-[#4B5563] px-4 text-[12px] font-semibold text-white hover:opacity-95"
+    >
+      <span class="flex h-4 w-4 items-center justify-center">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+          <path d="M12 3v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 11l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      Export Data
+    </button>
+  </div>
+</div>

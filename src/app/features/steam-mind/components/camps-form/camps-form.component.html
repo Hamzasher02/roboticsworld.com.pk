@@ -1,0 +1,277 @@
+<section class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-6 sm:px-6 sm:py-8">
+    <div
+      class="flex w-full flex-col overflow-hidden rounded-[10px] border border-[#E5E7EB] bg-white shadow-[0_12px_26px_rgba(17,24,39,0.10)] lg:flex-row"
+    >
+      <!-- =========================
+           LEFT (Order Summary)
+           ========================= -->
+      <aside class="flex w-full flex-col bg-[#F7E6E2] px-6 py-6 sm:px-8 sm:py-8 lg:w-[46%]">
+        <!-- Logo -->
+        <div class="flex w-full items-start justify-start">
+          <div class="flex h-10 w-10 items-center justify-center overflow-hidden ">
+            <img
+              src="assets/steam-mind/header/SteamMindLogo.svg"
+              alt="Logo"
+              class="h-9 w-9 object-contain"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <!-- Currency -->
+        <div class="mt-10 flex w-full flex-col">
+          <div class="text-[11px] font-semibold text-[#111827]">Choose a currency</div>
+<div class="mt-3 flex w-full flex-wrap items-center gap-3">
+  <button
+    type="button"
+    (click)="currency = currencies[0].code"
+    class="flex items-center gap-2 rounded-[2px] border px-3 py-2 text-[11px] font-semibold"
+    [ngClass]="currency === currencies[0].code ? 'border-[#111827] bg-white' : 'border-[#D1D5DB] bg-white/70'"
+  >
+    <img
+      [src]="currencies[0].flagImg"
+      alt="PK flag"
+      class="h-[14px] w-[20px] object-contain"
+      draggable="false"
+    />
+    <span>{{ currencies[0].amount }}</span>
+  </button>
+
+  <button
+    type="button"
+    (click)="currency = currencies[1].code"
+    class="flex items-center gap-2 rounded-[2px] border px-3 py-2 text-[11px] font-semibold"
+    [ngClass]="currency === currencies[1].code ? 'border-[#111827] bg-white' : 'border-[#D1D5DB] bg-white/70'"
+  >
+    <img
+      [src]="currencies[1].flagImg"
+      alt="US flag"
+      class="h-[14px] w-[20px] object-contain"
+      draggable="false"
+    />
+    <span>{{ currencies[1].amount }}</span>
+  </button>
+</div>
+
+
+          <div class="mt-6 text-[10px] font-medium text-[#6B7280]">
+            {{ rateText }}
+          </div>
+        </div>
+
+        <!-- Product row -->
+        <div class="mt-4 flex w-full items-start justify-between gap-4">
+          <div class="flex items-start gap-3">
+            <div class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-[6px] bg-white">
+              <img [src]="product.img" alt="" class="h-full w-full object-cover" draggable="false" />
+            </div>
+
+            <div class="flex flex-col">
+              <div class="max-w-[260px] text-[10px] font-semibold leading-4 text-[#111827]">
+                {{ product.title }}
+              </div>
+              <div class="mt-1 max-w-[260px] text-[9px] font-medium leading-4 text-[#6B7280]">
+                {{ product.desc }}
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[10px] font-semibold text-[#111827]">
+            {{ product.price }}
+          </div>
+        </div>
+
+        <div class="mt-6 h-px w-full bg-[#E5E7EB]"></div>
+
+        <!-- Totals -->
+        <div class="mt-6 flex w-full flex-col gap-5">
+          <div class="flex w-full items-center justify-between">
+            <div class="text-[10px] font-semibold text-[#111827]">Subtotal</div>
+            <div class="text-[10px] font-semibold text-[#111827]">{{ subtotal }}</div>
+          </div>
+
+          <div class="flex w-full items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="rounded-[6px] bg-[#D9D9D9] px-3 py-2 text-[10px] font-semibold text-[#111827]">
+                {{ coupon }}
+              </span>
+              <span class="text-[10px] font-medium text-[#6B7280]">{{ discountText }}</span>
+            </div>
+            <div class="text-[10px] font-semibold text-[#111827]">-</div>
+          </div>
+
+          <div class="flex w-full items-center justify-between">
+            <div class="text-[10px] font-semibold text-[#111827]">Total due</div>
+            <div class="text-[10px] font-semibold text-[#111827]">{{ totalDue }}</div>
+          </div>
+        </div>
+
+        <!-- Mini card -->
+        <div class="mt-6 flex w-full flex-col rounded-[8px] border border-[#D1D5DB] bg-white/60 p-4">
+          <div class="flex items-start gap-3">
+            <div class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-[6px] bg-white">
+              <img [src]="product.img" alt="" class="h-full w-full object-cover" draggable="false" />
+            </div>
+            <div class="flex flex-col">
+              <div class="text-[10px] font-semibold leading-4 text-[#111827]">
+                {{ product.title }}
+              </div>
+              <div class="mt-1 text-[9px] font-medium leading-4 text-[#6B7280]">
+                {{ product.desc }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="mt-5 inline-flex h-[34px] w-fit items-center justify-center rounded-[8px] bg-[#D9D9D9] px-4 text-[10px] font-semibold text-[#111827]"
+        >
+          + Add to your Order
+        </button>
+      </aside>
+
+      <!-- Divider (desktop only) -->
+      <div class="hidden w-px bg-[#E5E7EB] lg:flex"></div>
+
+      <!-- =========================
+           RIGHT (Checkout Form)
+           ========================= -->
+      <main class="flex w-full flex-col bg-[#F5F5F566] px-6 py-6 sm:px-8 sm:py-8 lg:w-[54%]">
+        <!-- Email -->
+        <div class="flex w-full flex-col">
+          <label class="text-[10px] font-medium text-[#111827]">Email</label>
+          <input
+            [(ngModel)]="email"
+            type="email"
+            placeholder="email@example.com"
+            class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#111827]"
+          />
+        </div>
+
+        <!-- Timezone -->
+        <div class="mt-5 flex w-full flex-col">
+          <label class="text-[10px] font-medium text-[#111827]">Select Timezone</label>
+          <select
+            [(ngModel)]="timezone"
+            class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none focus:border-[#111827]"
+          >
+            <option *ngFor="let tz of timezones" [value]="tz.value">{{ tz.label }}</option>
+          </select>
+        </div>
+
+        <!-- Batch date -->
+        <div class="mt-5 flex w-full flex-col">
+          <label class="text-[10px] font-medium text-[#111827]">Select the Batch Date</label>
+          <select
+            [(ngModel)]="batchDate"
+            class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none focus:border-[#111827]"
+          >
+            <option *ngFor="let d of batchDates" [value]="d.value">{{ d.label }}</option>
+          </select>
+        </div>
+
+        <!-- Batch time -->
+        <div class="mt-5 flex w-full flex-col">
+          <label class="text-[10px] font-medium text-[#111827]">Select the Batch Time</label>
+          <select
+            [(ngModel)]="batchTime"
+            class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none focus:border-[#111827]"
+          >
+            <option *ngFor="let t of batchTimes" [value]="t.value">{{ t.label }}</option>
+          </select>
+        </div>
+
+        <!-- Payment -->
+        <div class="mt-8 flex w-full flex-col">
+          <div class="text-[13px] font-extrabold text-[#111827]">Payment Method</div>
+
+          <div class="mt-4 flex w-full flex-col">
+            <label class="text-[10px] font-medium text-[#111827]">Card Information</label>
+
+            <!-- Card number row with icons -->
+            <div
+              class="mt-2 flex h-[36px] w-full items-center justify-between rounded-[6px] border border-[#D1D5DB] bg-white px-3"
+            >
+              <input
+                [(ngModel)]="cardNumber"
+                type="text"
+                placeholder="Card Information"
+                class="h-full w-full bg-transparent text-[11px] font-medium text-[#111827] outline-none placeholder:text-[#9CA3AF]"
+              />
+
+              <div class="flex items-center gap-2">
+                <img src="assets/steam-mind/camp/Group 20.svg" alt="visa" class="h-4 w-6 object-contain" />
+                <img src="assets/steam-mind/camp/Group 48099475.svg" alt="master" class="h-4 w-6 object-contain" />
+                <img src="assets/steam-mind/camp/Group 22.svg" alt="paypal" class="h-4 w-6 object-contain" />
+              </div>
+            </div>
+
+            <!-- MM/YY + CVC -->
+            <div class="mt-2 flex w-full flex-col gap-2 sm:flex-row sm:items-center">
+              <input
+                [(ngModel)]="exp"
+                type="text"
+                placeholder="MM/YY"
+                class="h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#111827] sm:w-1/2"
+              />
+              <input
+                [(ngModel)]="cvc"
+                type="text"
+                placeholder="CVC"
+                class="h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#111827] sm:w-1/2"
+              />
+            </div>
+          </div>
+
+          <!-- Card holder -->
+          <div class="mt-4 flex w-full flex-col">
+            <label class="text-[10px] font-medium text-[#111827]">Card Holder Name</label>
+            <input
+              [(ngModel)]="cardHolder"
+              type="text"
+              placeholder="Full Name on Card"
+              class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none placeholder:text-[#9CA3AF] focus:border-[#111827]"
+            />
+          </div>
+
+          <!-- Country -->
+          <div class="mt-4 flex w-full flex-col">
+            <label class="text-[10px] font-medium text-[#111827]">Country or Region</label>
+            <select
+              [(ngModel)]="country"
+              class="mt-2 h-[36px] w-full rounded-[6px] border border-[#D1D5DB] bg-white px-3 text-[11px] font-medium text-[#111827] outline-none focus:border-[#111827]"
+            >
+              <option *ngFor="let c of countries" [value]="c.value">{{ c.label }}</option>
+            </select>
+          </div>
+
+          <!-- Save info box -->
+          <div class="mt-5 flex w-full items-start gap-3 rounded-[8px] border border-[#D1D5DB] bg-white p-4">
+            <input
+              [(ngModel)]="saveInfo"
+              type="checkbox"
+              class="mt-1 h-4 w-4 rounded border border-[#D1D5DB] accent-[#111827]"
+            />
+            <div class="flex flex-col">
+              <div class="text-[10px] font-semibold text-[#111827]">Save my information for Faster Checkout</div>
+              <div class="mt-1 text-[9px] font-medium leading-4 text-[#6B7280]">
+                Pay Securely at STEAM Minds, and everywhere link is accepted
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book button -->
+        <button
+          type="button"
+          (click)="onBook()"
+          class="mt-8 inline-flex h-[40px] w-full items-center justify-center rounded-[6px] bg-[#FF6A3D] text-[12px] font-semibold text-white shadow-[0_10px_16px_rgba(255,106,61,0.25)]"
+        >
+          Book
+        </button>
+      </main>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,153 @@
+<!-- SESSION DETAIL MODAL -->
+<div *ngIf="isOpen" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+  <div class="bg-white w-[1100px] rounded-[28px] shadow-xl px-8 py-7 relative">
+    <!-- HEADER -->
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="text-xl font-semibold text-gray-900">Session Details</h2>
+      <button (click)="closeModal()" class="text-gray-700 hover:text-gray-900 text-2xl leading-none">×</button>
+    </div>
+
+    <!-- Loading / Error -->
+    <div *ngIf="loading" class="mb-4 text-[12px] text-gray-500 flex items-center gap-2">
+      <svg class="animate-spin h-4 w-4 text-[#089BC4]" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      </svg>
+      Loading session details...
+    </div>
+
+    <div *ngIf="!loading && error" class="mb-4 text-[12px] text-red-600">
+      {{ error }}
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+      <!-- LEFT CARD: Session Overview -->
+      <div class="col-span-8 border border-gray-200 rounded-xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-base font-semibold text-gray-900">Session Overview</h3>
+
+          <span class="px-5 py-1 rounded-full text-xs font-semibold" [ngClass]="statusPillClass">
+            {{ statusLabel }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-10 gap-y-7">
+          <!-- STUDENT -->
+          <div class="flex items-center gap-3">
+            <img src="/assets/instructor-images/courses/Avatar.svg" class="w-10 h-10 rounded-full object-cover"
+              alt="Student" />
+
+            <div>
+              <p class="text-xs text-gray-500 mb-1">Student</p>
+              <p class="text-sm font-semibold text-gray-900">{{ vmStudentName }}</p>
+            </div>
+          </div>
+
+          <!-- COURSE -->
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 border border-gray-200 flex-shrink-0">
+              <img src="/assets/instructor-images/session/book.svg" class="w-6 h-6" alt="Course" />
+            </div>
+
+            <div class="min-w-0">
+              <p class="text-xs text-gray-500 mb-1 flex items-center gap-2">
+                <span>Course</span>
+                <img src="/assets/instructor-images/session/Group (2).svg" class="w-4 h-4 opacity-70" alt="view" />
+              </p>
+
+              <p class="text-sm font-semibold text-gray-900 truncate">
+                {{ vmCourseName }}
+              </p>
+            </div>
+          </div>
+
+          <!-- MODULE -->
+          <div class="flex items-center gap-3">
+            <img src="/assets/instructor-images/session/Vector.svg" class="w-6 h-6" alt="Module" />
+            <div>
+              <p class="text-xs text-gray-500 mb-1">Module</p>
+              <p class="text-sm font-semibold text-gray-900">
+                {{ vmModuleName }}
+              </p>
+            </div>
+          </div>
+
+          <!-- SESSION PROGRESS -->
+          <div class="flex items-center gap-3">
+            <img src="/assets/instructor-images/session/Group.svg" class="w-6 h-6" alt="Progress" />
+            <div>
+              <p class="text-xs text-gray-500 mb-1">Session Progress</p>
+              <p class="text-sm font-semibold text-gray-900">
+                {{ currentSessionNumber }} of {{ vmTotalSessions }}
+              </p>
+            </div>
+          </div>
+
+          <!-- DATE & TIME -->
+          <div class="flex items-center gap-3 col-span-2">
+            <img src="/assets/instructor-images/session/date.svg" class="w-6 h-6" alt="Calendar" />
+            <div>
+              <p class="text-xs text-gray-500 mb-1">Date & Time</p>
+              <p class="text-sm font-semibold text-gray-900">
+                {{ vmDate }} • {{ vmTime }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="col-span-4 space-y-4">
+        <!-- Course Progress -->
+        <div class="border border-gray-200 rounded-xl p-5">
+          <h3 class="text-base font-semibold text-gray-900 mb-3">Course Progress</h3>
+
+          <div class="flex items-center justify-between text-sm mb-2">
+            <span class="text-gray-700">Progress</span>
+            <span class="text-gray-700">{{ currentSessionNumber }} of {{ vmTotalSessions }} Sessions</span>
+          </div>
+
+          <div class="w-full h-2 bg-gray-200 rounded-full">
+            <div class="h-2 bg-sky-500 rounded-full" [style.width.%]="progressPercent"></div>
+          </div>
+
+          <p class="text-xs text-gray-500 mt-2">{{ sessionsRemaining }} Sessions Remaining</p>
+        </div>
+
+        <!-- Meeting Information -->
+        <div class="border border-gray-200 rounded-xl p-5">
+          <p class="text-xs font-semibold text-gray-700 mb-3">Meeting Information</p>
+
+          <div class="bg-sky-50 rounded-lg p-4">
+            <p class="text-[11px] font-semibold text-gray-500">Meeting Link:</p>
+
+            <a *ngIf="vmMeetingLink" [href]="vmMeetingLink" target="_blank"
+              class="text-blue-600 text-sm font-medium block break-all">
+              {{ vmMeetingLink }}
+            </a>
+
+            <div class="flex gap-2 mt-3">
+              <button
+                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-xs font-semibold inline-flex items-center gap-2">
+                <span class="text-sm leading-none">🗓</span>
+                Add to Calendar
+              </button>
+
+              <button (click)="copyMeetingLink(vmMeetingLink)"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md text-xs font-semibold">
+                Copy Link
+              </button>
+            </div>
+
+            <p *ngIf="!vmMeetingLink" class="text-xs text-gray-500 mt-2">
+              No meeting link available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,771 @@
+<!-- ✅ edit-quiz.component.html (FULL UPDATED)
+     - FLEX ONLY (no grid classes)
+     - Questions will show for published too
+     - Editing disabled when status != draft
+-->
+
+<div class="min-h-screen bg-[#F3F4F6]">
+  <!-- Modal overlay -->
+  <div *ngIf="isOpen" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/30 px-3 sm:px-4">
+    <!-- Modal -->
+    <div class="h-[90vh] w-full max-w-[820px] overflow-hidden rounded-[6px] bg-white
+             shadow-[0_18px_45px_rgba(0,0,0,0.18)]">
+      <!-- Header -->
+      <div class="flex items-start justify-between px-6 py-5">
+        <div class="flex flex-col">
+          <div class="text-[18px] font-semibold text-[#111827]">
+            Edit Quiz: {{ form.title }}
+          </div>
+          <div class="mt-1 text-[12px] text-[#6B7280]">
+            Status:
+            <span class="font-medium text-[#111827]">{{ form.status }}</span>
+          </div>
+        </div>
+
+        <button type="button" (click)="close()"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6B7280] hover:bg-gray-50"
+          aria-label="Close">
+          ✕
+        </button>
+      </div>
+
+      <div class="h-px bg-[#E5E7EB]"></div>
+
+      <!-- Tabs -->
+      <div class="px-6 pt-4">
+        <div class="flex items-center gap-10 border-b border-[#E5E7EB]">
+          <!-- Quiz Details -->
+          <button type="button" (click)="setStep('details')"
+            class="relative flex cursor-pointer items-center gap-2 pb-3 text-[12px] font-medium"
+            [ngClass]="activeStep === 'details' ? 'text-[#0EA5B7]' : 'text-[#6B7280]'">
+            <img [src]="activeStep === 'details'
+                ? '/assets/instructor-images/quiz/quiz-detail.svg'
+                : '/assets/instructor-images/quiz/quizdetail-gray.svg'" class="h-4 w-4" alt="details" />
+            Quiz Details
+
+            <span *ngIf="activeStep === 'details'"
+              class="absolute bottom-[-1px] left-0 h-[2px] w-full rounded-full bg-[#0EA5B7]"></span>
+          </button>
+
+          <!-- Questions -->
+          <button type="button" (click)="setStep('questions')"
+            class="relative flex cursor-pointer items-center gap-2 pb-3 text-[12px] font-medium"
+            [ngClass]="activeStep === 'questions' ? 'text-[#0EA5B7]' : 'text-[#6B7280]'">
+            <img [src]="activeStep === 'questions'
+                ? '/assets/instructor-images/quiz/questions.svg'
+                : '/assets/instructor-images/quiz/question-gray.svg'" class="h-4 w-4" alt="questions" />
+            Questions
+
+            <span *ngIf="activeStep === 'questions'"
+              class="absolute bottom-[-1px] left-0 h-[2px] w-full rounded-full bg-[#0EA5B7]"></span>
+          </button>
+
+          <!-- Settings -->
+          <button type="button" (click)="setStep('settings')"
+            class="relative flex cursor-pointer items-center gap-2 pb-3 text-[12px] font-medium"
+            [ngClass]="activeStep === 'settings' ? 'text-[#0EA5B7]' : 'text-[#6B7280]'">
+            <img [src]="activeStep === 'settings'
+                ? '/assets/instructor-images/quiz/setting.svg'
+                : '/assets/instructor-images/quiz/setting-gray.svg'" class="h-4 w-4" alt="settings" />
+            Settings
+
+            <span *ngIf="activeStep === 'settings'"
+              class="absolute bottom-[-1px] left-0 h-[2px] w-full rounded-full bg-[#0EA5B7]"></span>
+          </button>
+
+          <!-- Preview -->
+          <button type="button" (click)="setStep('preview')"
+            class="relative flex cursor-pointer items-center gap-2 pb-3 text-[12px] font-medium"
+            [ngClass]="activeStep === 'preview' ? 'text-[#0EA5B7]' : 'text-[#6B7280]'">
+            <img [src]="activeStep === 'preview'
+                ? '/assets/instructor-images/quiz/preview.svg'
+                : '/assets/instructor-images/quiz/preview-gray.svg'" class="h-4 w-4" alt="preview" />
+            Preview
+
+            <span *ngIf="activeStep === 'preview'"
+              class="absolute bottom-[-1px] left-0 h-[2px] w-full rounded-full bg-[#0EA5B7]"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- BODY (Scrollable) -->
+      <div class="h-[calc(90vh-210px)] overflow-y-auto px-6 py-5">
+        <!-- ========================= -->
+        <!-- ✅ TAB: QUIZ DETAILS -->
+        <!-- ========================= -->
+        <div *ngIf="activeStep==='details'">
+          <!-- Row 1: title + course -->
+          <div class="flex w-full flex-col gap-5 md:flex-row">
+            <div class="flex w-full flex-col md:w-1/2">
+              <label class="text-[12px] font-medium text-[#374151]">Quiz Title</label>
+              <input [(ngModel)]="form.title" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-gray-100" />
+            </div>
+
+            <div class="flex w-full flex-col md:w-1/2">
+              <label class="text-[12px] font-medium text-[#374151]">Course</label>
+              <div class="relative mt-2">
+                <select [(ngModel)]="form.course" class="h-[44px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-4 pr-10 text-[13px] text-[#111827]
+                         focus:outline-none focus:ring-4 focus:ring-gray-100">
+                  <option>{{ form.course || 'Course (locked)' }}</option>
+                </select>
+                <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+              </div>
+              <div class="mt-1 text-[11px] text-[#9CA3AF]">Course change is disabled in edit.</div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mt-5 flex w-full flex-col">
+            <label class="text-[12px] font-medium text-[#374151]">Description</label>
+            <textarea [(ngModel)]="form.description" rows="5" class="mt-2 w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-3 text-[13px] text-[#111827]
+                     placeholder:text-[#9CA3AF] focus:outline-none focus:ring-4 focus:ring-gray-100"
+              placeholder="Enter quiz description..."></textarea>
+          </div>
+
+          <!-- Row: time + attempts + passing -->
+          <div class="mt-5 flex w-full flex-col gap-5 md:flex-row">
+            <div class="flex w-full flex-col md:w-1/3">
+              <label class="text-[12px] font-medium text-[#374151]">Time Limit (minutes)</label>
+              <input type="number" [(ngModel)]="form.timeLimit" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-gray-100" />
+            </div>
+
+            <div class="flex w-full flex-col md:w-1/3">
+              <label class="text-[12px] font-medium text-[#374151]">Attempts Allowed</label>
+              <div class="relative mt-2">
+                <select [(ngModel)]="form.attemptsAllowed" class="h-[44px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-4 pr-10 text-[13px] text-[#111827]
+                         focus:outline-none focus:ring-4 focus:ring-gray-100">
+                  <option>1 attempt</option>
+                  <option>2 attempts</option>
+                  <option>Unlimited</option>
+                </select>
+                <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+              </div>
+            </div>
+
+            <div class="flex w-full flex-col md:w-1/3">
+              <label class="text-[12px] font-medium text-[#374151]">Passing Score (%)</label>
+              <input type="number" [(ngModel)]="form.passingScore" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px] text-[#111827]
+                       focus:outline-none focus:ring-4 focus:ring-gray-100" />
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-center gap-3">
+            <input type="checkbox" [(ngModel)]="form.randomize" class="h-4 w-4 rounded border-[#D1D5DB]" />
+            <span class="text-[12px] text-[#374151]">Randomize question order for each student</span>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- ✅ TAB: QUESTIONS -->
+        <!-- ========================= -->
+        <div *ngIf="activeStep==='questions'">
+          <div class="flex items-center justify-between">
+            <div class="text-[14px] font-semibold text-[#111827]">Quiz Questions</div>
+            <div class="text-[12px] text-[#6B7280]">
+              {{ totalQuestions() }} questions • {{ totalPoints() }} total points
+            </div>
+          </div>
+
+          <!-- Info (published/scheduled view-only) -->
+          <div *ngIf="!canEditQuestions"
+            class="mt-3 rounded-[8px] border border-[#FEF3C7] bg-[#FFFBEB] px-4 py-3 text-[12px] text-[#92400E]">
+            This quiz is {{ form.status }}. Questions can be viewed but cannot be edited.
+          </div>
+
+          <!-- Add / Update Question Card -->
+          <div class="mt-4 rounded-[8px] border border-[#E5E7EB] bg-white px-5 py-5">
+            <div class="flex items-center justify-between">
+              <div class="text-[13px] font-semibold text-[#111827]">
+                {{ editingQuestionId ? 'Update Question' : 'Add New Question' }}
+              </div>
+
+              <button *ngIf="editingQuestionId && canEditQuestions" type="button" (click)="cancelEditQuestion()" class="inline-flex h-9 items-center justify-center rounded-[8px] border border-[#D1D5DB] bg-white px-4 text-[12px] font-medium text-[#111827]
+                       hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                Cancel Edit
+              </button>
+            </div>
+
+            <div class="mt-4">
+              <div class="text-[12px] font-medium text-[#374151]">Question Type</div>
+
+              <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+                <!-- Multiple Choice -->
+                <button type="button" (click)="setQuestionType('mcq')"
+                  class="flex h-[74px] w-full flex-col justify-between rounded-[8px] border px-4 py-3 text-left sm:w-1/4"
+                  [ngClass]="questionForm.type==='mcq'
+                    ? 'border-[#0EA5B7] bg-[#E6F7FA]'
+                    : 'border-[#E5E7EB] bg-white hover:bg-gray-50'" [disabled]="!canEditQuestions">
+                  <div class="flex w-full items-center justify-center">
+                    <img [src]="questionForm.type==='mcq'
+                        ? '/assets/instructor-images/quiz/multiple-chocices.svg'
+                        : '/assets/instructor-images/quiz/gemini.png'" class="h-[18px] w-[18px] object-contain"
+                      alt="mcq" />
+                  </div>
+                  <div class="text-[12px] font-medium"
+                    [ngClass]="questionForm.type==='mcq' ? 'text-[#0EA5B7]' : 'text-[#111827]'">
+                    Multiple Choice
+                  </div>
+                </button>
+
+                <!-- True/False -->
+                <button type="button" (click)="setQuestionType('tf')"
+                  class="flex h-[74px] w-full flex-col justify-between rounded-[8px] border px-4 py-3 text-left sm:w-1/4"
+                  [ngClass]="questionForm.type==='tf'
+                    ? 'border-[#0094C0] bg-[#E6F7FA]'
+                    : 'border-[#E5E7EB] bg-white hover:bg-gray-50'" [disabled]="!canEditQuestions">
+                  <div class="flex w-full items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                      <rect x="1" y="1" width="22" height="22" rx="3"
+                        [attr.fill]="questionForm.type==='tf' ? '#E6F7FA' : '#F8FAFC'"
+                        [attr.stroke]="questionForm.type==='tf' ? '#0094C0' : '#374151'" stroke-width="2" />
+                      <path d="M6.5 12.5L10.2 16.2L17.5 8.8"
+                        [attr.stroke]="questionForm.type==='tf' ? '#0094C0' : '#374151'" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                  <div class="text-[12px] font-medium"
+                    [ngClass]="questionForm.type==='tf' ? 'text-[#0094C0]' : 'text-[#111827]'">
+                    True/False
+                  </div>
+                </button>
+
+                <!-- Short Answer -->
+                <button type="button" (click)="setQuestionType('short')"
+                  class="flex h-[74px] w-full flex-col justify-between rounded-[8px] border px-4 py-3 text-left sm:w-1/4"
+                  [ngClass]="questionForm.type === 'short'
+                    ? 'border-[#0094C0] bg-[#E6F7FA]'
+                    : 'border-[#E5E7EB] bg-white hover:bg-gray-50'" [disabled]="!canEditQuestions">
+                  <div class="flex w-full items-center justify-center"
+                    [ngClass]="questionForm.type === 'short' ? 'text-[#0094C0]' : 'text-[#111827]'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                      <path
+                        d="M4 3.5h12.5L20.5 7.5V20a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 20V5A1.5 1.5 0 0 1 5 3.5Z" />
+                      <path d="M8.8 15.2V12.8L17.2 4.4l2.4 2.4-8.4 8.4H8.8Z" />
+                      <path d="M13 7l6 6" />
+                    </svg>
+                  </div>
+                  <div class="text-[12px] font-medium"
+                    [ngClass]="questionForm.type === 'short' ? 'text-[#0094C0]' : 'text-[#111827]'">
+                    Short Answer
+                  </div>
+                </button>
+
+                <!-- Essay (disabled in backend) -->
+                <button type="button" (click)="setQuestionType('essay')"
+                  class="flex h-[74px] w-full flex-col justify-between rounded-[8px] border px-4 py-3 text-left sm:w-1/4"
+                  [ngClass]="questionForm.type === 'essay'
+                    ? 'border-[#0094C0] bg-[#E6F7FA]'
+                    : 'border-[#E5E7EB] bg-white hover:bg-gray-50'" [disabled]="true">
+                  <div class="flex w-full items-center justify-center text-[#111827]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                      <path
+                        d="M6 3.5h9l4.5 4.5V20a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 20V5A1.5 1.5 0 0 1 6 3.5Z" />
+                      <path d="M15 3.5V8h4.5" />
+                      <line x1="8" y1="11" x2="12" y2="11" />
+                      <line x1="8" y1="15" x2="16" y2="15" />
+                      <line x1="8" y1="18" x2="16" y2="18" />
+                    </svg>
+                  </div>
+                  <div class="text-[12px] font-medium text-[#111827]">Essay</div>
+                </button>
+              </div>
+
+              <div class="mt-2 text-[11px] text-[#9CA3AF]">
+                Essay is disabled because backend does not support it yet.
+              </div>
+            </div>
+
+            <!-- Question text -->
+            <div class="mt-5">
+              <div class="text-[12px] font-medium text-[#374151]">Question</div>
+              <textarea [(ngModel)]="questionForm.questionText" [disabled]="!canEditQuestions" rows="3" class="mt-2 w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-3 text-[13px]
+                       placeholder:text-[#9CA3AF] focus:outline-none focus:ring-4 focus:ring-gray-100"
+                placeholder="Enter your question here..."></textarea>
+            </div>
+
+            <!-- Answer Options (MCQ) -->
+            <div *ngIf="questionForm.type==='mcq'" class="mt-5">
+              <div class="text-[12px] font-medium text-[#374151]">Answer Options</div>
+
+              <div class="mt-3 flex flex-col gap-3">
+                <div *ngFor="let opt of questionForm.options; let i = index" class="flex items-center gap-3">
+                  <input type="radio" name="correctOption" class="h-4 w-4" [disabled]="!canEditQuestions"
+                    [checked]="questionForm.correctIndex === i" (change)="questionForm.correctIndex = i" />
+                  <input [(ngModel)]="opt.text" [disabled]="!canEditQuestions" class="h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px] text-[#111827]
+                           focus:outline-none focus:ring-4 focus:ring-gray-100" />
+                </div>
+              </div>
+            </div>
+
+            <!-- True/False -->
+            <div *ngIf="questionForm.type==='tf'" class="mt-5">
+              <div class="text-[12px] font-medium text-[#374151]">Correct Answer</div>
+              <div class="mt-3 flex items-center gap-3">
+                <button type="button" (click)="questionForm.tfAnswer=true" [disabled]="!canEditQuestions"
+                  class="h-[38px] rounded-[8px] border px-5 text-[12px]"
+                  [ngClass]="questionForm.tfAnswer ? 'border-[#86EFAC] bg-[#ECFDF3] text-[#166534]' : 'border-[#E5E7EB] bg-white text-[#111827]'">
+                  True
+                </button>
+                <button type="button" (click)="questionForm.tfAnswer=false" [disabled]="!canEditQuestions"
+                  class="h-[38px] rounded-[8px] border px-5 text-[12px]"
+                  [ngClass]="!questionForm.tfAnswer ? 'border-[#86EFAC] bg-[#ECFDF3] text-[#166534]' : 'border-[#E5E7EB] bg-white text-[#111827]'">
+                  False
+                </button>
+              </div>
+            </div>
+
+            <!-- Short Answer -->
+            <div *ngIf="questionForm.type==='short'" class="mt-5">
+              <div class="text-[12px] font-medium text-[#374151]">Sample Answer</div>
+              <input [(ngModel)]="questionForm.shortAnswer" [disabled]="!canEditQuestions" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px]
+                       placeholder:text-[#9CA3AF] focus:outline-none focus:ring-4 focus:ring-gray-100"
+                placeholder="Enter sample answer..." />
+            </div>
+
+            <!-- Points + Explanation -->
+            <div class="mt-5 flex w-full flex-col gap-4 md:flex-row">
+              <div class="flex w-full flex-col md:w-1/2">
+                <div class="text-[12px] font-medium text-[#374151]">Points</div>
+                <input type="number" [(ngModel)]="questionForm.points" [disabled]="!canEditQuestions" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px]
+                         focus:outline-none focus:ring-4 focus:ring-gray-100" />
+              </div>
+
+              <div class="flex w-full flex-col md:w-1/2">
+                <div class="text-[12px] font-medium text-[#374151]">Explanation (Optional)</div>
+                <input [(ngModel)]="questionForm.explanation" [disabled]="!canEditQuestions" class="mt-2 h-[44px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[13px]
+                         placeholder:text-[#9CA3AF] focus:outline-none focus:ring-4 focus:ring-gray-100"
+                  placeholder="Explain the correct answer..." />
+              </div>
+            </div>
+
+            <button type="button" (click)="editingQuestionId ? updateQuestion() : addQuestion()"
+              class="mt-5 inline-flex h-10 items-center justify-center rounded-[8px] px-6 text-[13px] font-medium text-white"
+              [ngClass]="canAddQuestionNow
+                ? 'bg-[#0EA5B7] hover:bg-[#0C96A7]'
+                : 'bg-[#D1D5DB] cursor-not-allowed'" [disabled]="!canAddQuestionNow || isSavingQuestion">
+              {{ editingQuestionId ? (isSavingQuestion ? 'Updating...' : 'Update Question') : (isSavingQuestion ?
+              'Adding...' : 'Add Question') }}
+            </button>
+          </div>
+
+          <!-- Questions List -->
+          <div class="mt-5 flex flex-col gap-5">
+            <div *ngFor="let q of questions" class="rounded-[10px] border border-[#E5E7EB] bg-white p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="text-[13px] font-semibold text-[#111827]">Q{{ q.qNo }}</div>
+                  <span class="rounded-full bg-[#DBEAFE] px-3 py-1 text-[11px] font-medium text-[#1D4ED8]">
+                    {{ q.typeLabel }}
+                  </span>
+                  <span class="text-[12px] text-[#6B7280]">{{ q.points }} pts</span>
+                </div>
+
+                <div class="flex items-center gap-1.5" *ngIf="canEditQuestions">
+                  <button type="button" (click)="editQuestion(q)"
+                    class="flex items-center justify-center cursor-pointer" aria-label="Edit">
+                    <img src="/assets/instructor-images/quiz/Vector (22).svg" alt="Edit"
+                      class="h-4 w-4 object-contain" />
+                  </button>
+
+                  <button type="button" (click)="deleteQuestion(q)"
+                    class="flex items-center justify-center cursor-pointer" aria-label="Delete">
+                    <img src="/assets/instructor-images/quiz/Vector (23).svg" alt="Delete"
+                      class="h-4 w-4 object-contain" />
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-3 text-[14px] text-[#111827]">
+                {{ q.questionText }}
+              </div>
+
+              <!-- MCQ options -->
+              <div *ngIf="q.type==='mcq'" class="mt-4 flex flex-col gap-2">
+                <div *ngFor="let opt of q.options" class="rounded-[8px] border px-4 py-3 text-[13px]"
+                  [ngClass]="opt.isCorrect ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  <div class="flex items-center justify-between">
+                    <div class="text-[#111827]">{{ opt.text }}</div>
+                    <span *ngIf="opt.isCorrect" class="text-[#16A34A]">✓</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- True/False -->
+              <div *ngIf="q.type==='tf'" class="mt-4 flex items-center gap-3">
+                <div class="rounded-[8px] border px-5 py-2 text-[13px]"
+                  [ngClass]="q.tfAnswer === true ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  True <span *ngIf="q.tfAnswer===true" class="ml-2 text-[#16A34A]">✓</span>
+                </div>
+
+                <div class="rounded-[8px] border px-5 py-2 text-[13px]"
+                  [ngClass]="q.tfAnswer === false ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  False <span *ngIf="q.tfAnswer===false" class="ml-2 text-[#16A34A]">✓</span>
+                </div>
+              </div>
+
+              <!-- Short Answer -->
+              <div *ngIf="q.type==='short'"
+                class="mt-4 rounded-[8px] border border-[#E5E7EB] bg-white px-4 py-3 text-[13px]">
+                <span class="font-semibold text-[#111827]">Sample Answer:</span>
+                <span class="ml-2 text-[#111827]">{{ q.shortAnswer }}</span>
+              </div>
+
+              <!-- Explanation -->
+              <div *ngIf="q.explanation"
+                class="mt-4 rounded-[8px] border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-3 text-[13px] text-[#1D4ED8]">
+                <span class="font-semibold">Explanation:</span>
+                <span class="ml-1 text-[#1D4ED8]">{{ q.explanation }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ✅ Added Questions List -->
+        <div class="mt-5 flex flex-col gap-5">
+          <div *ngIf="questions.length === 0"
+            class="rounded-[10px] border border-[#E5E7EB] bg-white p-5 text-[13px] text-[#6B7280]">
+            No questions added yet.
+          </div>
+
+          <div *ngFor="let q of questions" class="rounded-[10px] border border-[#E5E7EB] bg-white p-5">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="text-[13px] font-semibold text-[#111827]">Q{{ q.qNo }}</div>
+                <span class="rounded-full bg-[#DBEAFE] px-3 py-1 text-[11px] font-medium text-[#1D4ED8]">
+                  {{ q.typeLabel }}
+                </span>
+                <span class="text-[12px] text-[#6B7280]">{{ q.points }} pts</span>
+              </div>
+            </div>
+
+            <div class="mt-3 text-[14px] text-[#111827]">
+              {{ q.questionText }}
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- ✅ TAB: SETTINGS -->
+        <!-- ========================= -->
+        <div *ngIf="activeStep==='settings'">
+          <div class="text-[14px] font-semibold text-[#111827]">Quiz Settings</div>
+
+          <!-- Top settings -->
+          <div class="mt-5 flex w-full flex-col gap-6 md:flex-row">
+            <!-- Left -->
+            <div class="flex w-full flex-col gap-5 md:w-1/2">
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Time Limit (minutes)</label>
+                <div class="mt-2 flex items-center gap-2">
+                  <input type="number" [(ngModel)]="settings.timeLimit" class="h-[40px] w-[120px] rounded-[8px] border border-[#E5E7EB] bg-white px-3 text-[13px] text-[#111827]
+                           focus:outline-none focus:ring-4 focus:ring-gray-100" />
+                  <span class="text-[12px] text-[#6B7280]">minutes</span>
+                </div>
+                <div class="mt-1 text-[11px] text-[#9CA3AF]">Set 0 for unlimited time</div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Show Results</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.showResults" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>After submission</option>
+                    <option>Immediately</option>
+                    <option>After due date</option>
+                    <option>Never</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Show Correct Answers</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.showCorrectAnswers" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>After all attempts</option>
+                    <option>After submission</option>
+                    <option>Never</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Attempts Allowed</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.attemptsAllowed" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>1 attempt</option>
+                    <option>2 attempts</option>
+                    <option>3 attempts</option>
+                    <option>Unlimited</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div class="flex w-full flex-col gap-5 md:w-1/2">
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Passing Score (%)</label>
+                <div class="mt-2 flex items-center gap-2">
+                  <input type="number" [(ngModel)]="settings.passingScore" class="h-[40px] w-[120px] rounded-[8px] border border-[#E5E7EB] bg-white px-3 text-[13px] text-[#111827]
+                           focus:outline-none focus:ring-4 focus:ring-gray-100" />
+                  <span class="text-[12px] text-[#6B7280]">%</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Question Randomization</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.questionRandomization" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>Enabled</option>
+                    <option>Disabled</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+                <div class="mt-1 text-[11px] text-[#9CA3AF]">Randomize question order for each attempt</div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Late Submission</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.lateSubmission" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>Not allowed</option>
+                    <option>Allowed</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-[12px] font-medium text-[#374151]">Proctoring</label>
+                <div class="relative mt-2">
+                  <select [(ngModel)]="settings.proctoring" class="h-[40px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB]
+                           px-3 pr-10 text-[13px] text-[#111827] focus:outline-none focus:ring-4 focus:ring-gray-100">
+                    <option>Disabled</option>
+                    <option>Enabled</option>
+                  </select>
+                  <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280]">▾</span>
+                </div>
+                <div class="mt-1 text-[11px] text-[#9CA3AF]">Monitor students during quiz attempts</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 h-px w-full bg-[#E5E7EB]"></div>
+
+          <!-- Advanced Settings -->
+          <div class="mt-6">
+            <div class="text-[13px] font-semibold text-[#111827]">Advanced Settings</div>
+
+            <div class="mt-4 flex w-full flex-col gap-6 md:flex-row">
+              <!-- Left toggles -->
+              <div class="flex w-full flex-col gap-5 md:w-1/2">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-medium text-[#111827]">Shuffle Answer Options</div>
+                    <div class="mt-1 text-[11px] text-[#6B7280]">
+                      Randomize answer choices for multiple choice questions
+                    </div>
+                  </div>
+
+                  <label class="relative inline-flex cursor-pointer items-center">
+                    <input type="checkbox" class="peer sr-only" [(ngModel)]="settings.shuffleOptions" />
+                    <span
+                      class="h-[22px] w-[44px] rounded-full bg-[#E5E7EB] peer-checked:bg-[#0EA5B7] transition"></span>
+                    <span
+                      class="absolute left-[3px] top-[3px] h-[16px] w-[16px] rounded-full bg-white transition peer-checked:translate-x-[22px]"></span>
+                  </label>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-medium text-[#111827]">Auto-Save Responses</div>
+                    <div class="mt-1 text-[11px] text-[#6B7280]">Automatically save student responses as they type</div>
+                  </div>
+
+                  <label class="relative inline-flex cursor-pointer items-center">
+                    <input type="checkbox" class="peer sr-only" [(ngModel)]="settings.autoSave" />
+                    <span
+                      class="h-[22px] w-[44px] rounded-full bg-[#E5E7EB] peer-checked:bg-[#0EA5B7] transition"></span>
+                    <span
+                      class="absolute left-[3px] top-[3px] h-[16px] w-[16px] rounded-full bg-white transition peer-checked:translate-x-[22px]"></span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Right toggles -->
+              <div class="flex w-full flex-col gap-5 md:w-1/2">
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-medium text-[#111827]">Show Progress Bar</div>
+                    <div class="mt-1 text-[11px] text-[#6B7280]">Display completion progress to students</div>
+                  </div>
+
+                  <label class="relative inline-flex cursor-pointer items-center">
+                    <input type="checkbox" class="peer sr-only" [(ngModel)]="settings.showProgress" />
+                    <span
+                      class="h-[22px] w-[44px] rounded-full bg-[#E5E7EB] peer-checked:bg-[#0EA5B7] transition"></span>
+                    <span
+                      class="absolute left-[3px] top-[3px] h-[16px] w-[16px] rounded-full bg-white transition peer-checked:translate-x-[22px]"></span>
+                  </label>
+                </div>
+
+                <div class="flex items-start justify-between gap-4">
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-medium text-[#111827]">Allow Review Before Submit</div>
+                    <div class="mt-1 text-[11px] text-[#6B7280]">Let students review answers before final submission
+                    </div>
+                  </div>
+
+                  <label class="relative inline-flex cursor-pointer items-center">
+                    <input type="checkbox" class="peer sr-only" [(ngModel)]="settings.allowReview" />
+                    <span
+                      class="h-[22px] w-[44px] rounded-full bg-[#E5E7EB] peer-checked:bg-[#0EA5B7] transition"></span>
+                    <span
+                      class="absolute left-[3px] top-[3px] h-[16px] w-[16px] rounded-full bg-white transition peer-checked:translate-x-[22px]"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 h-px w-full bg-[#E5E7EB]"></div>
+
+          <!-- Security & Access -->
+          <div class="mt-6">
+            <div class="text-[13px] font-semibold text-[#111827]">Security &amp; Access</div>
+
+            <div class="mt-4 flex w-full flex-col gap-6 md:flex-row">
+              <div class="flex w-full flex-col md:w-1/2">
+                <label class="text-[12px] font-medium text-[#374151]">Access Code</label>
+                <input [(ngModel)]="settings.accessCode" class="mt-2 h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-3 text-[13px] text-[#111827]
+                         focus:outline-none focus:ring-4 focus:ring-gray-100" placeholder="Enter code (optional)" />
+              </div>
+
+              <div class="flex w-full flex-col md:w-1/2">
+                <label class="text-[12px] font-medium text-[#374151]">IP Restrictions</label>
+                <input [(ngModel)]="settings.ipRestrictions" class="mt-2 h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-3 text-[13px] text-[#111827]
+                         focus:outline-none focus:ring-4 focus:ring-gray-100"
+                  placeholder="e.g. 192.168.1.0/24 (optional)" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================= -->
+        <!-- ✅ TAB: PREVIEW -->
+        <!-- ========================= -->
+        <div *ngIf="activeStep==='preview'">
+          <div class="rounded-[10px] bg-[#F9FAFB] p-6">
+            <div class="text-[18px] font-semibold text-[#111827]">
+              {{ form.title }}
+            </div>
+
+            <div class="mt-3 flex flex-col gap-2 text-[13px] text-[#111827] sm:flex-row sm:flex-wrap">
+              <div class="w-full sm:w-1/2 md:w-1/4">
+                <span class="font-semibold">Time Limit:</span>
+                <span class="ml-1 text-[#374151]">{{ form.timeLimit }} min</span>
+              </div>
+
+              <div class="w-full sm:w-1/2 md:w-1/4">
+                <span class="font-semibold">Questions:</span>
+                <span class="ml-1 text-[#374151]">{{ totalQuestions() }}</span>
+              </div>
+
+              <div class="w-full sm:w-1/2 md:w-1/4">
+                <span class="font-semibold">Total Points:</span>
+                <span class="ml-1 text-[#374151]">{{ totalPoints() }}</span>
+              </div>
+
+              <div class="w-full sm:w-1/2 md:w-1/4">
+                <span class="font-semibold">Passing Score:</span>
+                <span class="ml-1 text-[#374151]">{{ form.passingScore }}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-col gap-6">
+            <div *ngFor="let q of questions" class="rounded-[10px] border border-[#E5E7EB] bg-white p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div class="text-[14px] font-semibold text-[#111827]">
+                  Question {{ q.qNo }}
+                </div>
+                <div class="text-[13px] text-[#6B7280]">{{ q.points }} pts</div>
+              </div>
+
+              <div class="mt-3 text-[14px] text-[#111827]">
+                {{ q.questionText }}
+              </div>
+
+              <div *ngIf="q.type==='mcq'" class="mt-4 flex flex-col gap-2">
+                <div *ngFor="let opt of q.options"
+                  class="flex items-center justify-between rounded-[6px] border px-4 py-3 text-[13px]"
+                  [ngClass]="opt.isCorrect ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  <div class="text-[#111827]">{{ opt.text }}</div>
+                  <span *ngIf="opt.isCorrect" class="text-[#16A34A]">✓</span>
+                </div>
+              </div>
+
+              <div *ngIf="q.type==='tf'" class="mt-4 flex items-center gap-3">
+                <div class="rounded-[6px] border px-4 py-2 text-[13px]"
+                  [ngClass]="q.tfAnswer === true ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  True <span *ngIf="q.tfAnswer===true" class="ml-2 text-[#16A34A]">✓</span>
+                </div>
+
+                <div class="rounded-[6px] border px-4 py-2 text-[13px]"
+                  [ngClass]="q.tfAnswer === false ? 'border-[#86EFAC] bg-[#ECFDF3]' : 'border-[#E5E7EB] bg-white'">
+                  False <span *ngIf="q.tfAnswer===false" class="ml-2 text-[#16A34A]">✓</span>
+                </div>
+              </div>
+
+              <div *ngIf="q.type==='short'"
+                class="mt-4 rounded-[6px] border border-[#E5E7EB] bg-white px-4 py-3 text-[13px]">
+                <span class="font-semibold text-[#111827]">Sample Answer:</span>
+                <span class="ml-2 text-[#111827]">{{ q.shortAnswer }}</span>
+              </div>
+
+              <div *ngIf="q.explanation"
+                class="mt-4 rounded-[6px] border border-[#BFDBFE] bg-[#EFF6FF] px-4 py-3 text-[13px] text-[#1D4ED8]">
+                <span class="font-semibold">Explanation:</span>
+                <span class="ml-1">{{ q.explanation }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-px bg-[#E5E7EB]"></div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between px-6 py-4">
+        <button type="button" (click)="close()" class="inline-flex h-10 items-center justify-center rounded-[8px] border border-[#D1D5DB] bg-white px-6 text-[13px] font-medium text-[#111827]
+                 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100">
+          Cancel
+        </button>
+
+        <div class="flex items-center gap-3">
+          <button type="button" (click)="saveDraft()" [disabled]="isSavingDraft"
+            class="inline-flex h-10 items-center justify-center rounded-[8px] border border-[#0EA5B7] bg-white px-6 text-[13px] font-medium text-[#0EA5B7]
+                   hover:bg-[#F0FDFF] focus:outline-none focus:ring-4 focus:ring-sky-100 disabled:cursor-not-allowed disabled:opacity-60">
+            {{ isSavingDraft ? 'Saving...' : 'Save as Draft' }}
+          </button>
+
+          <button type="button" (click)="publish()" [disabled]="isPublishing"
+            class="inline-flex h-10 items-center justify-center rounded-[8px] bg-[#0EA5B7] px-6 text-[13px] font-semibold text-white
+                   hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100 disabled:cursor-not-allowed disabled:opacity-60">
+            {{ isPublishing ? 'Publishing...' : 'Publish Quiz' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

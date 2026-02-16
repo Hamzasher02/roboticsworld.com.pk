@@ -1,0 +1,19 @@
+.date-input {
+  position: relative;
+}
+
+/* Chrome / Edge / Safari */
+.date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 6px;          /* ✅ div ke bilkul end par */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 1;
+}
+
+/* Firefox fix */
+.date-input {
+  padding-right: 32px; /* icon ke liye space */
+}
+

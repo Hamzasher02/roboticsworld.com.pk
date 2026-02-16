@@ -1,0 +1,150 @@
+<div class="p-4 sm:p-6 bg-white min-h-screen">
+  <!-- Breadcrumb -->
+  <div class="mb-4 text-sm text-gray-500 flex items-center">
+    <a href="#" class="hover:text-blue-600">Dashboard</a>
+    <span class="mx-2">/</span>
+    <span>Notifications</span>
+  </div>
+
+  <!-- Title -->
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Notifications</h2>
+
+  <!-- Filters -->
+  <div class="flex space-x-1 mb-6 bg-blue-100 p-1 rounded-lg w-fit">
+    <button
+      (click)="filter = 'All'"
+      [ngClass]="{'bg-blue-500 text-white': filter === 'All', 'bg-blue-100 text-blue-600': filter !== 'All'}"
+      class="px-5 py-2 text-sm font-semibold rounded-lg shadow-sm transition-all min-w-[80px]"
+    >
+      All
+    </button>
+    <button
+      (click)="filter = 'Unread'"
+      [ngClass]="{'bg-blue-500 text-white': filter === 'Unread', 'bg-blue-100 text-blue-600': filter !== 'Unread'}"
+      class="px-5 py-2 text-sm font-semibold rounded-lg shadow-sm transition-all min-w-[80px]"
+    >
+      Unread
+    </button>
+    <button
+      (click)="filter = 'Read'"
+      [ngClass]="{'bg-blue-500 text-white': filter === 'Read', 'bg-blue-100 text-blue-600': filter !== 'Read'}"
+      class="px-5 py-2 text-sm font-semibold rounded-lg shadow-sm transition-all min-w-[80px]"
+    >
+      Read
+    </button>
+  </div>
+
+  <!-- Select All & Actions -->
+  <div class="flex justify-between items-center mb-4 pt-2">
+    <div class="flex items-center space-x-3">
+      <input
+        type="checkbox"
+        [checked]="isAllSelected"
+        (change)="toggleSelectAll()"
+        class="h-5 w-5 text-blue-500 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+      />
+      <label class="text-gray-700 font-medium select-none">Select All</label>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <button
+        *ngIf="selectedNotifications.length > 0"
+        (click)="markAsRead()"
+        class="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        Mark All as Read
+      </button>
+
+      <button
+        *ngIf="selectedNotifications.length > 0"
+        (click)="deleteAllSelected()"
+        class="text-sm font-medium text-red-600 hover:text-red-800 transition-colors flex items-center"
+        aria-label="Delete selected notifications"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#FF7878" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notifications List -->
+  <div class="space-y-2 overflow-y-auto h-[60vh]">
+    <div *ngFor="let notification of filteredNotifications" class="flex flex-col sm:flex-row items-stretch border-b border-gray-100 last:border-b-0">
+
+<!-- Left: Checkbox + Read button (always horizontal) -->
+<div class="flex flex-row items-center justify-center space-x-2 p-2">
+  <input
+    type="checkbox"
+    [checked]="selectedNotifications.includes(notification.id)"
+    (change)="toggleSelect(notification.id)"
+    class="h-5 w-5 text-blue-500 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+  />
+
+  <button
+    (click)="markAsRead(notification.id)"
+    class="flex flex-col items-center justify-center h-14 w-14 text-xs font-bold rounded-md shadow-sm text-white transition-colors"
+    [style.backgroundColor]="notification.isRead ? '#4BB543' : '#26A8D2'"
+    title="Mark as Read"
+  >
+    <img
+      src="/assets/instructor-images/notification/outline.png"
+      alt="Read Icon"
+      class="h-6 w-6 mb-1"
+      style="filter: brightness(0) invert(1);"
+    />
+    <span class="text-white text-[10px] font-medium">Read</span>
+  </button>
+</div>
+
+
+
+      <!-- Middle: Message area (with colored background) -->
+      <div
+        [ngClass]="{'bg-white': notification.isRead, 'bg-[#F4F4F4]': !notification.isRead}"
+        class="flex-grow flex flex-col sm:flex-row items-center sm:items-start justify-between min-w-0 rounded-md py-3 px-4 sm:px-6"
+      >
+        <div class="min-w-0 flex-grow">
+          <p [class.font-semibold]="!notification.isRead" class="text-gray-900 leading-snug">
+            {{ notification.message }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">
+            Last: {{ notification.timestamp | date:'shortDate' }} at {{ notification.timestamp | date:'shortTime' }}
+          </p>
+        </div>
+
+        <div class="flex-shrink-0 mt-2 sm:mt-0 sm:ml-4">
+          <button
+            class="px-4 py-2 h-10 text-sm font-medium text-white bg-[#089BC4] rounded-md hover:bg-blue-600 transition-colors shadow-sm w-[70px]"
+          >
+            {{ notification.actionLabel }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Delete button (outside colored message) -->
+      <div class="flex-shrink-0 ml-2 p-2">
+        <button
+          (click)="deleteNotification(notification.id)"
+          class="flex flex-col items-center justify-center h-16 w-16 rounded-md bg-[#FF7878] transition-colors"
+          title="Delete"
+        >
+          <img
+            src="/assets/instructor-images/notification/Vector.png"
+            alt="Delete Icon"
+            class="h-5 w-5 mt-1"
+            style="filter: brightness(0) invert(1);"
+          />
+          <span class="text-white text-[10px] mt-1 font-medium">Delete</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredNotifications.length === 0" class="text-center py-10 text-gray-500">
+    No notifications found in this view.
+  </div>
+</div>
+

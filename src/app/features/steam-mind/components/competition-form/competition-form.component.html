@@ -1,0 +1,197 @@
+<section class="w-full bg-white">
+  <!-- Outer wrapper -->
+  <div
+    class="mx-auto flex w-full max-w-[1200px] flex-col px-3 py-6 sm:px-6 sm:py-10 lg:px-10"
+  >
+    <!-- Card wrapper -->
+    <div
+      class="flex w-full h-auto flex-col overflow-hidden border border-[#E5E7EB] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] lg:flex-row"
+    >
+      <!-- LEFT INFO PANEL -->
+      <aside
+        class="flex w-full flex-col bg-[#FF66361A] px-5 py-6 sm:px-8 sm:py-8 lg:w-[44%]"
+      >
+        <div class="flex w-full flex-col">
+          <img
+            [src]="info.logoSrc"
+            alt="Competition logo"
+            class="h-[78px] w-[50px] object-contain"
+          />
+
+          <!-- ✅ heading 16 -->
+          <h2 class="mt-5 text-[16px] font-semibold leading-6 text-[#111827]">
+            {{ info.title }}<br />
+            {{ info.subtitle }}
+          </h2>
+
+          <!-- ✅ text 12 -->
+          <p class="mt-2 text-[12px] leading-5 text-[#6B7280]">
+            {{ info.hostedByLabel }}:
+            <span class="font-semibold text-[#111827]">{{
+              info.hostedBy
+            }}</span>
+          </p>
+        </div>
+
+        <div class="mt-8 flex w-full flex-col gap-5">
+          <!-- Starts/Ends -->
+          <div class="flex w-full items-start justify-between gap-6">
+            <!-- ✅ text 12 -->
+            <span class="text-[12px] leading-5 text-[#6B7280]">{{
+              info.startsAtLabel
+            }}</span>
+            <span class="text-[12px] font-medium leading-5 text-[#111827]">{{
+              info.startsAt
+            }}</span>
+          </div>
+
+          <div class="flex w-full items-start justify-between gap-6">
+            <span class="text-[12px] leading-5 text-[#6B7280]">{{
+              info.endsAtLabel
+            }}</span>
+            <span class="text-[12px] font-medium leading-5 text-[#111827]">{{
+              info.endsAt
+            }}</span>
+          </div>
+
+          <div class="flex w-full items-start justify-between gap-6">
+            <span class="text-[12px] leading-5 text-[#6B7280]">{{
+              info.teamSizeLabel
+            }}</span>
+            <span class="text-[12px] font-medium leading-5 text-[#111827]">{{
+              info.teamSize
+            }}</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT FORM PANEL -->
+      <div
+        class="flex w-full flex-col bg-white px-5 py-6 sm:px-8 sm:py-8 lg:w-[56%]"
+      >
+        <!-- ✅ heading 16 -->
+        <h3 class="text-[16px] font-semibold leading-6 text-[#111827]">
+          Enter your details to complete registration
+        </h3>
+
+        <form
+          class="mt-5 flex w-full flex-col"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+        >
+          <!-- Student Name -->
+          <!-- ✅ subheading 14 -->
+          <label class="text-[14px] leading-5 text-[#6B7280]" for="studentName"
+            >Student Name</label
+          >
+          <input
+            id="studentName"
+            type="text"
+            formControlName="studentName"
+            placeholder="Student Name"
+            class="mt-1 h-10 w-full rounded-[2px] border border-[#E5E7EB] px-3 text-[12px] text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-2 focus:ring-[#FF6A3D]/20"
+          />
+          <p
+            *ngIf="f.studentName.touched && f.studentName.invalid"
+            class="mt-1 text-[12px] leading-5 text-red-600"
+          >
+            Please enter a valid name.
+          </p>
+
+          <!-- Grade -->
+          <label class="mt-4 text-[14px] leading-5 text-[#6B7280]" for="grade"
+            >Grade</label
+          >
+          <select
+            id="grade"
+            formControlName="grade"
+            class="mt-1 h-10 w-full rounded-[2px] border border-[#E5E7EB] px-3 text-[12px] text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-2 focus:ring-[#FF6A3D]/20"
+          >
+            <option value="" disabled selected>Select</option>
+            <option *ngFor="let g of grades" [value]="g">{{ g }}</option>
+          </select>
+          <p
+            *ngIf="f.grade.touched && f.grade.invalid"
+            class="mt-1 text-[12px] leading-5 text-red-600"
+          >
+            Please select a grade.
+          </p>
+
+          <!-- School Name -->
+          <label
+            class="mt-4 text-[14px] leading-5 text-[#6B7280]"
+            for="schoolName"
+            >School Name</label
+          >
+          <input
+            id="schoolName"
+            type="text"
+            formControlName="schoolName"
+            placeholder="School Name"
+            class="mt-1 h-10 w-full rounded-[2px] border border-[#E5E7EB] px-3 text-[12px] text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-2 focus:ring-[#FF6A3D]/20"
+          />
+          <p
+            *ngIf="f.schoolName.touched && f.schoolName.invalid"
+            class="mt-1 text-[12px] leading-5 text-red-600"
+          >
+            Please enter school name.
+          </p>
+
+          <!-- Email -->
+          <label class="mt-4 text-[14px] leading-5 text-[#6B7280]" for="email"
+            >Email</label
+          >
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Email (Optional)"
+            class="mt-1 h-10 w-full rounded-[2px] border border-[#E5E7EB] px-3 text-[12px] text-[#111827] outline-none focus:border-[#FF6A3D] focus:ring-2 focus:ring-[#FF6A3D]/20"
+          />
+          <p
+            *ngIf="f.email.touched && f.email.invalid"
+            class="mt-1 text-[12px] leading-5 text-red-600"
+          >
+            Please enter a valid email.
+          </p>
+
+          <!-- Consent Box -->
+          <div
+            class="mt-4 flex w-full flex-col rounded-[2px] border border-[#E5E7EB] p-3"
+          >
+            <div class="flex items-start gap-2">
+              <input
+                id="consent"
+                type="checkbox"
+                formControlName="consent"
+                class="mt-[2px] h-4 w-4 rounded-[2px] border border-[#D1D5DB] accent-[#FF6A3D]"
+              />
+              <!-- ✅ text 12 -->
+              <label for="consent" class="text-[12px] leading-5 text-[#6B7280]">
+                Save my information for Faster Checkout<br />
+                By signing up you agree to the Terms of Service and Privacy
+                Policy. You may receive updates from us via Email and WhatsApp.
+              </label>
+            </div>
+
+            <p
+              *ngIf="f['consent'].touched && f['consent'].invalid"
+              class="mt-2 text-[12px] leading-5 text-red-600"
+            >
+              Please accept to continue.
+            </p>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            [disabled]="form.invalid || submitting"
+            class="cursor-pointer mt-5 flex h-10 w-full items-center justify-center rounded-[2px] bg-[#FF6A3D] text-[12px] font-semibold text-white shadow-[0_8px_16px_rgba(0,0,0,0.12)] hover:bg-[#ff5a26] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {{ submitting ? "Submitting..." : "Complete Registration" }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

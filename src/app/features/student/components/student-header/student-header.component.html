@@ -1,0 +1,115 @@
+﻿<!-- student-header.component.html -->
+<div class="relative mb-5 w-full pt-[30px]">
+  <div class="relative z-10 mx-auto w-full max-w-[1210px] bg-white ">
+    <div class="w-full bg-white">
+      <div class="px-4 md:px-8">
+        <!-- Top section -->
+        <div class="flex w-full flex-col items-start justify-between gap-4 py-5 sm:flex-row sm:items-center">
+          <!-- Profile -->
+          <div class="flex items-center gap-3">
+            <div class="h-[52px] w-[52px] overflow-hidden rounded-full bg-gray-200 sm:h-[70px] sm:w-[70px]">
+              <img [src]="profilePicture"
+                (error)="$any($event.target).src='assets/student/studentHeader/studentProfile.svg'" alt="Profile"
+                class="h-full w-full object-cover" />
+            </div>
+
+            <div class="flex flex-col">
+              <h4 class="text-[16px] font-semibold leading-5 text-gray-800 sm:text-[18px]">
+                {{ name }}
+              </h4>
+              <p class="mt-0.5 text-[12px] text-gray-500 sm:text-[13px]">
+                {{ email }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Button (CONDITIONAL) -->
+          <div class="flex w-full justify-start sm:w-auto sm:justify-end">
+
+            @if (actionButton === 'demo') {
+            <a [routerLink]="['/student/course-demo-request']"
+              class="flex h-[40px] min-w-[160px] items-center justify-center gap-2 rounded-[2px] bg-orange-500 px-5 text-[13px] font-semibold text-white transition hover:bg-orange-100 hover:text-orange-600 active:scale-[0.99]">
+              Book A Free Demo
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+            }
+
+            @if (actionButton === 'ask') {
+            <a [routerLink]="['/student/start-discussion']"
+              class="flex h-[40px] min-w-[160px] items-center justify-center rounded-[2px] bg-orange-500 px-5 text-[13px] font-semibold text-white transition hover:bg-orange-100 hover:text-orange-600 active:scale-[0.99]">
+              Ask Your Question
+            </a>
+            }
+
+            @if (actionButton === 'compose') {
+            <button type="button" (click)="isComposeOpen = true"
+              class="flex h-[40px] min-w-[160px] items-center justify-center gap-2 rounded-[2px] bg-orange-500 px-5 text-[13px] font-semibold text-white transition hover:bg-orange-100 hover:text-orange-600 active:scale-[0.99]">
+              <span>Compose</span>
+              <img src="assets/student/courseImage/plusIcon (2).svg" alt="" class="h-3 w-3" />
+            </button>
+            }
+
+            <app-compose-message [open]="isComposeOpen" (close)="isComposeOpen = false"></app-compose-message>
+
+
+
+
+            @if (actionButton === 'logout') {
+            <button type="button" (click)="logout()"
+              class="flex h-[40px] min-w-[160px] items-center justify-center rounded-[2px] bg-orange-500 px-5 text-[13px] font-semibold text-white transition hover:bg-orange-100 hover:text-orange-600 active:scale-[0.99]">
+              Logout
+            </button>
+            }
+          </div>
+
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="mt-5 flex w-full items-center border-y border-orange-500">
+          <div class="flex w-full overflow-x-auto">
+            <div class="flex min-w-max items-center">
+              <a routerLink="/student" [routerLinkActiveOptions]="{ exact: true }"
+                routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Dashboard
+              </a>
+
+              <a routerLink="/student/courses" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Courses
+              </a>
+
+              <a routerLink="/student/forum" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Forum
+              </a>
+
+              <a routerLink="/student/messages" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Messages
+              </a>
+
+              <a routerLink="/student/quiz" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Quiz
+              </a>
+
+              <a routerLink="/student/wishlist" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Wishlist
+              </a>
+
+              <a routerLink="/student/settings" routerLinkActive="bg-orange-500 text-white"
+                class="flex h-[54px] items-center justify-center px-5 text-[13px] font-medium text-gray-600 transition hover:text-black">
+                Settings
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- /Navigation Tabs -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,316 @@
+<!-- manage-sessions.component.html -->
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6">
+  <!-- Breadcrumb -->
+  <div class="mb-5 flex flex-wrap items-center text-[12px] font-medium text-gray-500 sm:mb-6 sm:text-sm">
+    <a routerLink="/instructor/dashboard" class="text-gray-500 hover:text-blue-600">Dashboard</a>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900">Manage Sessions</span>
+  </div>
+
+  <!-- Back Button -->
+  <div class="mb-5 sm:mb-6">
+    <button class="flex cursor-pointer items-center text-blue-600" (click)="goBack()" aria-label="Back">
+      <svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      <span class="text-[12px] font-medium sm:text-sm">Back</span>
+    </button>
+  </div>
+
+  <!-- Card -->
+  <div class="mx-auto flex w-full flex-col rounded-xl bg-white p-4 shadow-lg sm:p-6 lg:max-w-7xl lg:p-8">
+    <!-- Tabs -->
+    <div class="mb-4 border-b border-gray-200">
+      <ul class="flex flex-wrap -mb-px text-center text-[13px] font-semibold text-gray-500 sm:text-lg" role="tablist">
+        <li class="mr-2" role="presentation">
+          <button
+            type="button"
+            (click)="activeTab = 'upcoming'"
+            class="inline-flex items-center justify-center border-b-4 p-3 sm:p-4"
+            [ngClass]="activeTab === 'upcoming'
+              ? 'border-blue-600 text-gray-900'
+              : 'border-transparent text-gray-500 hover:text-blue-600'"
+          >
+            Upcoming Sessions
+          </button>
+        </li>
+
+        <li role="presentation">
+          <button
+            type="button"
+            (click)="activeTab = 'previous'"
+            class="inline-flex items-center justify-center border-b-4 p-3 sm:p-4"
+            [ngClass]="activeTab === 'previous'
+              ? 'border-blue-600 text-gray-900'
+              : 'border-transparent text-gray-500 hover:text-blue-600'"
+          >
+            Previous Sessions
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Loading (optional) -->
+    <div *ngIf="isLoading" class="flex w-full items-center justify-center py-10">
+      <div class="text-sm font-medium text-gray-600">Loading sessions...</div>
+    </div>
+
+    <!-- ====================== Upcoming Sessions ====================== -->
+    <div *ngIf="!isLoading && activeTab === 'upcoming'" class="flex w-full flex-col">
+      <!-- Filter -->
+      <div class="mb-4 flex w-full flex-col sm:w-56">
+        <label for="session-type-dropdown" class="sr-only">Session Type</label>
+
+        <div class="relative inline-flex w-full">
+          <select
+            id="session-type-dropdown"
+            [(ngModel)]="selectedSessionType"
+            class="block w-full cursor-pointer appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-8 text-[13px] font-medium leading-tight text-gray-700 focus:border-blue-500 focus:outline-none sm:text-sm"
+          >
+            <option>Session Type</option>
+            <option>Live Session</option>
+            <option>Demo Session</option>
+          </select>
+
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative w-full overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-white">
+            <tr>
+              <th class="w-[20%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Date &amp; Time
+              </th>
+              <th class="w-[25%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Student
+              </th>
+              <th class="w-[15%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Session
+              </th>
+              <th class="w-[15%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Type
+              </th>
+              <th class="w-[15%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Courses
+              </th>
+              <th class="w-[10%] px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-100 bg-white">
+            <tr *ngFor="let session of filteredUpcomingSessions(); trackBy: trackByKey" class="hover:bg-gray-50">
+              <!-- Date & Time -->
+              <td class="whitespace-nowrap px-4 py-3 text-[12px] font-medium text-gray-900 sm:text-sm">
+                <div class="flex flex-col">
+                  <span>{{ session.date }}</span>
+                  <span class="text-[11px] font-normal text-gray-500 sm:text-xs">{{ session.time }}</span>
+                </div>
+              </td>
+
+              <!-- Student -->
+              <td class="whitespace-nowrap px-4 py-3 text-[12px] text-gray-900 sm:text-sm">
+                <div class="flex items-center">
+                  <div class="h-8 w-8 overflow-hidden rounded-full">
+                    <img class="h-8 w-8 object-cover" [src]="session.studentImage" [alt]="session.studentName" />
+                  </div>
+                  <div class="ml-3 sm:ml-4">
+                    <div class="text-[12px] font-medium text-gray-900 sm:text-sm">
+                      {{ session.studentName }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <!-- Session -->
+              <td class="whitespace-nowrap px-4 py-3 text-[12px] text-gray-900 sm:text-sm">
+                {{ session.sessionNumber }}
+              </td>
+
+              <!-- Type -->
+              <td class="whitespace-nowrap px-4 py-3 text-[12px] sm:text-sm">
+                <span
+                  class="inline-flex rounded-full px-3 py-1 text-[11px] font-semibold leading-5 sm:text-xs"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-600': session.type === 'Live Session',
+                    'bg-green-100 text-green-600': session.type === 'Demo Session'
+                  }"
+                >
+                  {{ session.type }}
+                </span>
+              </td>
+
+              <!-- Courses -->
+             <td class="whitespace-nowrap px-4 py-3">
+  <div class="flex flex-col">
+    <span class="text-[13px] font-semibold text-[#111827] sm:text-[14px]">
+      {{ session.courseName }}
+    </span>
+  </div>
+</td>
+
+
+              <!-- Actions -->
+              <td class="whitespace-nowrap px-4 py-3 text-[12px] font-medium sm:text-sm">
+                <button
+                  type="button"
+                  [routerLink]="['/instructor/manage-sessions/session-manage', session.id]"
+                  class="cursor-pointer text-blue-600 hover:text-blue-900"
+                >
+                  View
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="filteredUpcomingSessions().length === 0">
+              <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">No upcoming sessions found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Pagination (Upcoming) -->
+      <div class="mt-4 flex items-center justify-between gap-3">
+        <p class="text-xs text-gray-500">
+          Page {{ page }} of {{ pages }} • Total {{ total }}
+        </p>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            (click)="prevPage()"
+            [disabled]="page <= 1"
+            class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          <button
+            type="button"
+            (click)="nextPage()"
+            [disabled]="page >= pages"
+            class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================== Previous Sessions ====================== -->
+    <div *ngIf="!isLoading && activeTab === 'previous'" class="flex flex-col">
+      <div class="mb-4 flex w-full flex-col sm:w-56">
+        <label for="session-type-dropdown-prev" class="sr-only">Session Type</label>
+
+        <div class="relative inline-flex w-full">
+          <select
+            id="session-type-dropdown-prev"
+            [(ngModel)]="selectedSessionTypePrev"
+            class="block w-full cursor-pointer appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 pr-8 text-[13px] font-medium leading-tight text-gray-700 focus:border-blue-500 focus:outline-none sm:text-sm"
+          >
+            <option>Session Type</option>
+            <option>Live Session</option>
+            <option>Demo Session</option>
+          </select>
+
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-white">
+            <tr>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Date &amp; Time
+              </th>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Student
+              </th>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Session
+              </th>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Type
+              </th>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Status
+              </th>
+              <th class="px-4 py-3 text-left font-inter text-[11px] font-semibold uppercase text-gray-500 sm:text-[12px]">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-100 bg-white">
+            <tr *ngFor="let session of filteredPreviousSessions(); trackBy: trackByKey" class="hover:bg-gray-50">
+              <td class="whitespace-nowrap px-4 py-3 text-sm font-medium text-gray-900">
+                <div class="flex flex-col">
+                  <span>{{ session.date }}</span>
+                  <span class="text-xs font-normal text-gray-500">{{ session.time }}</span>
+                </div>
+              </td>
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-900">
+                <div class="flex items-center">
+                  <div class="h-8 w-8 overflow-hidden rounded-full">
+                    <img class="h-8 w-8 object-cover" [src]="session.studentImage" [alt]="session.studentName" />
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900">{{ session.studentName }}</div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-900">{{ session.sessionNumber }}</td>
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm">
+                <span
+                  class="inline-flex rounded-full px-3 py-1 text-xs font-semibold leading-5"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-600': session.type === 'Live Session',
+                    'bg-green-100 text-green-600': session.type === 'Demo Session'
+                  }"
+                >
+                  {{ session.type }}
+                </span>
+              </td>
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm">
+                <span class="inline-flex rounded-full bg-green-100 px-3 py-1 text-xs font-semibold leading-5 text-green-600">
+                  Complete
+                </span>
+              </td>
+
+              <td class="whitespace-nowrap px-4 py-3 text-sm font-medium">
+                <button
+                  type="button"
+                  [routerLink]="['/instructor/manage-sessions/session-manage', session.id]"
+                  class="cursor-pointer text-blue-600 hover:text-blue-900 text-sm font-medium"
+                >
+                  View
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="filteredPreviousSessions().length === 0">
+              <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">No previous sessions found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

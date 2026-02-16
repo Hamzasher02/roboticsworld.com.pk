@@ -1,0 +1,124 @@
+<div 
+  id="add-time-slot-modal" 
+  tabindex="-1" 
+  aria-hidden="true" 
+  [ngClass]="{'hidden': !isModalOpen, 'flex': isModalOpen}"
+  class="fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-gray-900 bg-opacity-50 transition-opacity duration-300 ease-out"
+  (click)="closeModal()"
+>
+  <div class="relative p-4 w-full max-w-md max-h-full" (click)="$event.stopPropagation()">
+    <div class="relative bg-white rounded-lg shadow-xl">
+      
+      <div class="flex items-start justify-between p-4 border-b rounded-t">
+        <h3 class="flex items-center text-xl font-semibold text-gray-900">
+          <svg class="w-5 h-5 mr-2 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+          Add Time Slot
+        </h3>
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" (click)="closeModal()">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+
+      <form class="p-6 space-y-6" (ngSubmit)="submitTimeSlot()">
+        
+        <div class="space-y-2">
+          <label for="session-title" class="block text-sm font-medium text-gray-900">Session Title</label>
+          <input 
+            type="text" 
+            id="session-title" 
+            [(ngModel)]="timeSlotForm.sessionTitle" 
+            name="sessionTitle"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+            placeholder="" 
+            required
+          >
+        </div>
+
+        <div class="space-y-2">
+          <label for="schedule-type" class="block text-sm font-medium text-gray-900">Schedule Type</label>
+          <select 
+            id="schedule-type" 
+            [(ngModel)]="timeSlotForm.scheduleType" 
+            name="scheduleType"
+            class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-pointer"
+          >
+            <option value="Recurring Weekly">Recurring Weekly</option>
+            <option value="One Time">One Time</option>
+          </select>
+        </div>
+        
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-900">Select day(s)</label>
+          <div class="grid grid-cols-4 gap-4">
+            <div *ngFor="let day of daysOfWeek" class="flex items-center">
+              <input 
+                [id]="'day-' + day.id" 
+                type="checkbox" 
+                [(ngModel)]="timeSlotForm.days[day.id]" 
+                [name]="day.id"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+              >
+              <label [for]="'day-' + day.id" class="ml-2 text-sm font-medium text-gray-900 cursor-pointer">{{ day.label }}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="start-time" class="block text-sm font-medium text-gray-900">Start Time</label>
+            <div class="relative">
+              <input 
+                type="time" 
+                id="start-time" 
+                [(ngModel)]="timeSlotForm.startTime" 
+                name="startTime"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" 
+                value="-- : --"
+              >
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-2">
+            <label for="end-time" class="block text-sm font-medium text-gray-900">End Time</label>
+            <div class="relative">
+              <input 
+                type="time" 
+                id="end-time" 
+                [(ngModel)]="timeSlotForm.endTime" 
+                name="endTime"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" 
+                value="-- : --"
+              >
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="flex items-center justify-end p-4 space-x-2 border-t rounded-b">
+        <button 
+          type="button" 
+          (click)="closeModal()"
+          class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          (click)="submitTimeSlot()"
+          class="px-5 py-2.5 text-sm font-medium text-white bg-[#089BC4] rounded-lg hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-300"
+        >
+          Add Time Slot
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

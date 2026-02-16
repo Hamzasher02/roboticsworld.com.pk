@@ -1,0 +1,251 @@
+<!-- PAGE -->
+<section class="w-full bg-[#F5F5F5]">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-8 sm:px-6 lg:px-10">
+    <!-- TOP: Title -->
+    <div class="py-8">
+      <h1 class="text-[26px] font-bold leading-tight text-black sm:text-[32px] lg:text-[36px]">
+        All coding competitions,
+        <span class="font-bold text-[#FF6A3D]">challenges &amp; hackathons</span>
+      </h1>
+    </div>
+
+    <!-- TOP: Tabs -->
+    <div class="mt-6 flex flex-wrap items-center gap-4 sm:gap-8">
+      <button
+        type="button"
+        (click)="setTab('practice')"
+        class="cursor-pointer rounded-full px-6 py-2 text-[13px] font-semibold sm:text-[14px]"
+        [ngClass]="activeTab === 'practice'
+          ? 'bg-[#FF6A3D] text-white hover:bg-[#e85f36]'
+          : 'bg-transparent text-black hover:text-[#FF6A3D]'"
+      >
+        Practice
+      </button>
+
+      <button
+        type="button"
+        (click)="setTab('completed')"
+        class="cursor-pointer rounded-full px-6 py-2 text-[13px] font-semibold sm:text-[14px]"
+        [ngClass]="activeTab === 'completed'
+          ? 'bg-[#FF6A3D] text-white hover:bg-[#e85f36]'
+          : 'bg-transparent text-black hover:text-[#FF6A3D]'"
+      >
+        Completed
+      </button>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="mt-6 flex w-full flex-col gap-6 lg:flex-row lg:items-start">
+      <!-- LEFT -->
+      <div class="flex w-full flex-1 flex-col gap-6">
+        <!-- ✅ PRACTICE LIST -->
+        <ng-container *ngIf="activeTab === 'practice'">
+          <article
+            *ngFor="let item of practiceCards; trackBy: trackByIdx"
+            class="flex w-full flex-col border border-[#E5E7EB] bg-white shadow-[0_4px_10px_rgba(0,0,0,0.10)] sm:flex-row"
+          >
+            <!-- Logo -->
+            <div class="flex w-full items-center justify-center border-b border-[#F1F1F1] px-4 py-6 sm:w-[140px] sm:border-b-0 sm:border-r sm:py-8">
+              <img
+                [src]="item.logoSrc"
+                alt="STEAM Minds"
+                class="h-[86px] w-[127px] object-contain"
+              />
+            </div>
+
+            <!-- Body -->
+            <div class="flex flex-1 flex-col px-6 py-7 sm:px-8">
+              <div class="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
+                <h3 class="text-[18px] font-bold leading-snug text-black sm:text-[20px]">
+                  {{ item.titleTop }}<br />
+                  {{ item.titleBottom }}
+                </h3>
+
+                <button
+                  type="button"
+                   (click)="goToCompetitionForm(item)"
+                  class="cursor-pointer h-[40px] w-full rounded-[2px] bg-[#16A34A] px-6 text-[13px] font-semibold text-white shadow-[0_1px_0_rgba(0,0,0,0.10)] hover:bg-[#12863d] sm:w-auto sm:min-w-[160px]"
+                >
+                  {{ item.actionText }}
+                </button>
+              </div>
+
+              <div class="mt-5 flex flex-col gap-2 text-[13px]">
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Hosted By :</span>
+                  <span class="font-medium text-black">{{ item.hostedBy }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Ends In</span>
+                  <span class="text-black/45">{{ item.endsIn }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Team Size</span>
+                  <span class="text-black/45">{{ item.teamSize }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Grade</span>
+                  <span class="text-black/45">{{ item.grade }}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Completed heading -->
+          <h2 class="pt-2 text-[18px] font-semibold text-black sm:text-[20px]">
+            Completed
+          </h2>
+
+          <!-- Completed cards under practice view -->
+          <article
+            *ngFor="let item of completedCards; trackBy: trackByIdx"
+            class="flex w-full flex-col border border-[#E5E7EB] bg-white shadow-[0_4px_10px_rgba(0,0,0,0.10)] sm:flex-row"
+          >
+            <!-- Logo -->
+            <div class="flex w-full items-center justify-center border-b border-[#F1F1F1] px-4 py-6 sm:w-[140px] sm:border-b-0 sm:border-r sm:py-8">
+              <img
+                [src]="item.logoSrc"
+                alt="STEAM Minds"
+                class="h-[86px] w-[127px] object-contain"
+              />
+            </div>
+
+            <!-- Body -->
+            <div class="flex flex-1 flex-col px-6 py-7 sm:px-8">
+              <div class="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
+                <h3 class="text-[18px] font-bold leading-snug text-black sm:text-[20px]">
+                  {{ item.titleTop }}<br />
+                  {{ item.titleBottom }}
+                </h3>
+
+                <button
+                  type="button"
+                  (click)="goToCompetitionDetails(item)"
+                  class="cursor-pointer h-[40px] w-full rounded-[2px] border border-[#FF6A3D] bg-white px-6 text-[13px] font-semibold text-[#FF6A3D] hover:bg-[#FF6A3D] hover:text-white sm:w-auto sm:min-w-[170px]"
+                >
+                  {{ item.actionText }}
+                </button>
+              </div>
+
+              <div class="mt-5 flex flex-col gap-2 text-[13px]">
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Hosted By :</span>
+                  <span class="font-medium text-black">{{ item.hostedBy }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Ended at</span>
+                  <span class="text-black/45">{{ item.endedAt }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Team Size</span>
+                  <span class="text-black/45">{{ item.teamSize }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Grade</span>
+                  <span class="text-black/45">{{ item.grade }}</span>
+                </div>
+              </div>
+
+              <div class="mt-4 flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
+                <span class="text-[12px] text-black/40">{{ item.endedNote }}</span>
+                <span class="text-[12px] text-black">{{ item.prizeText }}</span>
+              </div>
+            </div>
+          </article>
+        </ng-container>
+
+        <!-- ✅ COMPLETED TAB VIEW -->
+        <ng-container *ngIf="activeTab === 'completed'">
+          <article
+            *ngFor="let item of completedCards; trackBy: trackByIdx"
+            class="flex w-full flex-col border border-[#E5E7EB] bg-white shadow-[0_4px_10px_rgba(0,0,0,0.10)] sm:flex-row"
+          >
+            <div class="flex w-full items-center justify-center border-b border-[#F1F1F1] px-4 py-6 sm:w-[140px] sm:border-b-0 sm:border-r sm:py-8">
+              <img [src]="item.logoSrc" alt="STEAM Minds" class="h-[86px] w-[127px] object-contain" />
+            </div>
+
+            <div class="flex flex-1 flex-col px-6 py-7 sm:px-8">
+              <div class="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
+                <h3 class="text-[18px] font-bold leading-snug text-black sm:text-[20px]">
+                  {{ item.titleTop }}<br />
+                  {{ item.titleBottom }}
+                </h3>
+
+                <button
+                  type="button"
+                  (click)="goToCompetitionDetails(item)"
+                  class="cursor-pointer h-[40px] w-full rounded-[2px] border border-[#FF6A3D] bg-white px-6 text-[13px] font-semibold text-[#FF6A3D] hover:bg-[#FF6A3D] hover:text-white sm:w-auto sm:min-w-[170px]"
+                >
+                  {{ item.actionText }}
+                </button>
+              </div>
+
+              <div class="mt-5 flex flex-col gap-2 text-[13px]">
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Hosted By :</span>
+                  <span class="font-medium text-black">{{ item.hostedBy }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Ended at</span>
+                  <span class="text-black/45">{{ item.endedAt }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Team Size</span>
+                  <span class="text-black/45">{{ item.teamSize }}</span>
+                </div>
+
+                <div class="flex items-start gap-6">
+                  <span class="w-[86px] shrink-0 text-black/70">Grade</span>
+                  <span class="text-black/45">{{ item.grade }}</span>
+                </div>
+              </div>
+
+              <div class="mt-4 flex w-full flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
+                <span class="text-[12px] text-black/40">{{ item.endedNote }}</span>
+                <span class="text-[12px] text-black">{{ item.prizeText }}</span>
+              </div>
+            </div>
+          </article>
+        </ng-container>
+      </div>
+
+      <!-- RIGHT (always visible + pixel-safe responsive) -->
+      <aside class="flex w-full lg:w-[350px] lg:shrink-0 lg:self-start lg:sticky lg:top-6">
+        <div class="flex w-full">
+          <div class="flex w-full flex-col items-center bg-gradient-to-b from-[#8E3A8C] via-[#B54A86] to-[#FF6A3D] px-6 pt-10">
+            <div class="flex h-[109px] w-[90px] items-center justify-center">
+              <img
+                src="assets/steam-mind/competition/demologo.svg"
+                alt="STEAM Minds"
+                class="h-[109px] w-[90px] object-contain"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="mt-10 flex h-[36px] items-center justify-center rounded-full bg-white px-10 text-[13px] font-semibold text-[#FF6A3D] shadow-[0_10px_22px_rgba(0,0,0,0.22)] hover:bg-white/95"
+            >
+              Book a Free Demo Lesson
+            </button>
+
+            <div class="mt-9 flex w-full items-end justify-center pb-6">
+              <img
+                src="assets/steam-mind/competition/demoimage.svg"
+                alt="Kids learning"
+                class="w-full max-w-[350px] object-contain drop-shadow-[0_22px_26px_rgba(0,0,0,0.18)]"
+              />
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

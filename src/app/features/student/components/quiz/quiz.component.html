@@ -1,0 +1,296 @@
+﻿<div class="min-h-screen bg-white">
+  <!-- Top thin line -->
+  <div class="h-px w-full"></div>
+
+  <!-- Page container -->
+  <div class="mx-auto max-w-[1170px] px-0 sm:px-6 lg:ps-4 lg:pe-5 py-0 sm:py-4">
+    <!-- Header -->
+    <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+      <h1 class="text-[20px] sm:text-[22px] lg:text-[24px] font-bold text-gray-900">
+        Quiz Dashboard
+      </h1>
+      <div class="pt-0 sm:pt-1 text-[12px] sm:text-[13px] text-gray-500">
+        Manage and track your course quizzes
+      </div>
+    </div>
+
+    <!-- Filter/Search panel -->
+    <div
+      class="mt-5 sm:mt-6 rounded-[8px] border border-gray-200 bg-white px-0 sm:px-6 py-4 sm:py-5 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+        <!-- Filter -->
+        <div class="w-full sm:w-[220px] px-4 sm:px-0">
+          <div class="text-[12px] sm:text-[13px] font-semibold text-gray-600">
+            Filter by Status
+          </div>
+
+          <div class="mt-2">
+            <div class="relative w-full sm:w-[160px] lg:w-[110px]">
+              <select (change)="onFilterChange($event)"
+                class="h-[34px] sm:h-[30px] w-full appearance-none rounded-[6px] border border-gray-200 bg-gray-50 px-3 pr-8 text-[13px] text-gray-700 outline-none focus:border-gray-300 focus:bg-white">
+                <option value="All Quizzes">All Quizzes</option>
+                <option value="Available">Available</option>
+                <option value="Completed">Completed</option>
+                <option value="Locked">Locked</option>
+              </select>
+
+              <svg class="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-500"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="w-full sm:flex-1 px-4 sm:px-0">
+          <div class="flex justify-start sm:justify-end">
+            <div class="w-full sm:max-w-[360px] lg:w-[300px]">
+              <!-- Label -->
+              <div class="mb-1 text-[12px] sm:text-[13px] font-semibold text-gray-600">
+                Search Quizzes
+              </div>
+
+              <!-- Search Input -->
+              <div
+                class="flex h-[34px] sm:h-[30px] items-center gap-2 rounded-[6px] border border-gray-200 bg-white px-3 text-gray-600 shadow-[inset_0_1px_0_rgba(0,0,0,0.02)] focus-within:border-gray-300">
+                <svg class="h-3 w-3 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" />
+                  <path d="M16.6 16.6 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+                <input type="text" (input)="onSearchChange($event)"
+                  class="w-full bg-transparent text-[13px] text-gray-700 outline-none placeholder:text-gray-400"
+                  placeholder="Search by quiz name, course, or module..." />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="mt-4 flex flex-wrap gap-3 sm:gap-4 px-4 sm:px-0">
+      <!-- Card -->
+      <div
+        class="flex w-[calc(50%-6px)] sm:w-[calc(25%-12px)] flex-col items-center rounded-[8px] border border-gray-200 bg-white px-3 sm:px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-[6px] bg-blue-50">
+          <img src="assets/student/quiz/Group (1).svg" alt="">
+        </div>
+        <div class="mt-1 text-[14px] sm:text-[16px] font-semibold text-gray-900">{{totalQuizzes}}</div>
+        <div class="mt-0.5 text-[12px] sm:text-[13px] text-gray-500">Total Quizzes</div>
+      </div>
+
+      <!-- Completed -->
+      <div
+        class="flex w-[calc(50%-6px)] sm:w-[calc(25%-12px)] flex-col items-center rounded-[8px] border border-gray-200 bg-white px-3 sm:px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-[6px] bg-green-50">
+          <img src="assets/student/quiz/Group (2).svg" alt="">
+        </div>
+        <div class="mt-1 text-[14px] sm:text-[16px] font-semibold text-gray-900">{{completedQuizzes}}</div>
+        <div class="mt-0.5 text-[12px] sm:text-[13px] text-gray-500">Completed</div>
+      </div>
+
+      <!-- Quizzes Left -->
+      <div
+        class="flex w-[calc(50%-6px)] sm:w-[calc(25%-12px)] flex-col items-center rounded-[8px] border border-gray-200 bg-white px-3 sm:px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-[6px] bg-[#EAF2FF]">
+          <img src="assets/student/quiz/Group (3).svg" alt="">
+        </div>
+        <div class="mt-1 text-[14px] sm:text-[16px] font-semibold text-gray-900">{{quizzesLeftCount}}</div>
+        <div class="mt-0.5 text-[12px] sm:text-[13px] text-gray-500">Quizzes Left</div>
+      </div>
+
+      <!-- Active Quiz -->
+      <div
+        class="flex w-[calc(50%-6px)] sm:w-[calc(25%-12px)] flex-col items-center rounded-[8px] border border-gray-200 bg-white px-3 sm:px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-[6px] bg-yellow-50">
+          <img src="assets/student/quiz/Group (4).svg" alt="">
+        </div>
+        <div class="mt-1 text-[14px] sm:text-[16px] font-semibold text-gray-900">{{inProgressCount}}</div>
+        <div class="mt-0.5 text-[12px] sm:text-[13px] text-gray-500">Active Quiz</div>
+      </div>
+    </div>
+
+    <!-- Table (responsive) -->
+    <div class="mt-4 overflow-hidden rounded-[8px] border border-gray-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+      <!-- Desktop table header (only show on lg+) -->
+      <div class="hidden lg:block border-b border-gray-200 bg-white px-4 py-3">
+        <div class="flex w-full flex-row flex-wrap text-[12px] font-semibold text-gray-700">
+          <div class="flex w-[12%]">Course</div>
+          <div class="flex w-[12%]">Module</div>
+          <div class="flex w-[18%]">Quiz Title</div>
+          <div class="flex w-[8%] justify-center">Duration</div>
+          <!-- <div class="flex w-[12%]">Availability</div> -->
+          <div class="flex w-[8%] justify-center">Status</div>
+          <div class="flex w-[8%] justify-center">Score</div>
+          <div class="flex w-[10%] justify-center">Action</div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loadingQuizzes" class="p-8 flex justify-center items-center">
+        <span class="text-gray-500">Loading quizzes...</span>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!loadingQuizzes && filteredQuizzes.length === 0" class="p-8 flex justify-center items-center">
+        <span class="text-gray-500">No quizzes found.</span>
+      </div>
+
+      <!-- Rows wrapper -->
+      <div *ngIf="!loadingQuizzes"
+        class="[&>*]:relative [&>*:not(:last-child)]:after:absolute [&>*:not(:last-child)]:after:left-0 [&>*:not(:last-child)]:after:bottom-0 [&>*:not(:last-child)]:after:h-px [&>*:not(:last-child)]:after:w-full lg:[&>*:not(:last-child)]:after:w-[80%] [&>*:not(:last-child)]:after:bg-gray-100">
+
+        <!-- Dynamic Row -->
+        <div *ngFor="let quiz of filteredQuizzes" class="px-0 sm:px-4 py-0 sm:py-4">
+          <!-- Mobile/Tablet card layout -->
+          <div class="lg:hidden">
+            <div class="flex flex-col gap-3 p-4">
+              <div class="flex w-full items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-[14px] font-semibold text-gray-900 leading-tight">
+                    {{quiz.title}}
+                  </div>
+                  <div class="mt-1 text-[12px] leading-snug text-gray-500">
+                    {{quiz.description}}
+                  </div>
+                </div>
+
+                <div class="shrink-0 text-right">
+                  <div class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold" [ngClass]="{
+                        'bg-emerald-50 text-emerald-700': getQuizStatusDisplay(quiz) === 'Completed',
+                        'bg-blue-50 text-blue-700': getQuizStatusDisplay(quiz) === 'Available',
+                        'bg-yellow-50 text-yellow-700': getQuizStatusDisplay(quiz) === 'In Progress'
+                    }">
+                    {{getQuizStatusDisplay(quiz)}}
+                  </div>
+                  <div class="mt-1 text-[10px] text-gray-400">Attempts: {{getAttemptsCount(quiz._id)}}</div>
+                </div>
+              </div>
+
+              <div class="h-px w-full bg-gray-100"></div>
+
+              <div class="flex flex-wrap gap-y-3">
+                <div class="flex w-1/2 flex-col pr-2">
+                  <div class="text-[10px] font-semibold text-gray-500">Duration</div>
+                  <div class="mt-0.5 text-[12px] text-gray-700">
+                    {{ quiz.settings.timeLimitMinutes ? quiz.settings.timeLimitMinutes + ' min' : 'Unlimited' }}
+                  </div>
+                </div>
+
+                <div class="flex w-1/2 flex-col pr-2">
+                  <div class="text-[10px] font-semibold text-gray-500">Score</div>
+                  <div class="mt-0.5 text-[12px] font-semibold text-gray-900">
+                    {{getBestScore(quiz._id) !== null ? (getBestScore(quiz._id) | number:'1.0-1') + '%' : '-'}}
+                  </div>
+                </div>
+
+                <div class="flex w-1/2 flex-col pl-2 items-end justify-end gap-2">
+                  <!-- Case 1: Not Attempted -->
+                  <button *ngIf="getQuizStatusDisplay(quiz) === 'Not Attempted'" (click)="startQuiz(quiz._id)"
+                    class="inline-flex w-full items-center justify-center rounded-[10px] bg-orange-500 px-3 py-2.5 text-[12px] font-semibold text-white shadow-sm transition hover:bg-orange-600">
+                    Attempt
+                  </button>
+
+                  <!-- Case 2: In Progress -->
+                  <button *ngIf="getQuizStatusDisplay(quiz) === 'Attempted / In Progress'" (click)="startQuiz(quiz._id)"
+                    class="inline-flex w-full items-center justify-center rounded-[10px] bg-orange-500 px-3 py-2.5 text-[12px] font-semibold text-white shadow-sm transition hover:bg-orange-600">
+                    Continue
+                  </button>
+
+                  <!-- Case 3: Completed -->
+                  <button *ngIf="getQuizStatusDisplay(quiz) === 'Completed'" (click)="viewResults(quiz._id)"
+                    class="inline-flex w-full items-center justify-center rounded-[8px] border border-gray-200 bg-white px-3 py-2.5 text-[12px] font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50">
+                    View
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop grid row -->
+          <div class="hidden lg:flex w-full flex-row flex-wrap items-start px-4 py-4">
+            <div class="flex w-[12%]">
+              <div class="text-[12px] font-semibold text-gray-800 leading-[13px] break-words">
+                {{ quiz.course.courseTitle }}
+              </div>
+            </div>
+
+            <div class="flex w-[12%]">
+              <div class="text-[12px] text-gray-600 leading-[13px]">
+                {{quiz.course.courseTitle || 'General'}}
+              </div>
+            </div>
+
+            <div class="flex w-[18%] flex-col">
+              <div class="text-[12px] font-semibold text-gray-800">{{quiz.title}}</div>
+              <div class="mt-1 max-w-[240px] text-[10px] leading-[12px] text-gray-500 truncate">
+                {{quiz.description}}
+              </div>
+            </div>
+
+            <div class="flex w-[8%] justify-center">
+              <div class="flex items-start justify-center gap-1 text-[10px] text-gray-600">
+                <svg class="mt-[1px] h-3 w-3 text-gray-400" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 7v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M12 21a9 9 0 1 0-9-9 9 9 0 0 0 9 9Z" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <div class="leading-[11px] text-center">
+                  {{ quiz.settings.timeLimitMinutes ? quiz.settings.timeLimitMinutes : 'Unlimited' }}
+                  <br *ngIf="quiz.settings.timeLimitMinutes" />
+                  <span *ngIf="quiz.settings.timeLimitMinutes">min</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex w-[8%] justify-center">
+              <div class="text-center">
+                <div class="text-[10px] font-semibold" [ngClass]="{
+                    'text-emerald-600': getQuizStatusDisplay(quiz) === 'Completed',
+                    'text-blue-600': getQuizStatusDisplay(quiz) === 'Not Attempted',
+                    'text-yellow-600': getQuizStatusDisplay(quiz) === 'Attempted / In Progress'
+                }">{{getQuizStatusDisplay(quiz)}}</div>
+                <div class="mt-0.5 text-[9px] text-gray-400">Attempts:
+                  {{getAttemptsCount(quiz._id)}}</div>
+              </div>
+            </div>
+
+            <div class="flex w-[8%] justify-center">
+              <div class="text-center">
+                <div class="text-[10px] font-semibold text-gray-800">
+                  {{getBestScore(quiz._id) !== null ? (getBestScore(quiz._id) | number: '1.0-1') + '%' : '-'}}
+                </div>
+                <div class="mt-0.5 text-[9px] text-gray-400">Best Score</div>
+              </div>
+            </div>
+
+            <div class="flex w-[10%] justify-center gap-1.5">
+              <!-- Not Attempted -->
+              <button *ngIf="getQuizStatusDisplay(quiz) === 'Not Attempted'" (click)="startQuiz(quiz._id)"
+                class="rounded-[6px] bg-orange-500 px-3 py-1.5 text-[11px] font-semibold text-white transition hover:bg-orange-600">
+                Attempt
+              </button>
+
+              <!-- In Progress -->
+              <button *ngIf="getQuizStatusDisplay(quiz) === 'Attempted / In Progress'" (click)="startQuiz(quiz._id)"
+                class="rounded-[6px] bg-orange-500 px-3 py-1.5 text-[11px] font-semibold text-white transition hover:bg-orange-600">
+                Continue
+              </button>
+
+              <!-- Results -->
+              <button *ngIf="getQuizStatusDisplay(quiz) === 'Completed'" (click)="viewResults(quiz._id)"
+                class="rounded-[6px] border border-gray-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-gray-700 transition hover:bg-gray-50">
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

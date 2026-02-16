@@ -1,0 +1,731 @@
+<!-- HERO -->
+<section class="w-full bg-white">
+  <div class="relative w-full overflow-hidden">
+    <img
+      [src]="hero.img"
+      [alt]="hero.title"
+      class="h-[220px] w-full object-cover sm:h-[300px] lg:h-[390px]"
+    />
+    <div class="absolute inset-0 bg-black/35"></div>
+
+    <div
+      class="absolute inset-0 flex items-center justify-center px-4 sm:px-6 lg:px-10"
+    >
+      <div
+        class="flex w-full max-w-[860px] flex-col items-center justify-center text-center"
+      >
+        <h1
+          class="text-[22px] font-semibold leading-[1.15] text-white sm:text-[30px] sm:leading-[1.15] lg:text-[38px] lg:leading-[1.15]"
+        >
+          {{ hero.title }}
+        </h1>
+
+        <p
+          class="mt-2 text-[12px] font-medium leading-5 text-white/90 sm:mt-2.5 sm:text-[13px] sm:leading-6 lg:mt-3 lg:text-[14px] lg:leading-6"
+        >
+          {{ hero.subtitle }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE BODY -->
+<section class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-4">
+    <div class="flex w-full flex-col gap-6 lg:flex-row lg:items-start">
+      <!-- LEFT STICKY NAV -->
+      <aside
+        class="flex w-full lg:w-[200px] lg:shrink-0 lg:sticky lg:top-6 lg:self-start"
+      >
+        <nav
+          class="flex w-full flex-col gap-3"
+          aria-label="Competition sections"
+        >
+          <button
+            *ngFor="let s of sections; trackBy: trackById"
+            type="button"
+            (click)="scrollTo(s.id)"
+            class="cursor-pointer text-left text-[12px] font-medium transition-colors"
+            [class.text-[#FF6A3D]]="activeSectionId === s.id"
+            [class.text-[#111827]]="activeSectionId !== s.id"
+            [class.hover:text-[#FF6A3D]]="activeSectionId !== s.id"
+          >
+            {{ s.label }}
+          </button>
+        </nav>
+      </aside>
+
+      <!-- CENTER -->
+      <main class="flex w-full flex-1 flex-col">
+        <!-- OVERVIEW -->
+        <section
+          id="overview"
+          class="flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">Overview</h2>
+            <div class="flex h-[2px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div class="mt-3 flex w-full overflow-hidden rounded-[4px]">
+            <img
+              [src]="overview.bannerImg"
+              alt="Overview"
+              class="h-[150px] w-full object-cover sm:h-[170px] lg:h-[190px]"
+            />
+          </div>
+
+          <div class="mt-4 flex w-full flex-col">
+            <p class="text-[11px] leading-[18px] text-[#6B7280]">
+              {{ overview.description }}
+            </p>
+
+            <div class="mt-4 flex w-full flex-col" *ngIf="overview.formatTitle">
+              <p
+                class="text-[11px] font-semibold leading-[18px] text-[#111827]"
+              >
+                {{ overview.formatTitle }}
+              </p>
+              <p class="mt-1 text-[11px] leading-[18px] text-[#6B7280]">
+                {{ overview.formatText }}
+              </p>
+            </div>
+
+            <div
+              class="mt-4 flex w-full flex-col"
+              *ngIf="overview.categoriesTitle"
+            >
+              <p
+                class="text-[11px] font-semibold leading-[18px] text-[#111827]"
+              >
+                {{ overview.categoriesTitle }}
+              </p>
+
+              <p class="mt-1 text-[11px] leading-[18px] text-[#6B7280]">
+                <ng-container
+                  *ngFor="let c of overview.categories; let last = last"
+                >
+                  <span class="font-semibold text-[#111827]"
+                    >{{ c.name }}:</span
+                  >
+                  {{ c.text }}<span *ngIf="!last"> </span>
+                </ng-container>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- EVENT DETAILS -->
+        <section
+          id="event-details"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              Event Details
+            </h2>
+            <div class="flex h-[2px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div class="mt-4 flex w-full flex-col gap-6 sm:flex-row">
+            <article
+              class="flex w-full flex-col rounded-[4px] bg-[#F9FAFB] px-6 py-5 sm:w-1/2"
+            >
+              <h3 class="text-[10px] font-semibold text-[#FF6A3D]">
+                {{ eventDetails.leftTitle }}
+              </h3>
+
+              <div class="mt-3 flex w-full flex-col gap-2">
+                <p
+                  *ngFor="let row of eventDetails.leftRows; trackBy: trackByKey"
+                  class="text-[10px] leading-[16px] text-[#111827]"
+                >
+                  <span class="font-semibold">{{ row.label }}:</span>
+                  <span class="text-[#6B7280]"> {{ row.value }}</span>
+                </p>
+              </div>
+            </article>
+
+            <article
+              class="flex w-full flex-col rounded-[4px] bg-[#F9FAFB] px-6 py-5 sm:w-1/2"
+            >
+              <h3 class="text-[10px] font-semibold text-[#111827]">
+                {{ eventDetails.rightTitle }}
+              </h3>
+
+              <div class="mt-3 flex w-full flex-col gap-2">
+                <p
+                  *ngFor="
+                    let row of eventDetails.rightRows;
+                    trackBy: trackByKey
+                  "
+                  class="text-[10px] leading-[16px] text-[#111827]"
+                >
+                  <span class="font-semibold">{{ row.label }}:</span>
+                  <span class="text-[#6B7280]"> {{ row.value }}</span>
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section
+          id="about-competition"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              About the Competition
+            </h2>
+            <div class="flex h-[2px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div class="mt-4 flex w-full flex-col">
+            <p
+              *ngFor="let para of about.paragraphs; trackBy: trackByIdx"
+              class="text-[11px] leading-[18px] text-[#6B7280]"
+              [class.mt-3]="para !== about.paragraphs[0]"
+            >
+              {{ para }}
+            </p>
+
+            <article
+              class="mt-4 flex w-full flex-col rounded-[4px] bg-[#FF66361A] px-5 py-4 sm:px-6 sm:py-5"
+              *ngIf="about.missionTitle"
+            >
+              <h3 class="text-[10px] font-semibold text-[#FF6A3D]">
+                {{ about.missionTitle }}
+              </h3>
+
+              <p class="mt-2 text-[11px] leading-[18px] text-[#6B7280]">
+                {{ about.missionText }}
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- RULES -->
+        <section
+          id="rules-guidelines"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              Rules and Guidelines
+            </h2>
+            <div class="flex h-[1px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div class="mt-4 flex w-full flex-col">
+            <h3 class="text-[10px] font-semibold text-[#FF6A3D]">
+              {{ rules.registrationTitle }}
+            </h3>
+
+            <div class="mt-2 flex w-full flex-col gap-1">
+              <p
+                *ngFor="let t of rules.registrationSteps; trackBy: trackByIdx"
+                class="text-[10px] leading-[16px] text-[#111827]"
+              >
+                {{ t }}
+              </p>
+            </div>
+
+            <h3 class="mt-4 text-[10px] font-semibold text-[#FF6A3D]">
+              {{ rules.guidelinesTitle }}
+            </h3>
+
+            <ul class="mt-2 flex w-full flex-col gap-2">
+              <li
+                *ngFor="let t of rules.guidelines; trackBy: trackByIdx"
+                class="flex items-start gap-2 text-[10px] leading-[16px] text-[#111827]"
+              >
+                <span
+                  class="mt-[6px] h-[4px] w-[4px] shrink-0 rounded-full bg-[#111827]"
+                ></span>
+                <span>{{ t }}</span>
+              </li>
+            </ul>
+
+            <h3 class="mt-4 text-[10px] font-semibold text-[#FF6A3D]">
+              {{ rules.conductTitle }}
+            </h3>
+
+            <ul class="mt-2 flex w-full flex-col gap-2">
+              <li
+                *ngFor="let t of rules.conduct; trackBy: trackByIdx"
+                class="flex items-start gap-2 text-[10px] leading-[16px] text-[#111827]"
+              >
+                <span
+                  class="mt-[6px] h-[4px] w-[4px] shrink-0 rounded-full bg-[#111827]"
+                ></span>
+                <span>{{ t }}</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ROUNDS -->
+        <section
+          id="rounds-evaluation"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              Rounds and Evaluation
+            </h2>
+            <div class="flex h-[1px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <article
+            class="mt-4 flex w-full flex-col rounded-[4px] bg-[#F9FAFB] px-5 py-5"
+          >
+            <h3 class="text-[10px] font-semibold text-[#FF6A3D]">
+              {{ rounds.structureTitle }}
+            </h3>
+
+            <div
+              class="mt-4 flex w-full flex-col gap-6 sm:flex-row sm:items-start sm:justify-between"
+            >
+              <div
+                *ngFor="let step of rounds.structure; trackBy: trackByIdx"
+                class="flex w-full flex-col items-center text-center sm:w-1/3"
+              >
+                <div
+                  class="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-semibold text-white"
+                  [class.bg-[#FF6A3D]]="step.color === 'orange'"
+                  [class.bg-[#7C1D7E]]="step.color === 'purple'"
+                >
+                  {{ step.no }}
+                </div>
+
+                <p
+                  class="mt-2 text-[10px] font-semibold leading-[14px] text-[#111827]"
+                >
+                  {{ step.title }}
+                </p>
+
+                <p
+                  class="mt-1 max-w-[190px] text-[9px] leading-[13px] text-[#6B7280]"
+                >
+                  {{ step.subtitle }}
+                </p>
+              </div>
+            </div>
+
+            <h3 class="mt-6 text-[10px] font-semibold text-[#FF6A3D]">
+              {{ rounds.criteriaTitle }}
+            </h3>
+
+            <div class="mt-4 flex w-full flex-col gap-6 sm:flex-row">
+              <div class="flex w-full flex-col gap-5 sm:w-1/2">
+                <div
+                  *ngFor="let c of rounds.criteriaLeft; trackBy: trackByIdx"
+                  class="flex w-full flex-col"
+                >
+                  <p class="text-[10px] font-semibold text-[#111827]">
+                    {{ c.title }}
+                  </p>
+                  <ul class="mt-2 flex w-full flex-col gap-2">
+                    <li
+                      *ngFor="let t of c.items; trackBy: trackByIdx"
+                      class="flex items-start gap-2 text-[9px] leading-[13px] text-[#6B7280]"
+                    >
+                      <span
+                        class="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-[#6B7280]"
+                      ></span>
+                      <span>{{ t }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="flex w-full flex-col gap-5 sm:w-1/2">
+                <div
+                  *ngFor="let c of rounds.criteriaRight; trackBy: trackByIdx"
+                  class="flex w-full flex-col"
+                >
+                  <p class="text-[10px] font-semibold text-[#111827]">
+                    {{ c.title }}
+                  </p>
+                  <ul class="mt-2 flex w-full flex-col gap-2">
+                    <li
+                      *ngFor="let t of c.items; trackBy: trackByIdx"
+                      class="flex items-start gap-2 text-[9px] leading-[13px] text-[#6B7280]"
+                    >
+                      <span
+                        class="mt-[6px] h-[3px] w-[3px] shrink-0 rounded-full bg-[#6B7280]"
+                      ></span>
+                      <span>{{ t }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- PRIZES -->
+        <section
+          id="prizes"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">Prizes</h2>
+            <div class="flex h-[1px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div class="mt-4 flex w-full flex-col gap-4 sm:flex-row">
+            <article
+              *ngFor="let p of prizes.top; trackBy: trackByIdx"
+              class="flex w-full flex-col items-center rounded-[6px] px-4 py-5 text-center text-white sm:w-1/3"
+              [class.bg-[#F4B400]]="p.color === 'gold'"
+              [class.bg-[#9CA3AF]]="p.color === 'silver'"
+              [class.bg-[#B45309]]="p.color === 'bronze'"
+            >
+              <div class="text-[18px]">{{ p.icon }}</div>
+              <h3 class="mt-2 text-[11px] font-semibold">{{ p.title }}</h3>
+              <p class="mt-1 text-[13px] font-bold">{{ p.amount }}</p>
+
+              <ul class="mt-3 flex w-full flex-col gap-1 text-[9px]">
+                <li *ngFor="let t of p.items; trackBy: trackByIdx">{{ t }}</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="mt-6 flex w-full flex-col gap-6 sm:flex-row">
+            <div class="flex w-full flex-col sm:w-1/2">
+              <h3 class="text-[11px] font-semibold text-[#FF6A3D]">
+                {{ prizes.leftTitle }}
+              </h3>
+
+              <div class="mt-3 flex w-full flex-col gap-3">
+                <div *ngFor="let b of prizes.leftBlocks; trackBy: trackByIdx">
+                  <p class="text-[10px] font-semibold text-[#111827]">
+                    {{ b.title }}
+                  </p>
+                  <p class="mt-1 text-[9px] leading-[14px] text-[#6B7280]">
+                    {{ b.text }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex w-full flex-col sm:w-1/2">
+              <h3 class="text-[11px] font-semibold text-[#FF6A3D]">
+                {{ prizes.rightTitle }}
+              </h3>
+
+              <div class="mt-3 flex w-full flex-col gap-3">
+                <div *ngFor="let b of prizes.rightBlocks; trackBy: trackByIdx">
+                  <p class="text-[10px] font-semibold text-[#111827]">
+                    {{ b.title }}
+                  </p>
+                  <p class="mt-1 text-[9px] leading-[14px] text-[#6B7280]">
+                    {{ b.text }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- IMPORTANT DATES -->
+        <section
+          id="important-dates"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              Important Dates
+            </h2>
+            <div class="flex h-[1px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div
+            class="mt-4 flex w-full flex-col gap-3 rounded-[4px] bg-[#F9FAFB] p-4"
+          >
+            <div
+              *ngFor="let d of importantDates; trackBy: trackByIdx"
+              class="flex w-full items-center gap-4 rounded-[4px] bg-white px-4 py-3"
+            >
+              <div
+                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white"
+                [class.bg-[#FF6A3D]]="d.color === 'orange'"
+                [class.bg-[#7E1F86]]="d.color === 'purple'"
+              >
+                {{ d.no }}
+              </div>
+
+              <div class="flex flex-col">
+                <p class="text-[10px] font-semibold text-[#111827]">
+                  {{ d.title }}
+                </p>
+                <p class="text-[9px] text-[#6B7280]">{{ d.date }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHY PARTICIPATE -->
+        <section
+          id="why-participate"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2 class="text-[12px] font-semibold text-[#FF6A3D]">
+              Why Participate / Learning Outcomes
+            </h2>
+            <div class="flex h-[1px] flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <div
+            class="mt-4 flex w-full flex-col gap-8 sm:flex-row sm:items-start"
+          >
+            <div class="flex w-full flex-col sm:w-1/2">
+              <p class="text-[10px] font-semibold text-[#FF6A3D]">
+                {{ why.leftTitle }}
+              </p>
+
+              <div class="mt-4 flex w-full flex-col gap-4">
+                <div
+                  *ngFor="let s of why.skills; trackBy: trackByIdx"
+                  class="flex w-full items-start gap-3"
+                >
+                  <div
+                    class="mt-[1px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FF6A3D] text-[10px] font-semibold text-white"
+                  >
+                    {{ s.no }}
+                  </div>
+                  <div class="flex flex-col">
+                    <p class="text-[10px] font-semibold text-[#111827]">
+                      {{ s.title }}
+                    </p>
+                    <p class="mt-1 text-[9px] leading-[14px] text-[#6B7280]">
+                      {{ s.text }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex w-full flex-col sm:w-1/2">
+              <p class="text-[10px] font-semibold text-[#FF6A3D]">
+                {{ why.rightTitle }}
+              </p>
+
+              <div class="mt-4 flex w-full flex-col gap-4">
+                <div
+                  *ngFor="let b of why.benefits; trackBy: trackByIdx"
+                  class="flex w-full items-start gap-3"
+                >
+                  <div
+                    class="mt-[1px] flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#7E1F86] text-[12px] font-bold leading-none text-white"
+                  >
+                    *
+                  </div>
+                  <div class="flex flex-col">
+                    <p class="text-[10px] font-semibold text-[#111827]">
+                      {{ b.title }}
+                    </p>
+                    <p class="mt-1 text-[9px] leading-[14px] text-[#6B7280]">
+                      {{ b.text }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex w-full rounded-[4px] bg-[#FF66361A] px-5 py-4">
+            <div class="flex w-full flex-col">
+              <p class="text-[10px] font-semibold text-[#FF6A3D]">
+                {{ why.futureTitle }}
+              </p>
+              <p class="mt-2 text-[9px] leading-[14px] text-[#6B7280]">
+                {{ why.futureText }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section
+          id="faq"
+          class="mt-8 flex w-full scroll-mt-24 flex-col"
+          data-section="true"
+        >
+          <div class="flex w-full items-center gap-3">
+            <h2
+              class="text-[14px] font-semibold tracking-[0.14em] text-[#FF6A3D]"
+            >
+              FAQ
+            </h2>
+            <div class="h-px flex-1 bg-[#FF6A3D]/35"></div>
+          </div>
+
+          <!-- ✅ Accordion list -->
+          <ul class="mt-5 flex w-full flex-col gap-3">
+            <li
+              *ngFor="let item of faqs; let i = index"
+              class="flex w-full flex-col"
+            >
+              <!-- Question -->
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-[10px] border border-[#EEF0F3] bg-[#F6F7F9] px-4 py-4 text-left shadow-[0_1px_0_rgba(0,0,0,0.03)] sm:px-5"
+                (click)="toggleFaq(i)"
+                [attr.aria-expanded]="openIndex === i"
+                [attr.aria-controls]="'faq-panel-' + i"
+              >
+                <span
+                  class="pr-3 text-[13px] font-semibold leading-[1.25] text-[#111827] sm:text-[14px]"
+                >
+                  {{ item.q }}
+                </span>
+
+                <span class="flex h-8 w-8 items-center justify-center">
+                  <svg
+                    class="h-[18px] w-[18px] text-[#6B7280] transition-transform duration-200"
+                    [class.rotate-180]="openIndex === i"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M6 9l6 6 6-6"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+
+              <!-- ✅ Answer (drops down under same item) -->
+              <div
+                [id]="'faq-panel-' + i"
+                role="region"
+                [attr.aria-label]="item.q"
+                class="overflow-hidden rounded-[10px] border border-[#EEF0F3] bg-white"
+                [class.hidden]="openIndex !== i"
+              >
+                <div
+                  class="px-4 pb-4 pt-3 text-[12px] leading-[1.6] text-[#4B5563] sm:px-5 sm:text-[13px]"
+                >
+                  {{ item.a }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <!-- RIGHT STICKY -->
+      <aside
+        class="flex w-full lg:w-[260px] lg:shrink-0 lg:sticky lg:top-6 lg:self-start"
+      >
+        <div class="flex w-full flex-col gap-8">
+          <div class="flex w-full flex-col">
+            <h3 class="text-[12px] font-semibold text-[#111827]">
+              Competition Info
+            </h3>
+
+            <div class="mt-3 flex w-full flex-col gap-2">
+              <div
+                *ngFor="let row of info; trackBy: trackByKey"
+                class="flex w-full items-center justify-between"
+              >
+                <span class="text-[12px] text-[#6B7280]">{{ row.label }}</span>
+                <span class="text-[12px] text-[#111827]">{{ row.value }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex w-full flex-col">
+            <h3 class="text-[12px] font-semibold text-[#111827]">
+              Share with Friends
+            </h3>
+
+            <div class="mt-3 flex items-center gap-2">
+              <button
+                *ngFor="let s of shareButtons; trackBy: trackByIdx"
+                type="button"
+                class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-[2px] text-white"
+                [class.bg-[#1877F2]]="s.type === 'fb'"
+                [class.bg-[#1DA1F2]]="s.type === 'tw'"
+                [class.bg-[#0A66C2]]="s.type === 'in'"
+                [class.bg-[#25D366]]="s.type === 'wa'"
+                [attr.aria-label]="s.label"
+              >
+                {{ s.text }}
+              </button>
+            </div>
+          </div>
+
+          <!-- CTA BANNER (your same UI, responsive) -->
+          <section class="w-full">
+            <div class="flex w-full flex-col">
+              <div
+                class="relative flex w-full flex-col items-center justify-start overflow-hidden px-6 pt-8 pb-6 sm:px-8 sm:pt-10"
+                aria-label="Competitions banner"
+              >
+                <!-- Gradient overlay -->
+                <div
+                  class="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#923D8C] via-[#C84B8A] to-[#FF6636]"
+                ></div>
+
+                <div class="relative z-20 flex items-center justify-center">
+                  <img
+                    [src]="cta.logo"
+                    alt="STEAM Minds"
+                    class="h-[80px] w-[60px] object-contain"
+                    draggable="false"
+                  />
+                </div>
+
+                <!-- ✅ BUTTON (events enabled) -->
+                <button
+                  type="button"
+                  aria-label="View latest competitions"
+                  (click)="goToCompetitions()"
+                  class="relative z-30 mt-6 inline-flex cursor-pointer items-center justify-center rounded-[40px] bg-white px-4 py-2 text-[14px] font-semibold text-[#FF6A3D] transition-all duration-200 hover:bg-[#FF6A3D] hover:text-white active:bg-[#FF6A3D] active:text-white active:scale-[0.97] focus:outline-none"
+                >
+                  {{ cta.buttonText }}
+                </button>
+
+                <div
+                  class="relative z-10 mt-7 flex w-full items-end justify-center sm:mt-8"
+                >
+                  <!-- ❌ THIS WAS BLOCKING CLICKS -->
+                  <!-- ✅ NOW FIXED -->
+                  <div
+                    class="absolute bottom-2 left-1/2 h-[180px] w-[300px] -translate-x-1/2 rounded-full bg-white/25 blur-[18px] pointer-events-none"
+                    aria-hidden="true"
+                  ></div>
+
+                  <img
+                    [src]="cta.image"
+                    alt="Kids learning with laptops"
+                    class="relative z-10 w-[310px] max-w-full object-contain sm:w-[360px]"
+                    draggable="false"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

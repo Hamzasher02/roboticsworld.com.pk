@@ -1,0 +1,290 @@
+<div
+  class="font-inter p-6 md:p-8 lg:p-10 bg-gray-50 min-h-screen text-gray-800"
+>
+  <div class="mb-8">
+    <div class="flex items-center space-x-3 mb-1">
+      <button
+        (click)="goBack()"
+        class="p-2 text-gray-700 cursor-pointer transition duration-200 hover:text-gray-900 hover:bg-gray-200 rounded-full "
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          ></path>
+        </svg>
+      </button>
+
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+        {{ pageTitle }}
+      </h1>
+    </div>
+    <p class="ml-10 text-base text-gray-600">{{ subtitle }}</p>
+  </div>
+
+  <div
+    class="bg-white p-4 sm:p-5 rounded-xl shadow-md mb-10 border border-gray-200"
+  >
+    <div class="flex flex-wrap items-center gap-3 md:gap-4">
+      <span class="flex items-center text-gray-700 text-sm font-semibold">
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707v7l-4 4v-7a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+          ></path>
+        </svg>
+        Filters:
+      </span>
+
+      <div
+        class="relative flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 h-7 leading-7 text-gray-800"
+          [(ngModel)]="selectedDateFilter"
+          (change)="handleFilterChange('Date', selectedDateFilter)"
+        >
+          <option *ngFor="let option of filterOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 text-gray-500 pointer-events-none absolute right-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="relative flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 h-7 leading-7 text-gray-800"
+          [(ngModel)]="selectedCategory"
+          (change)="handleFilterChange('Category', selectedCategory)"
+        >
+          <option *ngFor="let option of categories" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 text-gray-500 pointer-events-none absolute right-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <div
+        class="relative flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm cursor-pointer hover:border-gray-400 transition"
+      >
+        <select
+          class="bg-transparent focus:outline-none appearance-none cursor-pointer pr-5 h-7 leading-7 text-gray-800"
+          [(ngModel)]="selectedCourse"
+          (change)="handleFilterChange('Course', selectedCourse)"
+        >
+          <option *ngFor="let option of courses" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <svg
+          class="w-4 h-4 text-gray-500 pointer-events-none absolute right-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </div>
+
+      <button
+        (click)="resetFilters()"
+        class="flex items-center border border-gray-300 rounded-lg py-1 px-3 text-sm text-gray-700 cursor-pointer hover:border-purple-600 transition hover:text-purple-600 h-9 focus:outline-none focus:ring-2 focus:ring-purple-600/50"
+      >
+        <svg
+          class="w-5 h-5 mr-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Active Students</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ activeStudents | number : "1.0-0" }}
+        </p>
+        <img
+          src="/assets/admin/dashboard/tabler_users.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-green-600 flex items-center gap-2">
+          <img
+            src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+            alt="Users Icon"
+            class="w-[24px] h-[24px] text-blue-800"
+          />
+          +{{ activeStudentsChange | number : "1.1-1" }}% this week
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Avg. Session Time</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ avgSessionTime }}
+        </p>
+        <img
+          src="/assets/admin/dashboard/clock.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-green-600 flex items-center gap-2">
+          <img
+            src="/assets/admin/dashboard/clock.svg"
+            alt="Users Icon"
+            class="w-[15px] h-[15px] text-blue-800"
+          />
+          +{{ avgSessionTimeChange }} min vs Last Week
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Completion Rate</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ completionRate | number : "1.1-1" }}%
+        </p>
+        <img
+          src="/assets/admin/dashboard/clock.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-green-600 flex items-center gap-2">
+          <img
+            src="/assets/admin/dashboard/clock.svg"
+            alt="Users Icon"
+            class="w-[15px] h-[15px] text-blue-800"
+          />
+          +{{ completionRateImprovement | number : "1.1-1" }}% improvement
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex flex-col"
+    >
+      <h3 class="text-sm font-medium text-gray-600 mb-2">Drop off Rate</h3>
+      <div class="flex items-end justify-between">
+        <p class="text-3xl font-bold text-gray-900">
+          {{ dropOffRate | number : "1.1-1" }}%
+        </p>
+        <img
+          src="/assets/admin/dashboard/iconamoon_trend-up-fill.svg"
+          alt="Users Icon"
+          class="w-8 h-8 text-blue-800"
+        />
+      </div>
+      <div class="text-sm font-medium mt-3">
+        <span class="text-red-600 flex items-center gap-1">
+          <img
+            src="/assets/admin/dashboard/redicon.svg"
+            alt="Users Icon"
+            class="w-[24px] h-[24px] text-blue-800"
+          />
+          {{ dropOffRateChange | number : "1.1-1" }}% vs Last month
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="p-2">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+      Weekly Engagement Trends
+    </h2>
+    <p class="text-gray-500">Students Activity and Completion Rate Over Time</p>
+  </div>
+  <div
+    class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 min-h-[350px]"
+  >
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Course Popularity</h2>
+    <apx-chart
+      [series]="instructorPerformanceChartOptions.series"
+      [chart]="instructorPerformanceChartOptions.chart"
+      [stroke]="instructorPerformanceChartOptions.stroke"
+      [fill]="instructorPerformanceChartOptions.fill"
+      [xaxis]="instructorPerformanceChartOptions.xaxis"
+      [yaxis]="instructorPerformanceChartOptions.yaxis"
+      [grid]="instructorPerformanceChartOptions.grid"
+      [dataLabels]="instructorPerformanceChartOptions.dataLabels"
+      [colors]="instructorPerformanceChartOptions.colors"
+    >
+    </apx-chart>
+  </div>
+</div>

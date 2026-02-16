@@ -1,0 +1,423 @@
+﻿<!-- Assumes Tailwind is already included in your project -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-3 py-6">
+    <div class="w-full max-w-3xl rounded-xl bg-white shadow-2xl ring-1 ring-black/5
+           my-6 sm:my-10 max-h-[85vh] overflow-y-auto overflow-x-auto">
+        <div class="min-h-screen bg-white">
+            <!-- Header -->
+            <header class=" bg-white">
+                <div class="mx-auto w-full max-w-[980px] px-4 pt-6 sm:px-6">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <h1 class="text-[18px] font-semibold leading-6 text-slate-900 sm:text-[20px]">
+                                React Hooks Quiz - Results
+                            </h1>
+                            <p class="mt-1 text-[14px] leading-5 text-slate-500">
+                                Advanced React Development â€¢ Module 1 React Hooks
+                            </p>
+                        </div>
+
+                        <!-- Close icon (UI only) -->
+                        <a [routerLink]="['/student/quiz']"
+                            class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-50 hover:text-slate-600">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6 6 18" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- Stats row -->
+                    <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                        <!-- Final Score -->
+                        <div class="rounded-lg border border-slate-200 bg-white px-4 py-4 text-center shadow-sm">
+                            <div class="text-[18px] font-semibold text-emerald-600 sm:text-[20px]">85%</div>
+                            <div class="mt-1 text-[11px] text-slate-500">Final Score</div>
+                        </div>
+
+                        <!-- Correct Answers -->
+                        <div class="rounded-lg border border-slate-200 bg-white px-4 py-4 text-center shadow-sm">
+                            <div class="text-[18px] font-semibold text-blue-600 sm:text-[20px]">10/12</div>
+                            <div class="mt-1 text-[11px] text-slate-500">Correct Answers</div>
+                        </div>
+
+                        <!-- Time Spent -->
+                        <div class="rounded-lg border border-slate-200 bg-white px-4 py-4 text-center shadow-sm">
+                            <div class="text-[18px] font-semibold text-orange-600 sm:text-[20px]">22 min</div>
+                            <div class="mt-1 text-[11px] text-slate-500">Time Spent</div>
+                        </div>
+
+                        <!-- Attempt # -->
+                        <div class="rounded-lg border border-slate-200 bg-white px-4 py-4 text-center shadow-sm">
+                            <div class="text-[18px] font-semibold text-slate-900 sm:text-[20px]">2</div>
+                            <div class="mt-1 text-[11px] text-slate-500">Attempt #</div>
+                        </div>
+                    </div>
+
+                    <!-- Pass badge -->
+                    <div class="mt-5">
+                        <span
+                            class="inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-2 text-[14px] font-medium text-emerald-800">
+                            <span class="inline-flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600">
+                                <svg class="h-3 w-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="3">
+                                    <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            Passed (Passing Score: 80%)
+                        </span>
+                    </div>
+
+                    <div class="mt-6 pb-6">
+                        <h2 class="text-[13px] font-semibold text-slate-900">Question Breakdown</h2>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <main class="mx-auto w-full max-w-[980px] px-4 pb-8 sm:px-6">
+                <!-- Question 1 - Correct (Green) -->
+                <section class="rounded-lg border border-emerald-500 bg-white p-4 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-[14px] font-semibold text-slate-800">Question 1</div>
+                            <div class="mt-2 text-[14px] text-slate-900">
+                                What is the purpose of the useState hook in React?
+                            </div>
+                        </div>
+                        <span
+                            class="mt-0.5 inline-flex rounded-md bg-emerald-100 px-2 py-1 text-[11px] font-medium text-emerald-800">
+                            Correct
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <!-- Selected (correct + your answer) -->
+                        <div class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">To manage component state</div>
+                                <div class="flex items-center gap-3 text-[11px] font-medium">
+                                    <span class="inline-flex items-center gap-1 text-emerald-700">
+                                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3">
+                                            <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                        Correct Answer
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-emerald-700">
+                                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3">
+                                            <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                        Your Answer
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            To handle API calls
+                        </div>
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            To optimize performance
+                        </div>
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            To manage routing
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="mt-4 rounded-md border border-blue-200 bg-blue-50 px-4 py-3">
+                        <div class="flex items-start gap-2">
+                            <span
+                                class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300 bg-white">
+                                <svg class="h-3 w-3 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 16v-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M12 8h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="text-[11px] font-semibold text-blue-700">Explanation</div>
+                                <p class="mt-1 text-[14px] leading-5 text-blue-700">
+                                    useState is used to add state to functional components, allowing them to store and
+                                    update
+                                    data.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Spacer -->
+                <div class="h-6"></div>
+
+                <!-- Question 3 - Incorrect (Red) -->
+                <section class="rounded-lg border border-rose-500 bg-white p-4 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-[14px] font-semibold text-slate-800">Question 3</div>
+                            <div class="mt-2 text-[14px] text-slate-900">
+                                What does the dependency array in useEffect control?
+                            </div>
+                        </div>
+                        <span
+                            class="mt-0.5 inline-flex rounded-md bg-rose-100 px-2 py-1 text-[11px] font-medium text-rose-700">
+                            Incorrect
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <!-- Correct answer (green label on right) -->
+                        <div class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">When the effect runs</div>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Correct Answer
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            What data to fetch
+                        </div>
+
+                        <!-- Your wrong answer (red) -->
+                        <div class="rounded-md border border-rose-200 bg-rose-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">Component rendering</div>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-medium text-rose-700">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <path d="M18 6 6 18" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Your Answer
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            State updates
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="mt-4 rounded-md border border-blue-200 bg-blue-50 px-4 py-3">
+                        <div class="flex items-start gap-2">
+                            <span
+                                class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300 bg-white">
+                                <svg class="h-3 w-3 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 16v-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M12 8h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="text-[11px] font-semibold text-blue-700">Explanation</div>
+                                <p class="mt-1 text-[14px] leading-5 text-blue-700">
+                                    The dependency array determines when useEffect should re-run. If dependencies
+                                    change,
+                                    the
+                                    effect runs again.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Spacer -->
+                <div class="h-6"></div>
+
+                <!-- Question 4 - Correct (Green) -->
+                <section class="rounded-lg border border-emerald-500 bg-white p-4 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-[14px] font-semibold text-slate-800">Question 4</div>
+                            <div class="mt-2 text-[14px] text-slate-900">
+                                How do you prevent useEffect from running on every render?
+                            </div>
+                        </div>
+                        <span
+                            class="mt-0.5 inline-flex rounded-md bg-emerald-100 px-2 py-1 text-[11px] font-medium text-emerald-800">
+                            Correct
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            Use useState instead
+                        </div>
+
+                        <!-- Selected correct + your answer -->
+                        <div class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">Provide an empty dependency array []</div>
+                                <div class="flex items-center gap-3 text-[11px] font-medium">
+                                    <span class="inline-flex items-center gap-1 text-emerald-700">
+                                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3">
+                                            <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                        Correct Answer
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-emerald-700">
+                                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="3">
+                                            <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                        </svg>
+                                        Your Answer
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            Use useCallback
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            Return a cleanup function
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="mt-4 rounded-md border border-blue-200 bg-blue-50 px-4 py-3">
+                        <div class="flex items-start gap-2">
+                            <span
+                                class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300 bg-white">
+                                <svg class="h-3 w-3 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 16v-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M12 8h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="text-[11px] font-semibold text-blue-700">Explanation</div>
+                                <p class="mt-1 text-[14px] leading-5 text-blue-700">
+                                    An empty dependency array [] makes useEffect run only once after the initial render,
+                                    similar
+                                    to componentDidMount.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Spacer -->
+                <div class="h-6"></div>
+
+                <!-- Question 12 - Incorrect (Red) -->
+                <section class="rounded-lg border border-rose-500 bg-white p-4 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-[14px] font-semibold text-slate-800">Question 12</div>
+                            <div class="mt-2 text-[14px] text-slate-900">
+                                Which hook helps with referencing DOM elements?
+                            </div>
+                        </div>
+                        <span
+                            class="mt-0.5 inline-flex rounded-md bg-rose-100 px-2 py-1 text-[11px] font-medium text-rose-700">
+                            Incorrect
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <!-- Your wrong answer -->
+                        <div class="rounded-md border border-rose-200 bg-rose-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">useState</div>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-medium text-rose-700">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <path d="M18 6 6 18" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <path d="M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Your Answer
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Correct answer -->
+                        <div class="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="text-[14px] text-slate-700">useRef</div>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <path d="M20 6 9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Correct Answer
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            useEffect
+                        </div>
+                        <div class="rounded-md border border-slate-200 bg-white px-3 py-3 text-[14px] text-slate-700">
+                            useMemo
+                        </div>
+                    </div>
+
+                    <!-- Explanation -->
+                    <div class="mt-4 rounded-md border border-blue-200 bg-blue-50 px-4 py-3">
+                        <div class="flex items-start gap-2">
+                            <span
+                                class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300 bg-white">
+                                <svg class="h-3 w-3 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 16v-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M12 8h.01" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
+                            <div>
+                                <div class="text-[11px] font-semibold text-blue-700">Explanation</div>
+                                <p class="mt-1 text-[14px] leading-5 text-blue-700">
+                                    useRef creates a mutable reference that persists across renders and is commonly used
+                                    to
+                                    access DOM elements directly.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer row -->
+                <div
+                    class="mt-8 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <p class="text-[14px] text-slate-500">
+                        Completed on 1/16/2024 at 7:30:00 PM
+                    </p>
+
+                    <div class="flex items-center justify-end gap-3">
+                        <a [routerLink]="['/student/quiz']"
+                            class="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-[14px] font-medium text-slate-700 hover:bg-slate-50">
+                            Close
+                        </a>
+
+                        <button type="button"
+                            class="inline-flex h-9 items-center justify-center rounded-md bg-orange-500 px-4 text-[14px] font-medium text-white hover:bg-orange-600">
+                            Retake Quiz
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

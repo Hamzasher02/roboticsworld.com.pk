@@ -1,0 +1,35 @@
+/* Default Icon */
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  background-color: #4a4a68; /* default grey */
+
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+}
+
+/* Hover Effect */
+.sidebar-link:hover {
+  background-color: #923d8c !important;
+  color: white !important;
+}
+
+.sidebar-link:hover .sidebar-icon {
+  background-color: white !important;
+}
+
+/* Active Link */
+.active-link {
+  background-color: #923d8c !important;
+  color: white !important;
+  border-left-color: white !important;
+}
+
+.active-link .sidebar-icon {
+  background-color: white !important;
+}

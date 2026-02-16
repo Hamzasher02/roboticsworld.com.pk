@@ -1,0 +1,348 @@
+<!-- =========================================
+     dashboard.component.html (COMPLETE)
+     - Sessions table: ✅ Session column = backend sessionStatus
+     - Sessions table: ✅ NEW Type column (Live/Demo) like manage-sessions
+     - Nothing else changed
+     ========================================= -->
+
+<div class="min-h-screen bg-[#D9D9D914] overflow-x-hidden">
+  <div class="mx-auto w-full max-w-[1200px] px-3 sm:px-4 lg:px-4 py-4 min-w-0">
+    <app-profile-header></app-profile-header>
+
+    <!-- Stats -->
+    <div class="mt-4 flex flex-wrap gap-4">
+      <div
+        *ngFor="let s of stats; trackBy: trackByStat"
+        class="w-full sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]
+               border border-gray-200 bg-white
+               px-4 py-5
+               shadow-[0_-2px_6px_rgba(0,0,0,0.06)]"
+      >
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-[8px]" [ngClass]="s.iconBg">
+            <img [src]="s.icon" class="h-5 w-5" alt="" />
+          </div>
+
+          <div class="min-w-0">
+            <div class="text-[18px] font-bold leading-5 text-gray-900">
+              {{ s.value }}
+            </div>
+            <div class="mt-1 text-[12px] font-medium text-gray-500">
+              {{ s.label }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts (UNCHANGED) -->
+    <div class="mt-1 space-y-3">
+      <div class="rounded-[5px] border border-[#34C759] bg-[#DCFCE71C] px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="mt-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#4DE083] flex-shrink-0">
+              <img src="/assets/instructor-images/courses/Group.svg" class="h-4 w-4" alt="" />
+            </div>
+
+            <div class="min-w-0">
+              <div class="text-[13px] font-semibold text-[#0B6B2B]">New Demo Session Scheduled!</div>
+              <div class="mt-0.5 text-[12px] leading-5 text-[#1F7A3F]">
+                Your demo session has been scheduled by admin with Michael Chen
+              </div>
+              <div class="mt-1 text-[11px] text-[#1F7A3F]">
+                1/17/2025 at 4:00 PM - 5:00 PM • Data Science Fundamentals
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="openCourseSessionDetail()"
+            class="h-[32px] w-full sm:w-[96px] rounded-[8px]
+                   bg-[#16A34A] text-[12px] text-white
+                   hover:bg-[#137A36]
+                   focus:outline-none focus:ring-4 focus:ring-green-200
+                   flex-shrink-0 mr-5"
+          >
+            View Details
+          </button>
+        </div>
+      </div>
+
+      <div class="rounded-[10px] border border-[#34C759] bg-[#DCFCE71C] px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="mt-1 flex h-9 w-9 items-center justify-center rounded-full bg-[#4DE083] flex-shrink-0">
+              <img src="/assets/instructor-images/courses/Group.svg" class="h-4 w-4" alt="" />
+            </div>
+
+            <div class="min-w-0">
+              <div class="text-[13px] font-semibold text-[#0B6B2B]">Live Sessions Scheduled!</div>
+              <div class="mt-0.5 text-[12px] leading-5 text-[#1F7A3F]">
+                Your live sessions has been scheduled by admin with Michael Chen
+              </div>
+              <div class="mt-1 text-[11px] text-[#1F7A3F]">
+                1/17/2025 at 4:00 PM - 5:00 PM • Data Science Fundamentals
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="openLiveCourseSessionDetail()"
+            class="h-[32px] w-full sm:w-[96px] rounded-[8px]
+                   bg-[#16A34A] text-[12px] text-white
+                   hover:bg-[#137A36]
+                   focus:outline-none focus:ring-4 focus:ring-green-200
+                   flex-shrink-0 mr-5"
+          >
+            View Details
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="mt-4 flex flex-col gap-4 lg:flex-row min-w-0">
+      <!-- Left -->
+      <div class="flex min-w-0 flex-1 flex-col gap-4">
+        <!-- Courses list (UNCHANGED) -->
+        <div class="mt-4 flex flex-wrap gap-4 min-w-0">
+          <div
+            *ngFor="let course of courses; trackBy: trackByCourse"
+            (click)="openCourseDetail(course)"
+            class="cursor-pointer flex w-full min-w-0 flex-col gap-2 rounded-[8px] bg-[#089BC412] p-2 transition hover:bg-[#089BC420]
+                   sm:w-[calc(50%-8px)] sm:flex-row sm:items-stretch"
+          >
+            <div class="flex-shrink-0 w-full h-[140px] overflow-hidden rounded-[6px]
+                        sm:w-[140px] sm:h-[120px]">
+              <img
+                [src]="course.thumbnail"
+                alt="Course thumb"
+                class="h-full w-full object-cover"
+                (error)="onImgError($event)"
+              />
+            </div>
+
+            <div class="flex min-w-0 flex-1 flex-col justify-between px-2 py-1 sm:px-4 sm:py-3">
+              <div class="flex items-start justify-between gap-2 min-w-0">
+                <span class="bg-green-50 text-green-600 text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0">
+                  {{ course.category }}
+                </span>
+
+                <div class="flex items-center text-[10px] sm:text-xs text-orange-400 flex-shrink-0">
+                  <img src="/assets/instructor-images/courses/Star.svg" class="w-3 h-3 mr-1" alt="star" />
+                  <span class="font-bold text-gray-700">{{ course.rating }}</span>
+                  <span class="text-gray-400 ml-1">({{ course.reviews }})</span>
+                </div>
+              </div>
+
+              <h3 class="mt-2 font-bold text-[13px] leading-tight text-gray-900 min-w-0 sm:mt-1">
+                <span class="block truncate">{{ course.title }}</span>
+              </h3>
+
+              <div class="mt-2 flex items-center justify-between text-[10px] text-gray-500 min-w-0 sm:mt-1">
+                <div class="flex items-center min-w-0">
+                  <div class="flex -space-x-2 mr-2 flex-shrink-0">
+                    <img class="w-5 h-5 rounded-full border-2 border-white" src="/assets/instructor-images/courses/Photo.svg" alt="" />
+                    <img class="w-5 h-5 rounded-full border-2 border-white" src="/assets/instructor-images/courses/Emily Johnson.svg" alt="" />
+                  </div>
+                  <span class="truncate min-w-0">You and 2 more</span>
+                </div>
+
+                <div class="flex items-center flex-shrink-0">
+                  <img src="/assets/instructor-images/courses/Clock.svg" class="w-3 h-3 mr-1" alt="duration" />
+                  <span class="whitespace-nowrap">{{ course.duration }}</span>
+                </div>
+              </div>
+
+              <div class="mt-2 flex items-center justify-between gap-3 text-[11px] text-gray-500 sm:mt-1">
+                <div class="flex items-center">
+                  <img src="/assets/instructor-images/courses/User.svg" class="w-3 h-3 mr-1" alt="students" />
+                  <span class="whitespace-nowrap">{{ course.studentsCount }} students</span>
+                </div>
+
+                <div class="flex items-center flex-shrink-0">
+                  <img src="/assets/instructor-images/courses/bar-chart.svg" class="w-3 h-3 mr-1" alt="level" />
+                  <span class="whitespace-nowrap">{{ course.level }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+     <!-- Sessions card -->
+<div class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.02)] min-w-0">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between min-w-0">
+    <div class="flex flex-wrap items-center gap-2 min-w-0">
+      <h2 class="text-[13px] font-semibold text-gray-800 whitespace-nowrap">Sessions</h2>
+
+      <select class="h-7 w-full sm:w-auto min-w-0 rounded-full border border-gray-200 bg-white px-3
+                     text-[11px] font-medium text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
+        <option>All sessions</option>
+      </select>
+
+      <select class="h-7 w-full sm:w-auto min-w-0 rounded-full border border-gray-200 bg-white px-3
+                     text-[11px] font-medium text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
+        <option>Status</option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      (click)="goToManageSessions()"
+      class="h-7 w-full sm:w-auto whitespace-nowrap rounded-full border border-gray-200 bg-white px-4
+             text-[11px] font-semibold text-[#089BC4] hover:bg-gray-50
+             focus:outline-none focus:ring-4 focus:ring-gray-100"
+    >
+      View All
+    </button>
+  </div>
+
+  <div class="mt-3 w-full min-w-0 overflow-x-auto">
+   <div class="mt-3 w-full overflow-x-auto">
+  <table class="w-full table-auto text-left">
+    <thead>
+      <tr class="text-[10px] font-semibold uppercase text-gray-500">
+        <th class="py-2 pr-3">Date & Time</th>
+        <th class="py-2 pr-3">Course</th>
+        <th class="py-2 pr-3">Student</th>
+        <th class="py-2 pr-3">Session</th>
+        <th class="py-2 pr-3">Type</th>
+        <!-- <th class="py-2 text-left">Actions</th> -->
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-100">
+      <tr *ngFor="let s of sessions" class="text-[12px] text-gray-700">
+        <td class="py-3 pr-3">
+          <div class="font-semibold">{{ s.date }}</div>
+          <div class="text-[11px] text-gray-500">{{ s.time }}</div>
+        </td>
+
+        <td class="py-3 pr-3 truncate">{{ s.course }}</td>
+
+        <td class="py-3 pr-3">
+          <div class="flex items-center gap-2">
+            <img [src]="s.studentAvatar" class="h-7 w-7 rounded-full" />
+            <span class="font-semibold truncate">{{ s.student }}</span>
+          </div>
+        </td>
+
+        <td class="py-3 pr-3 font-semibold">{{ s.sessionText }}</td>
+
+        <td class="py-3 pr-3">
+          <span
+            class="inline-flex rounded-full px-3 py-1 text-[10px] font-semibold"
+            [ngClass]="{
+              'bg-blue-100 text-blue-600': s.type === 'Live Session',
+              'bg-green-100 text-green-600': s.type === 'Demo Session'
+            }"
+          >
+            {{ s.type }}
+          </span>
+        </td>
+
+        <!-- <td class="py-3 text-left">
+          <button class="text-sky-600 font-semibold">View</button>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+</div>
+
+
+      </div>
+
+      <!-- Right: Feedback (UNCHANGED) -->
+      <div class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.02)] min-w-0 lg:w-[260px]">
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-[14px] font-semibold text-gray-900">Students Feedback</h3>
+
+          <div class="relative flex-shrink-0">
+            <select
+              [(ngModel)]="feedbackFilter"
+              class="h-8 rounded-full border border-gray-200 bg-white pl-3 pr-8 text-[12px] font-medium text-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-100"
+            >
+              <option>Student</option>
+              <option>Course</option>
+              <option>All</option>
+            </select>
+          </div>
+        </div>
+
+       <div
+  (click)="goToFeedback(dashboardCourseId)"
+  class="cursor-pointer mt-4 max-h-[420px] overflow-y-auto pr-1"
+>
+
+          <div *ngIf="feedbackLoading" class="py-4 text-[12px] text-gray-500">
+            Loading feedback...
+          </div>
+
+          <div *ngIf="!feedbackLoading && dashboardFeedbacks.length === 0" class="py-4 text-[12px] text-gray-500">
+            No feedback found.
+          </div>
+
+          <div *ngFor="let f of dashboardFeedbacks; trackBy: trackByFeedback" class="py-4">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <img
+                [src]="f.avatar"
+                (error)="onImgError($event)"
+                class="h-8 w-8 rounded-full object-cover flex-shrink-0"
+                alt=""
+              />
+
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <div class="text-[13px] font-semibold text-gray-900">
+                    {{ f.name }}
+                  </div>
+                  <span class="text-[12px] text-gray-400">•</span>
+                  <div class="text-[12px] text-gray-500">
+                    {{ f.timeAgo }}
+                  </div>
+                </div>
+
+                <div class="mt-1 flex items-center gap-0.5" aria-label="rating">
+                  <ng-container *ngFor="let filled of starsArray(f.rating)">
+                    <svg class="h-2.5 w-2.5" viewBox="0 0 20 20" [attr.fill]="filled ? '#089BC4' : 'none'"
+                      [attr.stroke]="filled ? '#089BC4' : '#CBD5E1'" stroke-width="1.2" aria-hidden="true">
+                      <path
+                        d="M10 1.6l2.47 5.36 5.83.5-4.4 3.82 1.32 5.7L10 14.9 4.78 17l1.32-5.7-4.4-3.82 5.83-.5L10 1.6z" />
+                    </svg>
+                  </ng-container>
+                </div>
+
+                <p class="mt-2 text-[12px] leading-[18px] text-gray-600 break-words">
+                  {{ f.message }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Modal A -->
+    <app-courses-session-detail
+      [isOpen]="showCourseSessionDetail"
+      [data]="courseSessionDetailData"
+      [variant]="courseSessionVariant"
+      (close)="closeCourseSessionDetail()"
+      (join)="onJoinMeeting()"
+    ></app-courses-session-detail>
+
+    <!-- Modal B -->
+    <app-session-detail
+      [isOpen]="showSessionDetailModal"
+      [session]="selectedTableSession"
+      [loading]="sessionDetailLoading"
+      [error]="sessionDetailError"
+      (close)="closeTableSessionDetail()"
+    ></app-session-detail>
+  </div>
+</div>

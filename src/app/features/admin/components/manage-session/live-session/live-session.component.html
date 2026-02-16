@@ -1,0 +1,414 @@
+<!-- live-session.component.html -->
+<div class="w-full bg-[#F7F8FA] px-4 py-4 sm:px-6 sm:py-6">
+  <!-- Header -->
+  <div class="flex w-full items-center gap-3 rounded-[10px] bg-white px-4 py-3 shadow-[0_1px_10px_rgba(17,24,39,0.06)]">
+    <button type="button" aria-label="Back" (click)="goBack()"
+      class="cursor-pointer flex h-9 w-9 items-center justify-center rounded-[8px] text-[#6B7280] hover:bg-[#F3F4F6]">
+      <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+        <path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <div class="flex min-w-0 flex-col">
+      <h2 class="truncate text-[14px] font-semibold leading-5 text-[#111827]">
+        Schedule a Live Session
+      </h2>
+      <p class="truncate text-[11px] font-medium text-[#6B7280]">
+        Assign instructor and share session link
+      </p>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div
+    class="mt-4 flex w-full flex-col rounded-[12px] bg-white px-4 py-4 shadow-[0_2px_14px_rgba(17,24,39,0.06)] sm:px-6 sm:py-6">
+    <!-- Top area -->
+    <div class="flex w-full flex-col gap-4 lg:flex-row lg:items-start lg:gap-8">
+      <!-- Column 1 -->
+      <div class="flex w-full min-w-0 flex-col gap-4 lg:flex-1">
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Course Category</label>
+          <input type="text" [value]="form.courseCategory" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Sub Category</label>
+          <input type="text" [value]="form.subCategory" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Course Name</label>
+          <input type="text" [value]="form.courseName" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Select Date</label>
+          <input type="text" [value]="form.date" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <!-- ✅ NEW: End Date (UI + behavior same; only added this field) -->
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">End Date</label>
+          <input type="text" [value]="form.endDate" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Time Slot</label>
+          <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+            <input type="text" [value]="form.startTime" disabled
+              class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+            <input type="text" [value]="form.endTime" disabled
+              class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="flex w-full min-w-0 flex-col gap-4 lg:flex-1">
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Level</label>
+          <input type="text" [value]="form.level" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Age Group</label>
+          <input type="text" [value]="form.ageGroup" disabled
+            class="h-[38px] w-full rounded-[8px] bg-[#E5E7EB] px-3 text-[12px] font-medium text-[#111827] outline-none disabled:opacity-100" />
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Instructor Name</label>
+
+          <div class="relative flex w-full items-center">
+            <select [(ngModel)]="form.instructorId" (change)="onInstructorChange()"
+              class="cursor-pointer h-[38px] w-full appearance-none rounded-[8px] border border-[#D1D5DB] bg-white px-3 pr-9 text-[12px] font-medium text-[#111827] outline-none focus:border-[#8B3C8A]">
+              <option value="">Select Instructor</option>
+              <option *ngFor="let ins of instructors" [value]="ins.id">
+                {{ ins.name }}
+              </option>
+            </select>
+
+            <svg class="pointer-events-none absolute right-3 h-4 w-4 text-[#6B7280]" viewBox="0 0 20 20"
+              fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+
+          <p class="mt-1 text-[12px] font-medium text-[#6B7280]">
+            Selected:
+            <span class="font-semibold text-[#111827]">{{ selectedInstructorName }}</span>
+          </p>
+        </div>
+
+        <div class="flex w-full flex-col gap-2">
+          <label class="text-[12px] font-medium text-[#111827]">Add Session Link</label>
+          <input type="text" [(ngModel)]="form.sessionLink" (input)="onLinkInput()"
+            placeholder="Paste Google Meet / Zoom link"
+            class="h-[38px] w-full rounded-[8px] border border-[#D1D5DB] bg-white px-3 text-[12px] font-medium text-[#111827] outline-none focus:border-[#8B3C8A]" />
+          <p *ngIf="linkError" class="text-[12px] font-semibold text-red-600">
+            {{ linkError }}
+          </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-2 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+          <button type="button" (click)="onCancel()"
+            class="cursor-pointer flex h-[40px] w-full items-center justify-center rounded-[10px] border border-[#D1D5DB] bg-white text-[12px] font-semibold text-[#111827] hover:bg-[#F9FAFB] sm:w-[120px]">
+            Cancel
+          </button>
+
+          <button type="button" (click)="onSchedule()" [disabled]="!canSchedule || isLoading"
+            class="cursor-pointer flex h-[40px] w-full items-center justify-center rounded-[10px] bg-[#8B3C8A] text-[12px] font-semibold text-white hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[140px]">
+            <span *ngIf="isLoading"
+              class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+            {{ isLoading ? 'Scheduling...' : 'Schedule' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="flex w-full min-w-0 flex-col rounded-[12px] border border-[#E5E7EB] bg-[#F3F4F6] p-4 lg:flex-1">
+        <div class="flex w-full items-center gap-3">
+          <div class="h-11 w-11 overflow-hidden rounded-full bg-white">
+            <img [src]="student.avatar" alt="" class="h-full w-full object-cover" />
+          </div>
+
+          <div class="flex min-w-0 flex-col">
+            <div class="truncate text-[16px] font-semibold leading-7 text-[#111827]">
+              {{ student.name }}
+            </div>
+            <div class="truncate text-[12px] font-medium text-[#6B7280]">
+              {{ student.email }}
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex w-full flex-col gap-4">
+          <div class="flex w-full flex-col gap-3">
+            <div class="flex w-full items-start justify-between gap-6">
+              <div class="flex flex-col">
+                <div class="text-[12px] font-medium text-[#6B7280]">Course Category</div>
+                <div class="text-[12px] font-semibold text-[#111827]">{{ form.courseCategory }}</div>
+              </div>
+
+              <div class="flex flex-col items-start">
+                <div class="text-[12px] font-medium text-[#6B7280]">Age Group</div>
+                <div class="text-[12px] font-semibold text-[#111827]">{{ form.ageGroup }}</div>
+              </div>
+            </div>
+
+            <div class="flex w-full items-start justify-between gap-6">
+              <div class="flex flex-col">
+                <div class="text-[12px] font-medium text-[#6B7280]">Sub Category</div>
+                <div class="text-[12px] font-semibold text-[#111827]">{{ form.subCategory }}</div>
+              </div>
+
+              <div class="flex flex-col items-start">
+                <div class="text-[12px] font-medium text-[#6B7280]">Preferred Time</div>
+                <div class="text-[12px] font-semibold text-[#111827]">
+                  {{ form.startTime }} - {{ form.endTime }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex w-full items-start justify-between gap-6">
+              <div class="flex flex-col">
+                <div class="text-[12px] font-medium text-[#6B7280]">Course</div>
+                <div class="text-[12px] font-semibold text-[#111827]">{{ form.courseName }}</div>
+              </div>
+
+              <div class="flex flex-col items-start">
+                <div class="text-[12px] font-medium text-[#6B7280]">Request Date</div>
+                <div class="text-[12px] font-semibold text-[#111827]">{{ form.requestDate }}</div>
+              </div>
+            </div>
+
+            <!-- ✅ NEW: End Date shown in summary -->
+            <div class="flex w-full flex-col">
+              <div class="text-[12px] font-medium text-[#6B7280]">End Date</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ form.endDate }}</div>
+            </div>
+
+            <div class="flex w-full flex-col">
+              <div class="text-[12px] font-medium text-[#6B7280]">Level</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ form.level }}</div>
+            </div>
+
+            <div class="flex w-full items-start justify-between gap-6">
+              <div class="flex flex-col">
+                <div class="text-[12px] font-medium text-[#6B7280]">Enrollment Type</div>
+                <div class="text-[12px] font-semibold text-[#111827] capitalize">{{ form.enrollmentType }}</div>
+              </div>
+
+              <div class="flex flex-col items-start text-right">
+                <div class="text-[12px] font-medium text-[#6B7280]">Status</div>
+                <div
+                  class="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': form.enrollmentStatus === 'approved',
+                    'bg-yellow-100 text-yellow-700': form.enrollmentStatus === 'pending',
+                    'bg-red-100 text-red-700': form.enrollmentStatus === 'rejected'
+                  }">
+                  {{ form.enrollmentStatus }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex w-full flex-col">
+              <div class="text-[12px] font-medium text-[#6B7280]">Instructor</div>
+              <div class="text-[12px] font-semibold text-[#111827]">{{ selectedInstructorName }}</div>
+            </div>
+
+            <div class="flex w-full flex-col">
+              <div class="text-[12px] font-medium text-[#6B7280]">Session Link</div>
+              <a *ngIf="form.sessionLink?.trim()" [href]="form.sessionLink" target="_blank" rel="noopener"
+                class="truncate text-[12px] font-semibold text-[#8B3C8A] hover:underline">
+                {{ form.sessionLink }}
+              </a>
+              <div *ngIf="!form.sessionLink?.trim()" class="text-[12px] font-semibold text-[#111827]">
+                —
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Upcoming / Previous Tabs + Lists -->
+    <!-- ========================= -->
+    <div class="mt-6 w-full bg-white">
+      <div class="flex w-full items-center justify-start gap-8 border-b border-[#E5E7EB]">
+        <button type="button" (click)="setSessionTab('upcoming')"
+          class="cursor-pointer relative flex items-center justify-center pb-3 text-[13px] font-semibold"
+          [class.text-[#8B3C8A]]="activeSessionTab === 'upcoming'"
+          [class.text-[#111827]]="activeSessionTab !== 'upcoming'">
+          Upcoming Sessions
+          <span *ngIf="activeSessionTab === 'upcoming'"
+            class="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-[#8B3C8A]"></span>
+        </button>
+
+        <button type="button" (click)="setSessionTab('previous')"
+          class="cursor-pointer relative flex items-center justify-center pb-3 text-[13px] font-semibold"
+          [class.text-[#8B3C8A]]="activeSessionTab === 'previous'"
+          [class.text-[#111827]]="activeSessionTab !== 'previous'">
+          Previous Sessions
+          <span *ngIf="activeSessionTab === 'previous'"
+            class="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-[#8B3C8A]"></span>
+        </button>
+      </div>
+
+      <div class="mt-4 flex w-full flex-col gap-3">
+        <div *ngIf="activeSessionTab === 'upcoming' && upcomingSessions.length === 0"
+          class="flex w-full items-center justify-center rounded-[12px] border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-10 text-[12px] font-semibold text-[#6B7280]">
+          No upcoming sessions yet.
+        </div>
+
+        <div *ngIf="activeSessionTab === 'previous' && previousSessions.length === 0"
+          class="flex w-full items-center justify-center rounded-[12px] border border-[#E5E7EB] bg-[#F9FAFB] px-4 py-10 text-[12px] font-semibold text-[#6B7280]">
+          No previous sessions yet.
+        </div>
+
+        <!-- UPCOMING cards -->
+        <div *ngFor="let s of pagedUpcomingSessions; trackBy: trackById"
+          class="flex w-full items-start justify-between rounded-[12px] border border-[#E5E7EB] bg-white px-4 py-4 sm:px-5"
+          [class.hidden]="activeSessionTab !== 'upcoming'">
+          <div class="flex min-w-0 flex-col">
+            <div class="truncate text-[12px] font-semibold text-[#111827]">{{ s.title }}</div>
+            <div class="mt-[2px] text-[12px] font-medium text-[#9CA3AF]">{{ s.category }}</div>
+
+            <div class="mt-3 flex w-full flex-wrap items-center gap-4">
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.instructor }}</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M8 2v3M16 2v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M3.5 9h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path
+                      d="M6 5h12a2.5 2.5 0 0 1 2.5 2.5V18A2.5 2.5 0 0 1 18 20.5H6A2.5 2.5 0 0 1 3.5 18V7.5A2.5 2.5 0 0 1 6 5Z"
+                      stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.date }}</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M12 21a9 9 0 1 0-9-9 9 9 0 0 0 9 9Z" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.time }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex w-[26px] shrink-0"></div>
+        </div>
+
+        <!-- PREVIOUS cards + delete -->
+        <div *ngFor="let s of pagedPreviousSessions; trackBy: trackById"
+          class="flex w-full items-start justify-between rounded-[12px] border border-[#E5E7EB] bg-white px-4 py-4 sm:px-5"
+          [class.hidden]="activeSessionTab !== 'previous'">
+          <div class="flex min-w-0 flex-col">
+            <div class="truncate text-[12px] font-semibold text-[#111827]">{{ s.title }}</div>
+            <div class="mt-[2px] text-[12px] font-medium text-[#9CA3AF]">{{ s.category }}</div>
+
+            <div class="mt-3 flex w-full flex-wrap items-center gap-4">
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.instructor }}</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M8 2v3M16 2v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M3.5 9h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path
+                      d="M6 5h12a2.5 2.5 0 0 1 2.5 2.5V18A2.5 2.5 0 0 1 18 20.5H6A2.5 2.5 0 0 1 3.5 18V7.5A2.5 2.5 0 0 1 6 5Z"
+                      stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.date }}</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="flex h-4 w-4 items-center justify-center text-[#9CA3AF]">
+                  <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="M12 21a9 9 0 1 0-9-9 9 9 0 0 0 9 9Z" stroke="currentColor" stroke-width="1.8"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </span>
+                <span class="text-[12px] font-semibold text-[#111827]">{{ s.time }}</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" aria-label="Delete session" (click)="onDeletePrevious(s.id)"
+            class="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[#6B7280] hover:bg-[#F3F4F6]">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+              <path d="M4 7h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M10 11v7M14 11v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M6 7l1 14h10l1-14" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="M9 7V4h6v3" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex w-full items-center justify-between gap-3">
+        <button type="button" (click)="prevPage()" [disabled]="!canPrev"
+          class="cursor-pointer inline-flex h-[34px] items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-white px-4 text-[12px] font-semibold text-[#111827] hover:bg-[#F3F4F6] disabled:cursor-not-allowed disabled:opacity-50">
+          Prev
+        </button>
+
+        <div class="text-[12px] font-medium text-[#6B7280]">
+          Page {{ currentPage }} / {{ totalPages }}
+        </div>
+
+        <button type="button" (click)="nextPage()" [disabled]="!canNext"
+          class="cursor-pointer inline-flex h-[34px] items-center justify-center rounded-[10px] bg-[#8B3C8A] px-4 text-[12px] font-semibold text-white hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Status Modal -->
+<app-status-modal *ngIf="statusModal.show" [show]="statusModal.show" [title]="statusModal.title"
+  [message]="statusModal.message" [type]="statusModal.type" (close)="closeStatusModal()"></app-status-modal>

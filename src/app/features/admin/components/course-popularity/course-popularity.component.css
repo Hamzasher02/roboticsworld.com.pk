@@ -1,0 +1,15 @@
+/* course-popularity.component.css */
+
+/* Bar chart area mein behtar spacing ke liye flex ka istemaal */
+.h-48 {
+    /* Height for the bar chart container */
+    height: 12rem; /* 192px */
+}
+
+/* Jab labels lambe hon to unko theek tarah se display karne ke liye */
+.h-48 .flex-col span {
+    white-space: nowrap; /* Text wrap na ho */
+    overflow: hidden;    /* Baahir nikle to chup jaye */
+    text-overflow: ellipsis; /* ... show kare */
+    max-width: 100%;
+}

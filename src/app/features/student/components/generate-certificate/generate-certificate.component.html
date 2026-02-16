@@ -1,0 +1,158 @@
+﻿<!-- Overlay -->
+<div class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 px-3 py-4 sm:px-4" role="dialog"
+  aria-modal="true">
+  <!-- Modal -->
+  <div class="w-full max-w-[600px] max-h-[85vh] overflow-y-auto rounded-[10px] bg-white
+           shadow-[0_18px_45px_rgba(0,0,0,0.25)]">
+    <!-- Header -->
+    <div class="relative px-4 py-3 sm:px-6">
+      <h2 class="text-[16px] sm:text-[18px] font-bold text-gray-900">Certificate Preview</h2>
+
+      <a aria-label="Close" [routerLink]="['/student', parentPath, courseId]"
+        class="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-gray-700">
+        <img src="assets/student/buy course/crossIcon.svg" alt="" class="h-4 w-4" />
+      </a>
+    </div>
+
+    <div class="h-px w-full bg-gray-100"></div>
+
+    <!-- Content -->
+    <div class="px-4 pb-5 pt-3 sm:px-6">
+      <!-- Info banner -->
+      <div class="rounded-[6px] border border-blue-100 bg-blue-50 px-3 py-2">
+        <div class="flex gap-3">
+          <span class="mt-0.5 inline-flex h-5 w-5 items-center justify-center">
+            <img src="assets/student/buy course/Vector.png" alt="" class="h-4 w-4" />
+          </span>
+
+          <div>
+            <div class="text-[12px] font-semibold text-blue-700">Auto-fetched Information</div>
+            <div class="mt-0.5 text-[10px] leading-4 text-blue-700/80">
+              Your name is automatically fetched from your registration details.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certificate frame -->
+      <div class="mt-3 rounded-[10px] border border-dashed border-orange-200 bg-[#FCF6F8]
+               px-5 py-5 sm:px-8 sm:py-6">
+        <div class="flex justify-center">
+          <img src="assets/student/header/SteamMindLogo.svg" alt="" class="h-8 w-8" />
+        </div>
+
+        <div class="mt-4 text-center">
+          <div class="text-[18px] sm:text-[22px] font-bold text-gray-900">
+            Certificate of Completion
+          </div>
+          <div class="mt-2 text-[12px] font-normal text-gray-600">This is to certify that</div>
+        </div>
+
+        <div class="mt-3 flex justify-center">
+          <div class="w-full max-w-[380px] rounded-[6px] border border-orange-200 bg-white px-3 py-2 text-center">
+            <div class="text-[15px] sm:text-[16px] font-bold text-gray-900">Sarah Johnson</div>
+          </div>
+        </div>
+
+        <div class="mt-2 text-center text-[12px] font-normal text-gray-600">
+          has successfully completed the course
+        </div>
+
+        <div class="mt-3 flex justify-center">
+          <div class="w-full max-w-[380px] rounded-[6px] border border-purple-200 bg-white px-3 py-2 text-center">
+            <div class="text-[13px] sm:text-[14px] font-bold text-gray-900">
+              Advanced React Development
+            </div>
+            <div class="mt-0.5 text-[11px] sm:text-[12px] font-normal text-gray-500">
+              Instructed by Dr. Michael Chen
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="mt-4 grid grid-cols-1 gap-3 text-center sm:grid-cols-3 sm:gap-4">
+          <div>
+            <div class="text-[10px] font-normal text-gray-500">Completion Date</div>
+            <div class="mt-0.5 text-[11px] font-semibold text-gray-900">15/03/2024</div>
+          </div>
+          <div>
+            <div class="text-[10px] font-normal text-gray-500">Grade Achieved</div>
+            <div class="mt-0.5 text-[11px] font-semibold text-gray-900">A+</div>
+          </div>
+          <div>
+            <div class="text-[10px] font-normal text-gray-500">Certificate ID</div>
+            <div class="mt-0.5 text-[11px] font-semibold text-gray-900">CERT-2024-001</div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-4 mx-auto w-full max-w-[440px] border-b border-gray-200"></div>
+
+        <!-- Signature row -->
+        <div class="mt-6 sm:mt-8 grid grid-cols-2 gap-6 sm:gap-8 items-end">
+          <div>
+            <div class="h-px w-[90px] sm:w-[120px] bg-gray-300"></div>
+            <div class="mt-1 text-[9px] sm:text-[10px] font-normal text-gray-500">Digital Signature</div>
+          </div>
+
+          <div class="text-right">
+            <div class="ml-auto h-px w-[90px] sm:w-[120px] bg-gray-300"></div>
+            <div class="mt-1 text-[9px] sm:text-[10px] font-normal text-gray-500">Issue Date</div>
+            <div class="text-[9px] sm:text-[10px] font-normal text-gray-600">29/10/2025</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-center">
+        <a [routerLink]="['/student', parentPath, courseId, 'name-correction']"
+          class="flex h-9 items-center gap-2 rounded-[6px] border border-[#7C3AED] bg-white px-4 text-[12px] font-semibold text-[#7C3AED]">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+          </svg>
+
+          <span>Request Name Correction</span>
+        </a>
+
+
+        <button type="button" class="flex items-center justify-center gap-2 h-[37px] sm:h-[33px]
+                 rounded-[6px] bg-[#7C3AED] px-5 text-[12px] font-semibold text-white">
+          <svg class="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 4v9" />
+            <path d="M8 10l4 4 4-4" />
+            <path d="M4 18h16" />
+          </svg>
+          <span>Confirm &amp; Download Certificate</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- âœ… Download Success Modal (show on download click) -->
+  <div *ngIf="showDownloadSuccess" class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 px-4 py-6"
+    role="dialog" aria-modal="true" aria-label="Certificate Downloaded">
+    <div class="w-full max-w-[450px] rounded-[14px] bg-white px-6 py-7
+             shadow-[0_18px_55px_rgba(0,0,0,0.25)]">
+      <div class="flex justify-center">
+        <div class="flex h-[78px] w-[78px] items-center justify-center rounded-full bg-[#DFFBE8]">
+          <svg class="h-9 w-9 text-[#16A34A]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      <h2 class="mt-6 text-center text-[26px] font-semibold text-[#111827]">
+        Certificate Downloaded!
+      </h2>
+
+      <p class="mt-2 text-center text-[16px] leading-7 text-[#6B7280]">
+        Your certificate has been successfully generated and downloaded.
+      </p>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

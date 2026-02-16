@@ -1,0 +1,19 @@
+<div class="flex flex-col h-screen">
+
+  <!-- Header (fixed height) -->
+  <app-instructor-header class="w-full border-b-2 border-gray-300 flex-shrink-0"></app-instructor-header>
+
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- Sidebar (fixed width, full height of remaining space) -->
+    <app-instructor-sidebar></app-instructor-sidebar>
+
+    <!-- Main Content (scrollable) -->
+    <main class="flex-1 overflow-auto bg-gray-50">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
+

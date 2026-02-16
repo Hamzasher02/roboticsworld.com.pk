@@ -1,0 +1,23 @@
+<nav class="flex h-full flex-col shadow-xl transition-all duration-300 ease-in-out md:w-64 w-20"
+  style="background-color: #f5f5f5">
+  <!-- Header -->
+  <div class="flex items-center space-x-3 border-b border-gray-200 px-5 pt-3 md:justify-start justify-center">
+    <img src="/assets/admin/sidebaricons/stemlogo.svg" alt="STEAM Minds Logo" class="h-[72px] w-[45.18px]" />
+
+    <h1 class="hidden font-roboto text-[20px] font-semibold leading-[100%] tracking-[1.2px] text-[#4A4A68] md:block">
+      STEAM Minds
+    </h1>
+  </div>
+
+  <!-- Links -->
+  <div class="flex grow flex-col overflow-y-auto">
+    <a *ngFor="let item of menuItems" [routerLink]="item.route" routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: false }"
+      class="sidebar-link flex items-center border-l-4 border-transparent px-4 py-3 text-[#4A4A68] transition duration-150 md:space-x-4 justify-center md:justify-start">
+      <div class="sidebar-icon h-6 w-6 shrink-0" [style.mask-image]="'url(' + item.icon + ')'"
+        [style.webkitMaskImage]="'url(' + item.icon + ')'"></div>
+
+      <span class="hidden font-medium md:block">{{ item.label }}</span>
+    </a>
+  </div>
+</nav>

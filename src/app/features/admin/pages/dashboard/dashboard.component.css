@@ -1,0 +1,17 @@
+.verified-progress {
+  transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+.pending-progress {
+  transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+/* bar fade effect */
+.h-24 div {
+  background: linear-gradient(to top, #dcd0f9 60%, #eee8fe 100%);
+}
+
+.h-24 div:last-child {
+  background-color: #923D8C;
+  opacity: 0.95;
+}

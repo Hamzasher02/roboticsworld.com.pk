@@ -1,0 +1,1100 @@
+<!-- Course Detail Page (Tailwind + Angular-ready markup) -->
+<section class="w-full bg-white px-6 py-3">
+    <!-- Container -->
+    <div class="mx-auto w-full max-w-[1310px] sm:px-6 sm:py-8 lg:px-8">
+        <!-- Top Back -->
+        <a [routerLink]="['/steam-mind']"
+            class="inline-flex items-center gap-3 text-[14px] font-semibold text-gray-900 sm:text-[16px] lg:text-[18px]">
+            <span class="inline-flex h-6 w-6 items-center justify-center">
+                <img src="assets/student/buy course/LeftArrow.svg" alt="Back" class="h-5 w-5" />
+            </span>
+            Back to Dashboard
+        </a>
+
+        <!-- Hero -->
+        <section class="mt-4 flex flex-col items-start gap-8 lg:mt-2 lg:flex-row lg:justify-between lg:gap-12">
+            <!-- Left Content -->
+            <div class="w-full pt-1 lg:max-w-[600px]">
+                <h1
+                    class="text-[19px] font-extrabold leading-[1.15] tracking-tight text-black sm:text-[23px] lg:text-[26px]">
+                    Level Up Your Web Development Skills With
+                    <span class="text-[#FF6A3D]">The Top Courses For Teens</span>
+
+                </h1>
+
+                <p class="mt-4 w-full text-[12px] text-[#374151] sm:mt-6 sm:max-w-[520px] sm: text-[12px]">
+                    Ready to take your web design skills to the next level? Our top-rated courses are designed
+                    specifically for teens, offering hands-on experience in building websites, mastering coding
+                    languages, and exploring creative design. Whether you're a beginner or looking to enhance your
+                    skills, these courses provide everything you need to become a future web design pro. Start your
+                    journey today and unlock the world of endless possibilities!
+                </p>
+
+                <!-- Stats -->
+                <div
+                    class="mt-5 flex flex-col gap-2 text-[12px] text-[#111827] sm:mt-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-3">
+                    <div class="flex items-center gap-2">
+                        <img src="assets/student/courseImage/User.svg" alt="" class="h-[14px] w-[14px]" />
+                        <span class="font-semibold">12,458</span>
+                        <span class="text-[#6B7280]">students</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <img src="assets/student/courseImage/blackStart.svg" alt="" class="h-[14px] w-[14px]" />
+                        <span class="font-semibold">4.8</span>
+                        <span class="text-[#6B7280]">(3.3k reviews)</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <img src="assets/student/courseImage/price.svg" alt="" class="h-[14px] w-[14px]" />
+                        <span class="font-semibold">$99.9</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-6 flex w-full flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+                    <a routerLink="/student/course-demo-request"
+                        class="group inline-flex h-[44px] w-full items-center justify-center gap-3 rounded-[2px] bg-[#FF6A3D] px-6  text-[12px] font-semibold text-white shadow-[0_10px_22px_rgba(255,106,61,0.25)] transition-all duration-200 hover:bg-orange-100 hover:text-orange-600 focus:outline-none focus:ring-4 focus:ring-[#FF6A3D]/25 sm:w-auto sm:min-w-[190px]">
+                        Book A Free Demo
+
+                        <span class="relative flex h-4 w-4 items-center justify-center">
+                            <img src="assets/student/courseImage/whiteRightArrow.svg" alt=""
+                                class="absolute h-4 w-4 object-contain opacity-100 transition-opacity duration-200 group-hover:opacity-0" />
+                            <img src="assets/student/courseImage/ArrowRight.svg" alt=""
+                                class="absolute h-4 w-4 object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                        </span>
+                    </a>
+
+                    <button type="button"
+                        class="inline-flex h-[44px] w-full items-center justify-center gap-3 rounded-[2px] border border-[#D1D5DB] bg-white px-6  text-[12px] font-semibold text-[#111827] hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 sm:w-auto sm:min-w-[170px]">
+                        <img src="assets/student/header/favIcone.svg" alt="" class="h-4 w-4" />
+                        Add to Wishlist
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Image -->
+            <div class="mx-auto mt-6 w-full lg:mx-0 lg:mt-[-13px] lg:max-w-[500px]">
+                <div
+                    class="relative w-full overflow-visible rounded-[2px] after:pointer-events-none after:absolute after:inset-0 after:rounded-[2px] after:border-[2px] after:border-[#880A73] after:-translate-y-[12px] after:translate-x-[12px] sm:after:-translate-y-[16px] sm:after:translate-x-[16px] lg:ms-[-32px] lg:after:-translate-y-[20px] lg:after:translate-x-[20px] after:z-0 after:content-['']">
+                    <img src="assets/student/courseImage/courseImage.svg" alt="Course hero"
+                        class="relative z-10 h-[220px] w-full rounded-[2px] object-cover sm:h-[320px] lg:h-[360px]" />
+                </div>
+            </div>
+        </section>
+
+        <!-- What You'll Learn -->
+        <section class="mt-10 sm:mt-12 lg:mt-6">
+            <!-- Heading -->
+            <div class="flex flex-col items-start gap-3 sm:flex-row sm:items-start sm:gap-4">
+                <img src="assets/student/courseImage/whatYouWillLearn.svg" alt=""
+                    class="mt-0.5 h-9 w-9 sm:mt-1 sm:h-10 sm:w-10" />
+                <div>
+                    <h2 class="text-[18px] font-normal text-[#111827] sm:text-[20px] lg:text-[22px]">What You'll Learn
+                    </h2>
+                    <p class="mt-1 text-[12px] text-[#6B7280] sm: text-[12px]">
+                        Gain the skills that top companies are looking for in modern web developers
+                    </p>
+                </div>
+            </div>
+
+            <!-- Responsive layout -->
+            <div
+                class="mt-6 flex w-full flex-col items-stretch gap-8 sm:mt-8 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
+                <!-- Left List -->
+                <div class="flex w-full flex-col gap-4 sm:gap-6 lg:flex-1">
+                    <!-- Card -->
+                    <div
+                        class="flex items-center gap-4 rounded-[12px] bg-white px-5 py-4 shadow-[0_8px_18px_rgba(17,24,39,0.10)] sm:gap-6 sm:px-7 sm:py-5">
+                        <div
+                            class="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.08)] sm:h-[70px] sm:w-[70px]">
+                            <img src="assets/student/courseImage/eachCourseIcone.svg" alt=""
+                                class="h-8 w-8 sm:h-12 sm:w-12" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                Node.js &amp; Backend Development
+                            </div>
+                            <div class="mt-1 text-[12px] leading-[1.45] text-[#374151]">
+                                Master modern JavaScript features, async programming, and design patterns
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card -->
+                    <div
+                        class="flex items-center gap-4 rounded-[12px] bg-white px-5 py-4 shadow-[0_8px_18px_rgba(17,24,39,0.10)] sm:gap-6 sm:px-7 sm:py-5">
+                        <div
+                            class="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.08)] sm:h-[70px] sm:w-[70px]">
+                            <img src="assets/student/courseImage/eachCourseIcone.svg" alt=""
+                                class="h-8 w-8 sm:h-12 sm:w-12" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                Node.js &amp; Backend Development
+                            </div>
+                            <div class="mt-1 text-[12px] leading-[1.45] text-[#374151]">
+                                Master modern JavaScript features, async programming, and design patterns
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card -->
+                    <div
+                        class="flex items-center gap-4 rounded-[12px] bg-white px-5 py-4 shadow-[0_8px_18px_rgba(17,24,39,0.10)] sm:gap-6 sm:px-7 sm:py-5">
+                        <div
+                            class="flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.08)] sm:h-[70px] sm:w-[70px]">
+                            <img src="assets/student/courseImage/eachCourseIcone.svg" alt=""
+                                class="h-8 w-8 sm:h-12 sm:w-12" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                Node.js &amp; Backend Development
+                            </div>
+                            <div class="mt-1 text-[12px] leading-[1.45] text-[#374151]">
+                                Master modern JavaScript features, async programming, and design patterns
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Illustration (responsive) -->
+                <div
+                    class="me-5 relative mx-auto w-full max-w-[420px] overflow-visible rounded-[2px] h-[220px] sm:h-[280px] lg:h-[300px] after:pointer-events-none after:absolute after:inset-0 after:rounded-[2px] after:border-[2px] after:border-[#FF6A3D] after:-translate-y-[8px] after:translate-x-[8px] after:opacity-70 sm:after:-translate-y-[14px] sm:after:translate-x-[14px] lg:after:-translate-y-[20px] lg:after:translate-x-[20px] lg:after:opacity-100 after:z-0 after:content-['']">
+                    <div
+                        class="relative z-10 flex h-full w-full items-center justify-center rounded-[2px] bg-[#F3F4F6] p-4 sm:p-6">
+                        <img src="assets/student/courseImage/person.svg" alt="Learning illustration"
+                            class="h-full w-full object-contain" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum + Sidebar -->
+        <section
+            class="mt-12 flex w-full flex-col items-stretch gap-8 lg:mt-16 lg:flex-row lg:items-stretch lg:justify-between lg:gap-16">
+            <!-- Left: Curriculum -->
+            <div class="flex w-full flex-col lg:flex-1 lg:max-w-[760px]">
+                <h2 class="text-[18px] font-semibold text-[#111827] sm:text-[22px] lg:text-[28px]">
+                    Our Web Development Class Curriculum
+                </h2>
+
+                <p class="mt-2 text-[12px] text-[#6B7280] sm:text-[12px]">
+                    4 Modules, 20 Lessons, 4 Quizzes
+                </p>
+
+                <!-- Modules -->
+                <div class="mt-6 flex flex-col gap-3 sm:mt-8">
+
+                    <!-- ========================= -->
+                    <!-- Module 1 -->
+                    <!-- ========================= -->
+                    <div class="w-full overflow-hidden bg-gray-100">
+                        <!-- Header (NO toggle click here) -->
+                        <div
+                            class="flex w-full items-center justify-between gap-4 border-b border-[#E5E7EB] px-4 py-4 sm:px-6">
+                            <!-- Left -->
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col items-center justify-center">
+                                    <span
+                                        class="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FCE7E1]"
+                                        aria-hidden="true">
+                                        <img src="assets/student/courseImage/webDevelopment.svg" alt=""
+                                            class="h-6 w-6 sm:h-7 sm:w-7" />
+                                    </span>
+                                    <span class="mt-2 text-[11px] font-semibold text-[#111827]">Module 1</span>
+                                </div>
+
+                                <div class="flex flex-col items-start">
+                                    <h3 class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                        Introduction to Web Development &amp; Tools
+                                    </h3>
+                                    <p class="mt-1 text-[12px] leading-4 text-[#6B7280] sm:text-[12px]">
+                                        Build foundational understanding and setup essential tools.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Right: ICON BUTTON (toggle ONLY here) -->
+                            <button type="button" class="flex h-9 w-9 items-center justify-center rounded-md"
+                                (click)="toggleCurriculumModule(1); $event.stopPropagation()"
+                                [attr.aria-expanded]="openCurriculumModule === 1" aria-label="Toggle Module 1">
+                                <img *ngIf="openCurriculumModule === 1" src="assets/student/courseImage/arrowDown.png"
+                                    alt="" class="h-4 w-4" />
+                                <img *ngIf="openCurriculumModule !== 1"
+                                    src="assets/student/courseImage/ArrowDownNavigate.svg" alt="" class="h-4 w-4" />
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div *ngIf="openCurriculumModule === 1" class="w-full bg-gray-100">
+                            <ul class="flex w-full flex-col">
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div class="flex w-full flex-col sm:flex-row sm:items-baseline">
+                                        <div
+                                            class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                            <span class="text-[12px] font-semibold text-[#111827]">Lesson 1:</span>
+                                            <span class="text-[12px] text-[#111827]">What is Web Development? (Frontend
+                                                vs Backend)</span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div class="flex w-full flex-col sm:flex-row sm:items-baseline">
+                                        <div
+                                            class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                            <span class="text-[12px] font-semibold text-[#111827]">Lesson 2:</span>
+                                            <span class="text-[12px] text-[#111827]">Setting Up the Development
+                                                Environment (VS Code, Browser, Git)</span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div class="flex w-full flex-col sm:flex-row sm:items-baseline">
+                                        <div
+                                            class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                            <span class="text-[12px] font-semibold text-[#111827]">Lesson 3:</span>
+                                            <span class="text-[12px] text-[#111827]">Introduction to HTML: Structure
+                                                &amp; Tags</span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div class="flex w-full flex-col sm:flex-row sm:items-baseline">
+                                        <div
+                                            class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                            <span class="text-[12px] font-semibold text-[#111827]">Lesson 4:</span>
+                                            <span class="text-[12px] text-[#111827]">Introduction to CSS: Styling
+                                                Basics</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Module 2 -->
+                    <!-- ========================= -->
+                    <div class="w-full overflow-hidden bg-gray-100">
+                        <div
+                            class="flex w-full items-center justify-between gap-4 border-b border-[#E5E7EB] px-4 py-4 sm:px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col items-center justify-center">
+                                    <span
+                                        class="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FCE7E1]"
+                                        aria-hidden="true">
+                                        <img src="assets/student/courseImage/webDevelopment.svg" alt=""
+                                            class="h-6 w-6 sm:h-7 sm:w-7" />
+                                    </span>
+                                    <span class="mt-2 text-[11px] font-semibold text-[#111827]">Module 2</span>
+                                </div>
+
+                                <div class="flex flex-col items-start">
+                                    <h3 class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                        Introduction to Web Development &amp; Tools
+                                    </h3>
+                                    <p class="mt-1 text-[12px] leading-4 text-[#6B7280] sm:text-[12px]">
+                                        Build foundational understanding and setup essential tools.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button type="button" class="flex h-9 w-9 items-center justify-center rounded-md"
+                                (click)="toggleCurriculumModule(2); $event.stopPropagation()"
+                                [attr.aria-expanded]="openCurriculumModule === 2" aria-label="Toggle Module 2">
+                                <img *ngIf="openCurriculumModule === 2" src="assets/student/courseImage/arrowDown.png"
+                                    alt="" class="h-4 w-4" />
+                                <img *ngIf="openCurriculumModule !== 2"
+                                    src="assets/student/courseImage/ArrowDownNavigate.svg" alt="" class="h-4 w-4" />
+                            </button>
+                        </div>
+
+                        <div *ngIf="openCurriculumModule === 2" class="w-full bg-gray-100">
+                            <ul class="flex w-full flex-col">
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 1:</span>
+                                        <span class="text-[12px] text-[#111827]">What is Web Development? (Frontend vs
+                                            Backend)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 2:</span>
+                                        <span class="text-[12px] text-[#111827]">Setting Up the Development Environment
+                                            (VS Code, Browser, Git)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 3:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to HTML: Structure &amp;
+                                            Tags</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 4:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to CSS: Styling
+                                            Basics</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Module 3 -->
+                    <!-- ========================= -->
+                    <div class="w-full overflow-hidden bg-gray-100">
+                        <div
+                            class="flex w-full items-center justify-between gap-4 border-b border-[#E5E7EB] px-4 py-4 sm:px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col items-center justify-center">
+                                    <span
+                                        class="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FCE7E1]"
+                                        aria-hidden="true">
+                                        <img src="assets/student/courseImage/webDevelopment.svg" alt=""
+                                            class="h-6 w-6 sm:h-7 sm:w-7" />
+                                    </span>
+                                    <span class="mt-2 text-[11px] font-semibold text-[#111827]">Module 3</span>
+                                </div>
+
+                                <div class="flex flex-col items-start">
+                                    <h3 class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                        Introduction to Web Development &amp; Tools
+                                    </h3>
+                                    <p class="mt-1 text-[12px] leading-4 text-[#6B7280] sm:text-[12px]">
+                                        Build foundational understanding and setup essential tools.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button type="button" class="flex h-9 w-9 items-center justify-center rounded-md"
+                                (click)="toggleCurriculumModule(3); $event.stopPropagation()"
+                                [attr.aria-expanded]="openCurriculumModule === 3" aria-label="Toggle Module 3">
+                                <img *ngIf="openCurriculumModule === 3" src="assets/student/courseImage/arrowDown.png"
+                                    alt="" class="h-4 w-4" />
+                                <img *ngIf="openCurriculumModule !== 3"
+                                    src="assets/student/courseImage/ArrowDownNavigate.svg" alt="" class="h-4 w-4" />
+                            </button>
+                        </div>
+
+                        <div *ngIf="openCurriculumModule === 3" class="w-full bg-gray-100">
+                            <ul class="flex w-full flex-col">
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 1:</span>
+                                        <span class="text-[12px] text-[#111827]">What is Web Development? (Frontend vs
+                                            Backend)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 2:</span>
+                                        <span class="text-[12px] text-[#111827]">Setting Up the Development Environment
+                                            (VS Code, Browser, Git)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 3:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to HTML: Structure &amp;
+                                            Tags</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 4:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to CSS: Styling
+                                            Basics</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ========================= -->
+                    <!-- Module 4 -->
+                    <!-- ========================= -->
+                    <div class="w-full overflow-hidden bg-gray-100">
+                        <div
+                            class="flex w-full items-center justify-between gap-4 border-b border-[#E5E7EB] px-4 py-4 sm:px-6">
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col items-center justify-center">
+                                    <span
+                                        class="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FCE7E1]"
+                                        aria-hidden="true">
+                                        <img src="assets/student/courseImage/webDevelopment.svg" alt=""
+                                            class="h-6 w-6 sm:h-7 sm:w-7" />
+                                    </span>
+                                    <span class="mt-2 text-[11px] font-semibold text-[#111827]">Module 4</span>
+                                </div>
+
+                                <div class="flex flex-col items-start">
+                                    <h3 class="text-[15px] font-semibold leading-5 text-[#111827] sm:text-[16px]">
+                                        Introduction to Web Development &amp; Tools
+                                    </h3>
+                                    <p class="mt-1 text-[12px] leading-4 text-[#6B7280] sm:text-[12px]">
+                                        Build foundational understanding and setup essential tools.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button type="button" class="flex h-9 w-9 items-center justify-center rounded-md"
+                                (click)="toggleCurriculumModule(4); $event.stopPropagation()"
+                                [attr.aria-expanded]="openCurriculumModule === 4" aria-label="Toggle Module 4">
+                                <img *ngIf="openCurriculumModule === 4" src="assets/student/courseImage/arrowDown.png"
+                                    alt="" class="h-4 w-4" />
+                                <img *ngIf="openCurriculumModule !== 4"
+                                    src="assets/student/courseImage/ArrowDownNavigate.svg" alt="" class="h-4 w-4" />
+                            </button>
+                        </div>
+
+                        <div *ngIf="openCurriculumModule === 4" class="w-full bg-gray-100">
+                            <ul class="flex w-full flex-col">
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 1:</span>
+                                        <span class="text-[12px] text-[#111827]">What is Web Development? (Frontend vs
+                                            Backend)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 2:</span>
+                                        <span class="text-[12px] text-[#111827]">Setting Up the Development Environment
+                                            (VS Code, Browser, Git)</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 3:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to HTML: Structure &amp;
+                                            Tags</span>
+                                    </div>
+                                </li>
+                                <li class="border-b border-[#E5E7EB] px-2 py-3">
+                                    <div
+                                        class="flex w-full flex-row flex-wrap items-baseline gap-2 pl-[60px] sm:pl-[76px]">
+                                        <span class="text-[12px] font-semibold text-[#111827]">Lesson 4:</span>
+                                        <span class="text-[12px] text-[#111827]">Introduction to CSS: Styling
+                                            Basics</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- Right: Pricing Card -->
+            <aside
+                class="mt-6 w-full max-w-none rounded-[10px] border border-[#E5E7EB] bg-white p-6 shadow-[0_12px_30px_rgba(17,24,39,0.12)] sm:p-8 lg:mt-0 lg:max-w-[420px] lg:p-10"
+                aria-label="Purchase options">
+                <a [routerLink]="['/student/buy-course']"
+                    class="mt-2 inline-flex h-[50px] w-full items-center justify-center rounded-[2px] bg-[#FF6A3D]  text-[12px] font-semibold text-white hover:bg-[#FFF3E9] hover:text-[#FF6A3D] hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[#FF6A3D]/25">
+                    Buy Now
+                </a>
+
+                <a routerLink="/student/course-demo-request"
+                    class="mt-4 inline-flex h-[50px] w-full items-center justify-center gap-3 rounded-[2px] bg-[#FFF3E9]  text-[12px] font-semibold text-[#FF6A3D] hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[#FF6A3D]/15">
+                    Book A Free Demo
+                </a>
+
+
+                <div class="mt-6">
+                    <div class="flex items-center justify-between">
+                        <div class="text-[14px] font-extrabold text-[#111827]">In Live Sessions</div>
+                        <div class="flex items-center gap-2  text-[12px] font-extrabold text-[#111827]">
+                            <img src="assets/student/courseImage/price.svg" alt="" class="h-4 w-4" />
+                            $299
+                        </div>
+                    </div>
+
+                    <ul class="mt-4 flex flex-col gap-3  text-[12px] text-[#111827] sm:text-[15px]">
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Interactive sessions with instructor</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Real-time Q&amp;A and discussions</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Scheduled daily classes</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Certificate upon completion</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-8">
+                    <div class="flex items-center justify-between">
+                        <div class="text-[14px] font-extrabold text-[#111827]">In Recorded Sessions</div>
+                        <div class="flex items-center gap-2  text-[12px] font-extrabold text-[#111827]">
+                            <img src="assets/student/courseImage/price.svg" alt="" class="h-4 w-4" />
+                            $199
+                        </div>
+                    </div>
+
+                    <ul class="mt-4 flex flex-col gap-3  text-[12px] text-[#111827] sm:text-[15px]">
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Learn at your own pace</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>High-quality video lessons</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>4 Months access to content</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <img src="assets/student/courseImage/Select.svg" alt="" class="mt-0.5 h-5 w-5" />
+                            <span>Certificate upon completion</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </section>
+
+        <!-- Meet Your Instructors -->
+        <section class="mt-12 sm:mt-16">
+            <h2 class="text-[24px] font-semibold text-[#111827] sm:text-[28px] lg:text-[32px]">Meet Your Instructors
+            </h2>
+            <p class="mt-2 text-[12px] text-[#6B7280] sm: text-[12px]">
+                Learn from industry experts with years of real-world experience
+            </p>
+
+            <!-- NOTE: changed to flex (no grid) -->
+            <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:flex-wrap">
+                <!-- Card -->
+                <article
+                    class="flex w-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 py-8 shadow-[0_12px_26px_rgba(17,24,39,0.12)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <!-- Top profile section -->
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full border border-[#111827]/20 p-1">
+                            <img src="assets/student/settings/userProfile.svg" alt="Alex Johnson"
+                                class="h-16 w-16 rounded-full object-cover" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[14px] font-extrabold text-[#111827]">Alex Johnson</div>
+                            <div class="text-[11px] text-[#6B7280]">{{ email }}</div>
+
+                            <div class="mt-1 flex items-center gap-2 text-[11px] text-[#111827]">
+                                <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-3.5 w-3.5" />
+                                <span class="font-semibold">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-1 flex-col">
+                        <div class="text-[12px] font-bold text-[#111827]">Senior Full-Stack Developer at Tech Corp</div>
+                        <p class="mt-3 text-[12px] leading-[1.55] text-[#374151]">
+                            Seasoned full-stack developer with expertise in React, Node.js, and MongoDB.
+                            Former engineer at Google and Microsoft.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article
+                    class="flex w-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 py-8 shadow-[0_12px_26px_rgba(17,24,39,0.12)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full border border-[#111827]/20 p-1">
+                            <img src="assets/student/settings/userProfile.svg" alt="Alex Johnson"
+                                class="h-16 w-16 rounded-full object-cover" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[14px] font-extrabold text-[#111827]">Alex Johnson</div>
+                            <div class="text-[11px] text-[#6B7280]">{{ email }}</div>
+
+                            <div class="mt-1 flex items-center gap-2 text-[11px] text-[#111827]">
+                                <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-3.5 w-3.5" />
+                                <span class="font-semibold">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-1 flex-col">
+                        <div class="text-[12px] font-semibold text-[#111827]">Senior Full-Stack Developer at Tech Corp
+                        </div>
+                        <p class="mt-3 text-[12px] leading-[1.55] text-[#374151]">
+                            Seasoned full-stack developer with expertise in React, Node.js, and MongoDB.
+                            Former engineer at Google and Microsoft.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article
+                    class="flex w-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 py-8 shadow-[0_12px_26px_rgba(17,24,39,0.12)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full border border-[#111827]/20 p-1">
+                            <img src="assets/student/settings/userProfile.svg" alt="Alex Johnson"
+                                class="h-16 w-16 rounded-full object-cover" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[14px] font-extrabold text-[#111827]">Alex Johnson</div>
+                            <div class="text-[11px] text-[#6B7280]">{{ email }}</div>
+
+                            <div class="mt-1 flex items-center gap-2 text-[11px] text-[#111827]">
+                                <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-3.5 w-3.5" />
+                                <span class="font-semibold">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-1 flex-col">
+                        <div class="text-[12px] font-semibold text-[#111827]">Senior Full-Stack Developer at Tech Corp
+                        </div>
+                        <p class="mt-3 text-[12px] leading-[1.55] text-[#374151]">
+                            Seasoned full-stack developer with expertise in React, Node.js, and MongoDB.
+                            Former engineer at Google and Microsoft.
+                        </p>
+                    </div>
+                </article>
+
+                <!-- Card 4 -->
+                <article
+                    class="flex w-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 py-8 shadow-[0_12px_26px_rgba(17,24,39,0.12)] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div class="flex items-start gap-4">
+                        <div class="rounded-full border border-[#111827]/20 p-1">
+                            <img src="assets/student/settings/userProfile.svg" alt="Alex Johnson"
+                                class="h-16 w-16 rounded-full object-cover" />
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="text-[14px] font-extrabold text-[#111827]">Alex Johnson</div>
+                            <div class="text-[11px] text-[#6B7280]">{{ email }}</div>
+
+                            <div class="mt-1 flex items-center gap-2 text-[11px] text-[#111827]">
+                                <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-3.5 w-3.5" />
+                                <span class="font-semibold">4.9</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 flex flex-1 flex-col">
+                        <div class="text-[12px] font-bold text-[#111827]">Senior Full-Stack Developer at Tech Corp</div>
+                        <p class="mt-3 text-[12px] leading-[1.55] text-[#374151]">
+                            Seasoned full-stack developer with expertise in React, Node.js, and MongoDB.
+                            Former engineer at Google and Microsoft.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Purple CTA Banner -->
+        <section class="mt-14 sm:mt-20">
+            <div class="relative overflow-visible rounded-lg bg-[#880A73] px-5 py-8 sm:px-10 sm:py-10 lg:px-12">
+                <!-- NOTE: changed to flex (no grid) -->
+                <div class="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+                    <div class="w-full lg:flex-1">
+                        <h2 class="text-[20px] font-extrabold leading-[1.15] text-white sm:text-[24px] lg:text-[31px]">
+                            Start Mastering Web Development Today
+                        </h2>
+                        <p class="mt-2 w-full text-[12px] leading-[1.7] text-white/80 sm:max-w-[640px]">
+                            Unlock your potential and dive into the world of web development with hands-on courses
+                            designed for all
+                            skill levels.
+                        </p>
+
+                        <div
+                            class="mt-6 flex w-full flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+                            <a [routerLink]="['/student/buy-course']"
+                                class="inline-flex h-[38px] w-full items-center justify-center bg-[#FF6A3D] px-10 text-[12px] font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-white/20 sm:w-auto sm:min-w-[180px]">
+                                Buy Now
+                            </a>
+
+                            <button type="button"
+                                class="inline-flex h-[44px] w-full items-center justify-center gap-3 rounded-[2px] border border-[#D1D5DB] bg-white px-6  text-[12px] font-semibold text-[#111827] hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100 sm:w-auto sm:min-w-[170px]">
+                                <img src="assets/student/header/favIcone.svg" alt="" class="h-4 w-4" />
+                                Add to Wishlist
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="relative mx-auto w-full max-w-[360px] lg:mx-0 lg:flex-1">
+                        <img src="assets/student\courseImage\childPic.svg" alt="Kids learning"
+                            class="mx-auto h-[190px] w-auto object-contain sm:h-[230px] lg:absolute lg:-top-20 lg:right-0 lg:h-[240px]" />
+                        <div class="hidden lg:block lg:h-[160px]"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Testimonials (Gray background section like screenshot) -->
+    <section class="mt-12 w-full bg-[#F3F4F6] py-12 sm:mt-16 sm:py-16">
+        <!-- inner container controls width -->
+        <div class="mx-auto w-full max-w-[1310px] px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-[26px] font-semibold text-[#111827] sm:text-[34px] lg:text-[40px]">What Our Students Say
+                </h2>
+                <p class="mx-auto mt-3 max-w-[720px] text-[12px] leading-[1.7] text-[#6B7280]">
+                    Our students love the hands-on experience and personalized guidance they receive in our courses.
+                    Here's what
+                    some of them have to say about their learning journey with us
+                </p>
+            </div>
+
+            <!-- NOTE: changed to flex (no grid) -->
+            <div class="mt-10 flex flex-col gap-6 sm:mt-12 sm:flex-row sm:flex-wrap">
+                <!-- Card 1 -->
+                <article
+                    class="group relative w-full rounded-[14px] border border-[#E5E7EB] bg-white p-6 shadow-[0_12px_26px_rgba(17,24,39,0.12)] transition-colors duration-300 hover:bg-[#FF6A3D] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <!-- Quote Badge -->
+                    <div
+                        class="absolute -top-5 left-8 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FF6A3D] transition-colors duration-300 group-hover:bg-white">
+                        <img src="assets/student/courseImage/QuotationMarks.svg" alt="Quotation mark"
+                            class="h-[18px] w-[18px] object-contain transition-opacity duration-200 group-hover:opacity-0" />
+                        <img src="assets/student/courseImage/orangeQuotationMarks.svg" alt="Quotation mark"
+                            class="absolute h-[18px] w-[18px] object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                    </div>
+
+                    <!-- Stars -->
+                    <div class="mt-6 flex items-center gap-1">
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                    </div>
+
+                    <p
+                        class="mt-5 text-[12px] leading-[1.75] text-[#111827] transition-colors duration-300 group-hover:text-white">
+                        I never imagined I'd be able to design my own website from scratch so quickly! The lessons were
+                        clear and
+                        the projects were fun and challenging. I'm more confident in my skills than ever!
+                    </p>
+
+                    <div class="mt-7 flex items-center gap-4">
+                        <div
+                            class="rounded-full border border-[#111827]/20 p-1 transition-colors duration-300 group-hover:border-white/40">
+                            <img src="assets/student/settings/userProfile.svg" alt="Emily J."
+                                class="h-12 w-12 rounded-full object-cover" />
+                        </div>
+
+                        <div>
+                            <div
+                                class=" text-[12px] font-extrabold text-[#111827] transition-colors duration-300 group-hover:text-white">
+                                Emily J.</div>
+                            <div
+                                class="text-[11px] text-[#6B7280] transition-colors duration-300 group-hover:text-white/90">
+                                Frontend Developer<br />at Spotify
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article
+                    class="group relative w-full rounded-[14px] border border-[#E5E7EB] bg-white p-6 shadow-[0_12px_26px_rgba(17,24,39,0.12)] transition-colors duration-300 hover:bg-[#FF6A3D] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div
+                        class="absolute -top-5 left-8 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FF6A3D] transition-colors duration-300 group-hover:bg-white">
+                        <img src="assets/student/courseImage/QuotationMarks.svg" alt="Quotation mark"
+                            class="h-[18px] w-[18px] object-contain transition-opacity duration-200 group-hover:opacity-0" />
+                        <img src="assets/student/courseImage/orangeQuotationMarks.svg" alt="Quotation mark"
+                            class="absolute h-[18px] w-[18px] object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-1">
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                    </div>
+
+                    <p
+                        class="mt-5 text-[12px] leading-[1.75] text-[#111827] transition-colors duration-300 group-hover:text-white">
+                        I never imagined I'd be able to design my own website from scratch so quickly! The lessons were
+                        clear and
+                        the projects were fun and challenging. I'm more confident in my skills than ever!
+                    </p>
+
+                    <div class="mt-7 flex items-center gap-4">
+                        <div
+                            class="rounded-full border border-[#111827]/20 p-1 transition-colors duration-300 group-hover:border-white/40">
+                            <img src="assets/student/settings/userProfile.svg" alt="Emily J."
+                                class="h-12 w-12 rounded-full object-cover" />
+                        </div>
+
+                        <div>
+                            <div
+                                class=" text-[12px] font-extrabold text-[#111827] transition-colors duration-300 group-hover:text-white">
+                                Emily J.</div>
+                            <div
+                                class="text-[11px] text-[#6B7280] transition-colors duration-300 group-hover:text-white/90">
+                                Frontend Developer<br />at Spotify
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article
+                    class="group relative w-full rounded-[14px] border border-[#E5E7EB] bg-white p-6 shadow-[0_12px_26px_rgba(17,24,39,0.12)] transition-colors duration-300 hover:bg-[#FF6A3D] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div
+                        class="absolute -top-5 left-8 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FF6A3D] transition-colors duration-300 group-hover:bg-white">
+                        <img src="assets/student/courseImage/QuotationMarks.svg" alt="Quotation mark"
+                            class="h-[18px] w-[18px] object-contain transition-opacity duration-200 group-hover:opacity-0" />
+                        <img src="assets/student/courseImage/orangeQuotationMarks.svg" alt="Quotation mark"
+                            class="absolute h-[18px] w-[18px] object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-1">
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                    </div>
+
+                    <p
+                        class="mt-5 text-[12px] leading-[1.75] text-[#111827] transition-colors duration-300 group-hover:text-white">
+                        I never imagined I'd be able to design my own website from scratch so quickly! The lessons were
+                        clear and
+                        the projects were fun and challenging. I'm more confident in my skills than ever!
+                    </p>
+
+                    <div class="mt-7 flex items-center gap-4">
+                        <div
+                            class="rounded-full border border-[#111827]/20 p-1 transition-colors duration-300 group-hover:border-white/40">
+                            <img src="assets/student/settings/userProfile.svg" alt="Emily J."
+                                class="h-12 w-12 rounded-full object-cover" />
+                        </div>
+
+                        <div>
+                            <div
+                                class=" text-[12px] font-extrabold text-[#111827] transition-colors duration-300 group-hover:text-white">
+                                Emily J.</div>
+                            <div
+                                class="text-[11px] text-[#6B7280] transition-colors duration-300 group-hover:text-white/90">
+                                Frontend Developer<br />at Spotify
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4 -->
+                <article
+                    class="group relative w-full rounded-[14px] border border-[#E5E7EB] bg-white p-6 shadow-[0_12px_26px_rgba(17,24,39,0.12)] transition-colors duration-300 hover:bg-[#FF6A3D] sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+                    <div
+                        class="absolute -top-5 left-8 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#FF6A3D] transition-colors duration-300 group-hover:bg-white">
+                        <img src="assets/student/courseImage/QuotationMarks.svg" alt="Quotation mark"
+                            class="h-[18px] w-[18px] object-contain transition-opacity duration-200 group-hover:opacity-0" />
+                        <img src="assets/student/courseImage/orangeQuotationMarks.svg" alt="Quotation mark"
+                            class="absolute h-[18px] w-[18px] object-contain opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                    </div>
+
+                    <div class="mt-6 flex items-center gap-1">
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                        <img src="assets/student/courseImage/goldStart.svg" alt="" class="h-4 w-4" />
+                    </div>
+
+                    <p
+                        class="mt-5 text-[12px] leading-[1.75] text-[#111827] transition-colors duration-300 group-hover:text-white">
+                        I never imagined I'd be able to design my own website from scratch so quickly! The lessons were
+                        clear and
+                        the projects were fun and challenging. I'm more confident in my skills than ever!
+                    </p>
+
+                    <div class="mt-7 flex items-center gap-4">
+                        <div
+                            class="rounded-full border border-[#111827]/20 p-1 transition-colors duration-300 group-hover:border-white/40">
+                            <img src="assets/student/settings/userProfile.svg" alt="Emily J."
+                                class="h-12 w-12 rounded-full object-cover" />
+                        </div>
+
+                        <div>
+                            <div
+                                class=" text-[12px] font-extrabold text-[#111827] transition-colors duration-300 group-hover:text-white">
+                                Emily J.</div>
+                            <div
+                                class="text-[11px] text-[#6B7280] transition-colors duration-300 group-hover:text-white/90">
+                                Frontend Developer<br />at Spotify
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-white py-12 sm:py-16">
+        <div class="mx-auto w-full max-w-[1310px] px-4 sm:px-6 lg:px-8">
+            <h2 class="text-[22px] font-semibold text-[#111827] sm:text-[28px] lg:text-[32px]">
+                Frequently Asked Questions
+            </h2>
+            <p class="mt-2 text-[12px] text-[#6B7280] sm:text-[14px]">
+                Everything you need to know about our course
+            </p>
+
+            <div class="mt-6 flex flex-col gap-4 sm:mt-8">
+
+                <!-- ITEM 1 -->
+                <label class="block cursor-pointer overflow-hidden border border-[#111827]">
+                    <input type="checkbox" class="peer hidden" />
+
+                    <!-- HEADER -->
+                    <div
+                        class="flex w-full items-center justify-between bg-white px-4 py-2 text-[12px] text-[#111827] sm:px-6 sm:py-5 sm:text-[14px] peer-checked:[&_.plus]:opacity-0 peer-checked:[&_.minus]:opacity-100">
+                        <span class="pr-4">
+                            What tools and software will I need to complete the course?
+                        </span>
+
+                        <!-- ICON -->
+                        <span class="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                            <img src="assets/student/courseImage/Plus.svg"
+                                class="plus absolute inset-0 h-3 w-3 opacity-100 transition-opacity" alt="" />
+                            <img src="assets/steam-mind/steam-mind-home/minus-icon.svg"
+                                class="minus absolute inset-0 h-3 w-3 opacity-0 transition-opacity" alt="" />
+                        </span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div
+                        class="max-h-0 overflow-hidden px-4 transition-all duration-300 peer-checked:max-h-[300px] sm:px-6">
+                        <p class="py-4 text-[12px] text-gray-600 sm:text-[14px]">
+                            You’ll need a modern browser, VS Code, and basic knowledge of HTML/CSS.
+                        </p>
+                    </div>
+                </label>
+
+            </div>
+
+            <div class="mt-6 flex flex-col gap-4 sm:mt-8">
+
+                <!-- ITEM 1 -->
+                <label class="block cursor-pointer overflow-hidden border border-[#111827]">
+                    <input type="checkbox" class="peer hidden" />
+
+                    <!-- HEADER -->
+                    <div
+                        class="flex w-full items-center justify-between bg-white px-4 py-4 text-[12px] text-[#111827] sm:px-6 sm:py-5 sm:text-[14px] peer-checked:[&_.plus]:opacity-0 peer-checked:[&_.minus]:opacity-100">
+                        <span class="pr-4">
+                            What tools and software will I need to complete the course?
+                        </span>
+
+                        <!-- ICON -->
+                        <span class="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                            <img src="assets/student/courseImage/Plus.svg"
+                                class="plus absolute inset-0 h-3 w-3 opacity-100 transition-opacity" alt="" />
+                            <img src="assets/steam-mind/steam-mind-home/minus-icon.svg"
+                                class="minus absolute inset-0 h-3 w-3 opacity-0 transition-opacity" alt="" />
+                        </span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div
+                        class="max-h-0 overflow-hidden px-4 transition-all duration-300  peer-checked:max-h-[300px] sm:px-6">
+                        <p class="py-4 text-[12px] text-gray-600 sm:text-[14px]">
+                            You’ll need a modern browser, VS Code, and basic knowledge of HTML/CSS.
+                        </p>
+                    </div>
+                </label>
+
+            </div>
+            <div class="mt-6 flex flex-col gap-4 sm:mt-8">
+
+                <!-- ITEM 1 -->
+                <label class="block cursor-pointer overflow-hidden border border-[#111827]">
+                    <input type="checkbox" class="peer hidden" />
+
+                    <!-- HEADER -->
+                    <div
+                        class="flex w-full items-center justify-between bg-white px-4 py-4 text-[12px] text-[#111827] sm:px-6 sm:py-5 sm:text-[14px] peer-checked:[&_.plus]:opacity-0 peer-checked:[&_.minus]:opacity-100">
+                        <span class="pr-4">
+                            What tools and software will I need to complete the course?
+                        </span>
+
+                        <!-- ICON -->
+                        <span class="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                            <img src="assets/student/courseImage/Plus.svg"
+                                class="plus absolute inset-0 h-3 w-3 opacity-100 transition-opacity" alt="" />
+                            <img src="assets/steam-mind/steam-mind-home/minus-icon.svg"
+                                class="minus absolute inset-0 h-3 w-3 opacity-0 transition-opacity" alt="" />
+                        </span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div
+                        class="max-h-0 overflow-hidden px-4 transition-all duration-300 peer-checked:max-h-[300px] sm:px-6">
+                        <p class="py-4 text-[12px] text-gray-600 sm:text-[14px]">
+                            You’ll need a modern browser, VS Code, and basic knowledge of HTML/CSS.
+                        </p>
+                    </div>
+                </label>
+
+            </div>
+            <div class="mt-6 flex flex-col gap-4 sm:mt-8">
+
+                <!-- ITEM 4 -->
+                <label class="block cursor-pointer overflow-hidden border border-[#111827]">
+                    <input type="checkbox" class="peer hidden" />
+
+                    <!-- HEADER -->
+                    <div
+                        class="flex w-full items-center justify-between bg-white px-4 py-4 text-[12px] text-[#111827] sm:px-6 sm:py-5 sm:text-[14px] peer-checked:[&_.plus]:opacity-0 peer-checked:[&_.minus]:opacity-100">
+                        <span class="pr-4">
+                            What tools and software will I need to complete the course?
+                        </span>
+
+                        <!-- ICON -->
+                        <span class="relative flex h-3 w-3 shrink-0 items-center justify-center">
+                            <img src="assets/student/courseImage/Plus.svg"
+                                class="plus absolute inset-0 h-3 w-3 opacity-100 transition-opacity" alt="" />
+                            <img src="assets/steam-mind/steam-mind-home/minus-icon.svg"
+                                class="minus absolute inset-0 h-3 w-3 opacity-0 transition-opacity" alt="" />
+                        </span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div
+                        class="max-h-0 overflow-hidden px-4 transition-all duration-300 peer-checked:max-h-[300px] sm:px-6">
+                        <p class="py-4 text-[12px] text-gray-600 sm:text-[14px]">
+                            You’ll need a modern browser, VS Code, and basic knowledge of HTML/CSS.
+                        </p>
+                    </div>
+                </label>
+
+            </div>
+        </div>
+    </section>
+</section>

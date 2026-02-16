@@ -1,0 +1,413 @@
+<!-- about-us.component.html -->
+<section class="w-full bg-[#F5F5F5]">
+  <!-- TOP AREA (watermark bg) -->
+ <div class="relative w-full overflow-hidden">
+  <!-- Background Image -->
+ <img
+    [src]="hero.bg"
+    alt=""
+    class="absolute inset-0 h-full w-full object-cover"
+    draggable="false"
+  />
+
+  <!-- White faded overlay (controls transparency) -->
+  <div class="absolute inset-0 bg-white/75"></div>
+
+
+  <!-- White overlay (low opacity) -->
+  <div class="absolute inset-0 bg-white/60"></div>
+
+  <!-- CONTENT -->
+  <div
+    class="relative mx-auto flex w-full max-w-[1320px] flex-col px-4 py-12 sm:px-6 lg:px-10 lg:py-16"
+  >
+    <div
+      class="flex w-full flex-col items-start justify-between gap-10 lg:flex-row lg:items-center"
+    >
+      <!-- LEFT CONTENT -->
+      <div class="flex w-full flex-col lg:max-w-[720px]">
+        <!-- Badge -->
+        <div class="inline-flex w-fit rounded-[2px] bg-[#8F2C8D] px-6 py-3">
+          <span class="text-[18px] font-extrabold text-white sm:text-[20px]">
+            {{ hero.badge }}
+          </span>
+        </div>
+
+        <!-- Text Card -->
+        <div
+          class="mt-4 w-full max-w-[560px] rounded-[2px] bg-white px-6 py-6 shadow-[0_10px_26px_rgba(0,0,0,0.08)]"
+        >
+          <p class="text-[12px] leading-5 text-black/80 sm:text-[13px] sm:leading-6">
+            <span class="font-extrabold">STEAM Minds</span>
+            <span class="font-medium"> is </span>
+            {{ hero.p1 }}
+          </p>
+
+          <p
+            class="mt-4 text-[12px] leading-5 text-black/80 sm:text-[13px] sm:leading-6"
+          >
+            {{ hero.p2 }}
+          </p>
+        </div>
+      </div>
+
+<!-- RIGHT IMAGE COLLAGE (outer border = big image size, images bottom aligned) -->
+<div class="flex w-full items-center  mt-10 justify-center lg:w-[520px]">
+  <!-- Outer frame (border according to BIG image height) -->
+  <div
+    class="flex w-full max-w-[520px] items-end overflow-hidden rounded-[6px] border-[3px] border-[#FF6A3D]  shadow-[0_12px_26px_rgba(0,0,0,0.15)]"
+  >
+    <!-- SMALL (LEFT) -->
+    <div class="flex w-[44%] items-end">
+      <img
+        [src]="hero.collageSmall"
+        alt=""
+        class="h-[210px] w-full object-cover"
+        draggable="false"
+      />
+    </div>
+
+
+    <!-- BIG (RIGHT) -->
+    <div class="flex w-[56%] items-end">
+      <img
+        [src]="hero.collageBig"
+        alt=""
+        class="h-[320px] w-full object-cover"
+        draggable="false"
+      />
+    </div>
+  </div>
+</div>
+
+
+
+    </div>
+  </div>
+</div>
+
+
+ <!-- CARDS ROW -->
+<div
+  class="mx-auto flex w-full max-w-[1320px] bg-[#F5F5F5] flex-col px-4 pb-14 pt-10 sm:px-6 sm:pb-16 lg:px-10"
+>
+  <div class="flex w-full flex-col gap-8 lg:flex-row lg:items-stretch lg:justify-between">
+    <div
+      *ngFor="let c of cards; let i = index"
+      class="flex w-full flex-col overflow-hidden rounded-[6px] bg-white shadow-[0_14px_28px_rgba(0,0,0,0.10)] lg:w-1/3"
+    >
+      <!-- IMAGE AREA -->
+      <div class="flex w-full bg-[#EFEFEF]">
+        <img
+          [src]="c.image"
+          alt=""
+          class="h-[220px] w-full object-cover sm:h-[240px] lg:h-[260px]"
+          draggable="false"
+        />
+      </div>
+
+      <div class="flex w-full flex-1 flex-col px-6 pb-6 pt-5">
+        <div class="flex w-full items-start gap-3">
+          <div
+            class="mt-[2px] flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#8F2C8D]"
+          >
+            <img [src]="c.icon" alt="" class="h-5 w-5" draggable="false" />
+          </div>
+
+          <div class="flex w-full flex-col">
+            <div class="text-[13px] font-extrabold text-black sm:text-[14px]">
+              {{ c.title }}
+            </div>
+
+            <p class="mt-2 text-[11px] leading-5 text-black/70 sm:text-[12px]">
+              {{ c.desc }}
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex w-full items-center justify-center">
+          <!-- ✅ Navigate to aboutus-detail -->
+         <button
+  type="button"
+  [routerLink]="['/steam-mind/aboutus-detail']"
+  [state]="{ detailKey: c.title.includes('VR') ? 'vr-labs' : (c.title.includes('DIY') ? 'kits' : 'steam-words') }"
+            class="cursor-pointer inline-flex h-9 w-[150px] items-center justify-center rounded-full bg-[#8F2C8D] text-[12px] font-semibold text-white shadow-[0_10px_22px_rgba(143,44,141,0.25)] active:scale-[0.99]"
+          >
+            {{ c.cta }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ✅ NEW: ACCOLADES & RECOGNITION -->
+  <div class="w-full bg-white pt-10 pb-10 sm:pt-12 sm:pb-12 lg:pt-14 lg:pb-14">
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 sm:px-6 lg:px-10">
+      <!-- Header -->
+      <div class="flex w-full flex-col items-center justify-center text-center">
+        <div class="flex items-center justify-center gap-2">
+          <img
+            *ngIf="awardsHeader.starIcon"
+            [src]="awardsHeader.starIcon"
+            alt=""
+            class="h-4 w-4"
+            draggable="false"
+          />
+          <div class="text-[10px] font-semibold text-black/60">
+            {{ awardsHeader.mini }}
+          </div>
+        </div>
+
+        <div class="mt-2 text-[20px] font-extrabold text-black sm:text-[22px]">
+          {{ awardsHeader.title }}
+        </div>
+
+        <p class="mt-2 max-w-[720px] text-[10px] font-semibold leading-4 text-black/60 sm:text-[11px] sm:leading-5">
+          {{ awardsHeader.desc }}
+        </p>
+      </div>
+
+      <!-- Awards cards -->
+      <div class="mt-8 flex w-full flex-col gap-6 lg:flex-row lg:items-stretch lg:justify-between">
+    <div
+  *ngFor="let a of awards"
+  class="group relative flex w-full flex-col items-center justify-center overflow-hidden rounded-[2px] bg-[#8F2C8D] px-6 py-10 text-center shadow-[0_12px_26px_rgba(0,0,0,0.12)] lg:w-1/3"
+>
+  <!-- ✅ HOVER IMAGE (different per card) -->
+ <img
+  [src]="a.hoverImg"
+  alt=""
+  class="absolute inset-0 z-10 h-full w-full object-contain object-center bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+  draggable="false"
+/>
+
+
+  <!-- ✅ CONTENT (visible normally, hidden on hover) -->
+  <div class="relative z-20 flex w-full flex-col items-center justify-center transition-opacity duration-200 group-hover:opacity-0">
+    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white">
+      <img [src]="a.icon" alt="" class="h-8 w-8" draggable="false" />
+    </div>
+
+    <div class="mt-4 text-[12px] font-extrabold text-white">
+      {{ a.title }}
+    </div>
+
+    <div class="mt-1 text-[10px] font-semibold text-white/90">
+      {{ a.year }}
+    </div>
+
+    <p class="mt-4 max-w-[320px] text-[10px] leading-4 text-white/90">
+      {{ a.desc }}
+    </p>
+  </div>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+
+<!-- ✅ NEW: MISSION / CENTER IMAGE / VISION -->
+<div class="w-full bg-[#F5F5F5] pt-10 pb-14">
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 sm:px-6 lg:px-10">
+    <div class="flex w-full flex-col gap-6 lg:flex-row lg:items-stretch lg:justify-between">
+
+      <!-- Mission (TOP-LEFT on lg) -->
+      <div
+        class="flex w-full flex-col rounded-[2px] bg-white px-8 py-8 shadow-[0_10px_24px_rgba(0,0,0,0.08)]
+               lg:w-[28%] lg:self-start"
+      >
+        <div class="flex h-9 w-9 items-center justify-center rounded-full bg-black/5">
+          <img [src]="mission.icon" alt="" class="h-5 w-5" draggable="false" />
+        </div>
+
+        <div class="mt-6 text-[12px] font-extrabold text-black">
+          {{ mission.title }}
+        </div>
+
+        <p class="mt-3 text-[10px] leading-4 text-black/60">
+          {{ mission.desc }}
+        </p>
+      </div>
+
+      <!-- Center image (TALL) -->
+      <div class="flex w-full items-center justify-center lg:w-[40%]">
+        <div class="flex w-full items-center justify-center bg-white p-3 shadow-[0_10px_24px_rgba(0,0,0,0.10)]">
+          <img
+            [src]="centerImage"
+            alt=""
+            class="h-[320px] w-full max-w-[360px] object-cover
+                   sm:h-[380px] sm:max-w-[420px]
+                   lg:h-[520px] lg:max-w-[520px]"
+            draggable="false"
+          />
+        </div>
+      </div>
+
+      <!-- Vision (BOTTOM-RIGHT on lg) -->
+      <div
+        class="flex w-full flex-col rounded-[2px] bg-white px-8 py-8 shadow-[0_10px_24px_rgba(0,0,0,0.08)]
+               lg:w-[28%] lg:self-end"
+      >
+        <div class="flex h-9 w-9 items-center justify-center rounded-full bg-black/5">
+          <img [src]="vision.icon" alt="" class="h-5 w-5" draggable="false" />
+        </div>
+
+        <div class="mt-6 text-[12px] font-extrabold text-black">
+          {{ vision.title }}
+        </div>
+
+        <p class="mt-3 text-[10px] leading-4 text-black/60">
+          {{ vision.desc }}
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+<!-- ✅ NEW: STRATEGIC PARTNERSHIPS -->
+<div class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-12 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
+    <!-- Header -->
+    <div class="flex w-full flex-col items-center justify-center text-center">
+      <div class="text-[11px] font-semibold text-black/70">
+        {{ partnersHeader.mini }}
+      </div>
+
+      <div class="mt-2 text-[22px] font-extrabold text-black sm:text-[26px]">
+        {{ partnersHeader.title }}
+      </div>
+
+      <p class="mt-3 max-w-[840px] text-[11px] leading-5 text-black/60 sm:text-[12px]">
+        {{ partnersHeader.desc }}
+      </p>
+    </div>
+
+    <!-- Logos Row -->
+    <div class="mt-10 flex w-full flex-wrap items-stretch justify-center gap-5 sm:gap-6 lg:flex-nowrap lg:justify-between">
+      <div
+        *ngFor="let p of partners; trackBy: trackByIdx"
+        class="flex w-[260px] flex-col overflow-hidden rounded-[2px] bg-white shadow-[0_14px_26px_rgba(0,0,0,0.14)] sm:w-[270px] lg:w-[190px]"
+      >
+    <!-- logo area -->
+<div
+  class="flex h-[92px] w-full items-center justify-center px-4"
+  [ngClass]="p.logoBg || 'bg-[#ECECEC]'"
+>
+  <img
+    [src]="p.logo"
+    [alt]="p.name"
+    class="max-h-[54px] w-auto max-w-full object-contain"
+    draggable="false"
+  />
+</div>
+
+
+        <!-- label -->
+        <div class="flex flex-1 items-center justify-center px-5 py-6 text-center">
+          <div class="text-[11px] font-semibold leading-4 text-black">
+            {{ p.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ✅ NEW: CORE TEAM -->
+<div class="w-full bg-[#F5F5F5]">
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-12 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
+    <!-- Header -->
+    <div class="flex w-full flex-col items-center justify-center text-center">
+      <div class="text-[22px] font-extrabold text-black sm:text-[26px]">
+        {{ teamHeader.title }}
+      </div>
+      <p class="mt-3 max-w-[860px] text-[11px] leading-5 text-black/60 sm:text-[12px]">
+        {{ teamHeader.desc }}
+      </p>
+    </div>
+
+    <!-- Team cards row -->
+    <div class="mt-10 flex w-full flex-wrap items-stretch justify-center gap-5 sm:gap-6 lg:flex-nowrap lg:justify-between">
+      <div
+        *ngFor="let m of team; trackBy: trackByIdx"
+        class="flex w-[260px] flex-col overflow-hidden rounded-[2px] bg-white shadow-[0_14px_26px_rgba(0,0,0,0.14)] sm:w-[270px] lg:w-[190px]"
+      >
+        <!-- Photo area -->
+        <div class="flex w-full items-center justify-center px-5 pt-6">
+          <div class="flex h-[120px] w-[120px] items-center justify-center overflow-hidden rounded-full bg-[#EFEFEF]">
+            <img
+              [src]="m.img"
+              [alt]="m.name"
+              class="h-full w-full object-cover"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="flex w-full flex-1 flex-col items-center justify-start px-5 pb-7 pt-5 text-center">
+          <div class="text-[11px] font-extrabold text-black">
+            {{ m.name }}
+          </div>
+          <div class="mt-2 text-[10px] leading-4 text-black/70">
+            {{ m.role }}
+          </div>
+        </div>
+
+        <!-- Bottom subtle line like screenshot -->
+        <div class="h-[2px] w-full bg-black/5"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ✅ NEW: SUPPORTING TEAMS -->
+<div class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-12 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
+    <!-- Title -->
+    <div class="flex w-full items-center justify-center text-center">
+      <div class="text-[22px] font-extrabold text-black sm:text-[26px]">
+        {{ supportingHeader.title }}
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="mt-10 flex w-full flex-wrap items-stretch justify-center gap-5 sm:gap-6">
+      <div
+        *ngFor="let m of supportingTeam; trackBy: trackByIdx"
+        class="flex w-[260px] flex-col overflow-hidden rounded-[2px] bg-white shadow-[0_14px_26px_rgba(0,0,0,0.14)] sm:w-[270px] lg:w-[190px]"
+      >
+        <!-- Photo / Placeholder -->
+        <div class="flex w-full items-center justify-center bg-white px-5 pt-5">
+          <div class="flex h-[132px] w-full items-center justify-center overflow-hidden bg-[#D9D9D9]">
+            <img
+              *ngIf="m.img"
+              [src]="m.img"
+              [alt]="m.name"
+              class="h-full w-full object-cover"
+              draggable="false"
+            />
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="flex w-full flex-1 flex-col items-center justify-start px-5 pb-7 pt-5 text-center">
+          <div class="text-[11px] font-extrabold text-black">
+            {{ m.name }}
+          </div>
+
+          <div class="mt-2 text-[10px] leading-4 text-black/70">
+            <div>{{ m.roleLine1 }}</div>
+            <div *ngIf="m.roleLine2">{{ m.roleLine2 }}</div>
+          </div>
+        </div>
+
+        <!-- bottom subtle line -->
+        <div class="h-[2px] w-full bg-black/5"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

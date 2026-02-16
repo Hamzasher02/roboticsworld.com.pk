@@ -1,0 +1,147 @@
+<div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <!-- Today's Sessions Table -->
+    <div class="lg:col-span-2">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg md:text-xl font-semibold text-gray-900">Today's Sessions</h2>
+        <button (click)="openViewAllModal()"
+          class="px-3 py-1 text-sm font-medium cursor-pointer text-white bg-[#923D8C] rounded hover:bg-purple-700 transition">
+          View All
+        </button>
+      </div>
+
+      <div class="overflow-x-auto w-full">
+        <table class="w-full min-w-max divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TIME</th>
+              <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">COURSE</th>
+              <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">INSTRUCTOR</th>
+              <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SESSION</th>
+              <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+              <th class="px-3 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr *ngFor="let session of sessions" class="hover:bg-gray-50">
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900 font-medium">{{ session.time }}</td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-800">{{ session.course }}</td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                <div class="flex items-center gap-2">
+                  <img class="h-6 w-6 rounded-full object-cover" [src]="session.instructor.avatar"
+                    alt="{{ session.instructor.name }}">
+                  <span class="text-sm text-gray-700">{{ session.instructor.name }}</span>
+                </div>
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{{ session.sessionNumber }}</td>
+              <td class="px-3 py-2 whitespace-nowrap">
+                <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full" [ngClass]="{
+                    'bg-indigo-100 text-indigo-800': session.status === 'Upcoming',
+                    'bg-green-100 text-green-800': session.status === 'Completed',
+                    'bg-red-100 text-red-800': session.status === 'Cancelled'
+                  }">
+                  {{ session.status }}
+                </span>
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
+                <p class="text-[#923D8C]">View</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pending Instructors Notification -->
+    <div class="lg:col-span-1">
+      <div class="bg-[#FEF3C7] border border-yellow-200 p-4 rounded-md flex items-start space-x-3">
+        <img src="/assets/admin/dashboard/instruct.svg" alt="Instructor Warning Icon" class="mt-0.5 w-8 h-8" />
+        <div>
+          <h3 class="text-sm font-semibold text-gray-800 mb-1">Instructor Verification Pending</h3>
+          <p class="text-xs text-gray-700 mb-3">
+            <span class="font-semibold">{{ pendingInstructorsCount }} new instructors</span> are waiting for
+            verification.
+          </p>
+          <button (click)="onReviewApplications()"
+            class="px-4 py-1 cursor-pointer text-xs font-semibold text-white bg-[#D97706] rounded hover:bg-orange-400 transition">Review
+            Applications</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Model -->
+  <!-- ✅ Today's Sessions Modal (pixel-style like screenshot) -->
+  <div *ngIf="isModalOpen" class="fixed inset-0 z-50 flex justify-center p-4 sm:p-6 bg-black/20 overflow-y-auto"
+    role="dialog" aria-modal="true" aria-label="Today's Sessions">
+    <!-- Modal -->
+    <div class="w-full max-w-200 bg-white shadow-[0_18px_55px_rgba(0,0,0,0.12)]
+           max-h-[90vh] overflow-y-auto">
+      <!-- Header -->
+      <div class="flex items-start justify-between px-5 sm:px-6 pt-5 sm:pt-6">
+        <div>
+          <h2 class="text-[12px] font-semibold text-[#8B0A73]">Today's Sessions</h2>
+          <div class="mt-1 h-0.5 w-30 bg-[#8B0A73]"></div>
+        </div>
+
+        <button type="button" (click)="closeModal()"
+          class="inline-flex h-8 w-8 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+          aria-label="Close">
+          ✕
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="px-5 sm:px-6 pb-6 pt-4">
+        <div class="space-y-3">
+          <div *ngFor="let session of upcomingSessions" class="rounded-lg border border-gray-200 bg-white px-4 py-3">
+            <!-- Title + Category -->
+            <div class="text-[12px] font-semibold text-gray-900">
+              {{ session.title }}
+            </div>
+            <div class="mt-0.5 text-[12px] text-gray-400">
+              {{ session.category }}
+            </div>
+
+            <!-- Meta Row -->
+            <div class="mt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-[9px] text-gray-600">
+              <!-- Instructor -->
+              <div class="flex items-center gap-1.5">
+                <svg class="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span class="font-semibold text-gray-700">{{ session.instructor }}</span>
+              </div>
+
+              <!-- Date -->
+              <div class="flex items-center gap-1.5">
+                <svg class="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>{{ session.date }}</span>
+              </div>
+
+              <!-- Time -->
+              <div class="flex items-center gap-1.5">
+                <svg class="h-3.5 w-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ session.time }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div *ngIf="upcomingSessions.length === 0" class="py-10 text-center text-[11px] text-gray-500">
+            No sessions found.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

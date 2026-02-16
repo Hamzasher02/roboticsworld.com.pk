@@ -1,0 +1,103 @@
+<main class="w-full bg-white">
+  <!-- PAGE WRAP -->
+  <section class="w-full bg-white">
+    <div
+      class="mx-auto flex w-full max-w-[1320px] flex-col px-4 py-10 sm:px-6 sm:py-12 lg:px-10 lg:py-14"
+    >
+      <!-- TOP ROW -->
+      <div class="flex w-full flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+        <!-- LEFT CONTENT -->
+        <div class="flex w-full flex-col lg:max-w-[640px]">
+          <!-- Badge -->
+          <div class="inline-flex w-fit rounded-[2px] bg-[#8F2C8D] px-6 py-3">
+            <span class="text-[18px] font-extrabold text-white sm:text-[20px]">
+              {{ detail.badge }}
+            </span>
+          </div>
+
+          <!-- Paragraphs -->
+          <div class="mt-3 flex w-full flex-col gap-4">
+            <p
+              *ngFor="let p of detail.paragraphs"
+              class="text-[12px] leading-5 text-black/80 sm:text-[13px] sm:leading-6"
+            >
+              {{ p }}
+            </p>
+          </div>
+
+          <!-- Bullets title -->
+          <div *ngIf="detail.bulletsTitle" class="mt-6 text-[12px] font-extrabold text-black sm:text-[13px]">
+            {{ detail.bulletsTitle }}
+          </div>
+
+          <!-- Bullets list -->
+          <div *ngIf="detail.bullets?.length" class="mt-2 flex w-full flex-col gap-2">
+            <div class="flex w-full flex-col gap-2">
+              <div *ngFor="let b of detail.bullets" class="flex w-full items-start gap-3">
+                <span class="mt-[7px] inline-flex h-[5px] w-[5px] shrink-0 rounded-full bg-black/70"></span>
+                <span class="text-[12px] leading-5 text-black/80 sm:text-[13px] sm:leading-6">
+                  {{ b }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Numbered section title -->
+          <div *ngIf="detail.sectionTitle" class="mt-6 text-[12px] font-extrabold text-black sm:text-[13px]">
+            {{ detail.sectionTitle }}
+          </div>
+
+          <!-- Numbered points -->
+          <div *ngIf="detail.numbered?.length" class="mt-3 flex w-full flex-col gap-2">
+            <div *ngFor="let n of detail.numbered; let i = index" class="flex w-full items-start gap-3">
+              <span
+                class="mt-[2px] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black/5 text-[11px] font-semibold text-black"
+              >
+                {{ i + 1 }}
+              </span>
+              <span class="text-[12px] leading-5 text-black/70 sm:text-[13px] sm:leading-6">
+                {{ n }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+            <button
+              *ngFor="let btn of detail.ctas"
+              type="button"
+              (click)="goTo(btn.key)"
+              class="cursor-pointer inline-flex h-10 w-full items-center justify-center rounded-full px-6 text-[12px] font-semibold shadow-[0_8px_18px_rgba(0,0,0,0.08)] sm:w-auto"
+              [ngClass]="
+                btn.variant === 'solid'
+                  ? 'bg-[#FF6A3D] text-white shadow-[0_12px_26px_rgba(255,106,61,0.25)]'
+                  : 'border border-black/40 bg-white text-black'
+              "
+            >
+              {{ btn.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT IMAGE -->
+        <div class="flex w-full items-center justify-center lg:w-[560px]">
+          <div class="relative flex w-full max-w-[560px] items-center justify-center">
+            <!-- optional frame like VR Labs screenshot -->
+            <div
+              *ngIf="detail.rightFrame"
+              class="pointer-events-none absolute right-0 top-0 hidden h-full w-full border border-black/40 sm:flex"
+            ></div>
+
+          <img
+  [src]="detail.rightImage"
+  [alt]="detail.rightImageAlt"
+  class="w-full max-w-[520px] object-contain bg-transparent shadow-none"
+  draggable="false"
+/>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

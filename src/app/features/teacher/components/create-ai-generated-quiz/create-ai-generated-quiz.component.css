@@ -1,0 +1,18 @@
+.qt-icon-normal,
+.qt-icon-purple {
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+.qt-icon-normal {
+  background-color: #111827; /* normal black/gray */
+}
+
+.qt-icon-purple {
+  background-color: #7c3aed; /* selected purple */
+}
+

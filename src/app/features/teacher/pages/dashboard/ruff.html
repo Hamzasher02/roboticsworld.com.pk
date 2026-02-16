@@ -1,0 +1,499 @@
+<div class="min-h-screen bg-[#F7F9FB] overflow-x-hidden">
+  <!-- Page container (padding adjusted like screenshot) -->
+  <div class="mx-auto w-full max-w-[1200px] px-3 sm:px-4 lg:px-4 py-4 min-w-0">
+    <!-- Profile Header -->
+    <app-profile-header></app-profile-header>
+
+    <!-- Stats -->
+    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div
+        *ngFor="let s of stats; trackBy: trackByStat"
+        class="rounded-[10px] border border-gray-200 bg-white px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]"
+      >
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-[8px]" [ngClass]="s.iconBg">
+            <img [src]="s.icon" class="h-5 w-5" alt="" />
+          </div>
+
+          <div class="min-w-0">
+            <div class="text-[18px] font-bold leading-5 text-gray-900">{{ s.value }}</div>
+            <div class="mt-0.5 text-[12px] font-medium text-gray-500">{{ s.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="mt-4 space-y-3">
+      <div class="rounded-[10px] border border-[#34C759] bg-[#EFFFF4] px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#34C759] flex-shrink-0">
+              <img src="/assets/instructor-images/courses/Group.svg" class="h-4 w-4" alt="" />
+            </div>
+
+            <div class="min-w-0">
+              <div class="text-[13px] font-semibold text-[#0B6B2B]">New Demo Session Scheduled!</div>
+              <div class="mt-0.5 text-[12px] leading-5 text-[#1F7A3F]">
+                Your demo session has been scheduled by admin with Michael Chen
+              </div>
+              <div class="mt-1 text-[11px] text-[#1F7A3F]">
+                1/17/2025 at 4:00 PM - 5:00 PM • Data Science Fundamentals
+              </div>
+            </div>
+          </div>
+
+         <button
+  type="button"
+  (click)="openSessionDetail()"
+  class="h-[32px] w-full sm:w-[120px] rounded-[8px] bg-[#168A3E] text-[12px] font-semibold text-white hover:bg-[#137A36] focus:outline-none focus:ring-4 focus:ring-green-200 flex-shrink-0"
+>
+  View Details
+</button>
+
+        </div>
+      </div>
+
+      <div class="rounded-[10px] border border-[#34C759] bg-[#EFFFF4] px-4 py-3 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#34C759] flex-shrink-0">
+              <img src="/assets/instructor-images/courses/Group.svg" class="h-4 w-4" alt="" />
+            </div>
+
+            <div class="min-w-0">
+              <div class="text-[13px] font-semibold text-[#0B6B2B]">Live Sessions Scheduled!</div>
+              <div class="mt-0.5 text-[12px] leading-5 text-[#1F7A3F]">
+                Your live sessions has been scheduled by admin with Michael Chen
+              </div>
+              <div class="mt-1 text-[11px] text-[#1F7A3F]">
+                1/17/2025 at 4:00 PM - 5:00 PM • Data Science Fundamentals
+              </div>
+            </div>
+          </div>
+
+         <button
+  type="button"
+  (click)="openLiveSessionDetails()"
+  class="h-[32px] w-full sm:w-[120px] rounded-[8px] bg-[#168A3E] text-[12px] font-semibold text-white hover:bg-[#137A36] focus:outline-none focus:ring-4 focus:ring-green-200 flex-shrink-0"
+>
+  View Details
+</button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="mt-4 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-4 min-w-0">
+      <!-- Left column -->
+      <div class="space-y-4 min-w-0">
+        <!-- My Courses card -->
+        <div class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.02)] min-w-0">
+          <div class="flex items-center justify-between">
+            <h2 class="text-[13px] font-semibold text-gray-800">My Courses</h2>
+          </div>
+
+          <!-- Courses grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 min-w-0">
+            <div
+              *ngFor="let course of courses"
+              (click)="openCourseDetail(course)"
+              class="cursor-pointer flex flex-col sm:flex-row bg-[#089BC412] hover:bg-[#089BC420] p-2 rounded-lg gap-2 transition min-w-0"
+            >
+              <!-- Image -->
+              <div class="flex-shrink-0 w-full sm:w-32 h-32">
+                <img
+                  src="/assets/instructor-images/courses/Course Images.svg"
+                  class="object-cover w-full h-full rounded-md"
+                  alt="Course thumb"
+                />
+              </div>
+
+              <!-- Info -->
+              <div class="ml-0 sm:ml-4 flex flex-col justify-between flex-grow min-w-0">
+                <!-- Top row -->
+                <div class="flex items-center justify-between mb-1 gap-2 min-w-0">
+                  <span class="bg-green-50 text-green-600 text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0">
+                    {{ course.category }}
+                  </span>
+
+                  <div class="flex items-center text-xs text-orange-400 min-w-0">
+                    <img src="/assets/instructor-images/courses/Star.svg" class="w-3 h-3 mr-1 flex-shrink-0" alt="star" />
+                    <span class="font-bold text-gray-700 flex-shrink-0">{{ course.rating }}</span>
+                    <span class="text-gray-400 ml-1 whitespace-nowrap">({{ course.reviews }})</span>
+                  </div>
+                </div>
+
+                <!-- Title -->
+                <h3 class="font-bold text-sm mb-2 leading-tight min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                  {{ course.title }}
+                </h3>
+
+                <!-- avatars + duration -->
+                <div class="flex items-center justify-between text-[9px] text-gray-500 mb-1 gap-2 min-w-0 pr-1 overflow-hidden">
+                  <div class="flex items-center min-w-0">
+                    <div class="flex -space-x-2 mr-1 flex-shrink-0">
+                      <img class="w-5 h-5 rounded-full border-2 border-white" src="/assets/instructor-images/courses/Photo.svg" alt="" />
+                      <img class="w-5 h-5 rounded-full border-2 border-white" src="/assets/instructor-images/courses/Emily Johnson.svg" alt="" />
+                    </div>
+                    <span class="whitespace-nowrap truncate">You and 2 more</span>
+                  </div>
+
+                  <div class="flex items-center flex-shrink-0 ml-2">
+                    <img src="/assets/instructor-images/courses/Clock.svg" class="w-3 h-3 mr-1" alt="duration" />
+                    <span class="whitespace-nowrap">{{ course.duration }}</span>
+                  </div>
+                </div>
+
+                <!-- bottom row -->
+                <div class="flex items-center text-[11px] text-gray-500 gap-4 pl-1">
+                  <div class="flex items-center">
+                    <img src="/assets/instructor-images/courses/User.svg" class="w-3 h-3 mr-1" alt="students" />
+                    150 students
+                  </div>
+
+                  <div class="flex items-center">
+                    <img src="/assets/instructor-images/courses/bar-chart.svg" class="w-3 h-3 mr-1" alt="level" />
+                    {{ course.level }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sessions card -->
+        <div class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.02)] min-w-0">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex items-center gap-2">
+              <h2 class="text-[13px] font-semibold text-gray-800">Sessions</h2>
+
+              <select class="h-7 rounded-full border border-gray-200 bg-white px-3 text-[11px] font-medium text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <option>All sessions</option>
+              </select>
+
+              <select class="h-7 rounded-full border border-gray-200 bg-white px-3 text-[11px] font-medium text-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                <option>Status</option>
+              </select>
+            </div>
+
+          <button
+  type="button"
+  (click)="goToManageSessions()"
+  class="h-7 w-full sm:w-auto rounded-full border border-gray-200 bg-white px-4 text-[11px] font-semibold text-[#089BC4] hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-100"
+>
+  View All
+</button>
+
+          </div>
+
+          <!-- ✅ NO SCROLLER: table-fixed + widths + truncate -->
+<div class="mt-3 w-full min-w-0 overflow-x-auto">
+<table class="min-w-[850px] w-full table-fixed text-left">
+             <thead>
+  <tr class="text-[10px] font-semibold uppercase text-gray-500">
+    <th class="py-2 pr-3 w-[120px]">Date &amp; Time</th>
+    <th class="py-2 pr-3 w-[220px]">Course</th>     <!-- 240 -> 220 -->
+    <th class="py-2 pr-3 w-[200px]">Student</th>    <!-- 180 -> 200 -->
+    <th class="py-2 pr-3 w-[100px]">Session</th>    <!-- 110 -> 100 -->
+    <th class="py-2 pr-3 w-[140px]">Status</th>     <!-- 110 -> 140 ✅ -->
+    <th class="py-2 text-right w-[70px]">Actions</th>
+  </tr>
+</thead>
+
+
+              <tbody class="divide-y divide-gray-100">
+                <tr *ngFor="let s of sessions; trackBy: trackBySession" class="text-[12px] text-gray-700">
+                  <td class="py-3 pr-3">
+                    <div class="font-semibold text-gray-700">{{ s.date }}</div>
+                    <div class="text-[11px] text-gray-500">{{ s.time }}</div>
+                  </td>
+
+                  <td class="py-3 pr-3 text-gray-700">
+                    <div class="truncate">{{ s.course }}</div>
+                  </td>
+
+                  <td class="py-3 pr-3">
+                    <div class="flex items-center gap-2 min-w-0">
+                      <img [src]="s.studentAvatar" class="h-7 w-7 rounded-full flex-shrink-0" alt="" />
+                      <span class="text-[12px] font-semibold text-gray-700 truncate block min-w-0">{{ s.student }}</span>
+                    </div>
+                  </td>
+
+                  <td class="py-3 pr-3 text-gray-700">
+                    <div class="font-semibold">{{ s.sessionText }}</div>
+                    <div class="text-[11px] text-gray-500">{{ s.sessionSub }}</div>
+                  </td>
+
+                <td class="py-3 pr-3">
+  <span
+    class="inline-flex max-w-full items-center justify-center rounded-full px-2.5 py-1 text-[10px] font-semibold whitespace-nowrap"
+    [ngClass]="{
+      'bg-[#FFECEC] text-[#E54444]': s.status === 'Upcoming',
+      'bg-[#EFFFF4] text-[#168A3E]': s.status === 'Completed'
+    }"
+  >
+    {{ s.status }}
+  </span>
+</td>
+
+
+                  <td class="py-3 text-right">
+                   <button
+  type="button"
+  (click)="openSessionDetail(s)"
+  class="text-[12px] font-semibold text-sky-600 hover:text-sky-700"
+>
+  View
+</button>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Students Feedback -->
+
+     <div
+  (click)="goToFeedback()" class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.02)] min-w-0">
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-[14px] font-semibold text-gray-900">Students Feedback</h3>
+
+          <div class="relative flex-shrink-0">
+            <select
+              [(ngModel)]="feedbackFilter"
+              class="h-8 rounded-full border border-gray-200 bg-white pl-3 pr-8 text-[12px] font-medium text-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-100"
+            >
+              <option>Student</option>
+              <option>Course</option>
+              <option>All</option>
+            </select>
+
+            <svg
+              class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="mt-4 divide-y divide-[#56C3DF]">
+          <div *ngFor="let f of feedbacks; trackBy: trackByFeedback" class="py-4">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <!-- ✅ Avatar smaller -->
+              <img
+                [src]="f.avatar"
+                (error)="onImgError($event)"
+                class="h-8 w-8 rounded-full object-cover flex-shrink-0"
+                alt=""
+              />
+
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <div class="text-[13px] font-semibold text-gray-900">{{ f.name }}</div>
+                  <span class="text-[12px] text-gray-400">•</span>
+                  <div class="text-[12px] text-gray-500">{{ f.timeAgo }}</div>
+                </div>
+
+                <div class="mt-1 flex items-center gap-0.5" aria-label="rating">
+                  <ng-container *ngFor="let filled of starsArray(f.rating)">
+                    <svg
+                      class="h-4 w-4"
+                      viewBox="0 0 20 20"
+                      [attr.fill]="filled ? '#089BC4' : 'none'"
+                      [attr.stroke]="filled ? '#089BC4' : '#CBD5E1'"
+                      stroke-width="1.2"
+                      aria-hidden="true"
+                    >
+                      <path d="M10 1.6l2.47 5.36 5.83.5-4.4 3.82 1.32 5.7L10 14.9 4.78 17l1.32-5.7-4.4-3.82 5.83-.5L10 1.6z" />
+                    </svg>
+                  </ng-container>
+                </div>
+
+                <p class="mt-2 text-[12px] leading-[18px] text-gray-600 break-words">
+                  {{ f.message }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Backdrop -->
+<div
+  *ngIf="showLiveSessionDetails"
+  class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 px-3 py-4"
+>
+  <!-- Modal Card (LIMIT HEIGHT + responsive width) -->
+  <div
+    class="w-full max-w-[560px]
+ max-h-[95vh] overflow-hidden rounded-[10px] bg-white shadow-[0_20px_45px_rgba(0,0,0,0.15)]"
+  >
+    <!-- Header (fixed) -->
+    <div class="flex items-center justify-between border-b px-5 py-4">
+      <h2 class="text-[16px] font-semibold text-gray-900">
+        Session Details
+      </h2>
+
+      <button
+        type="button"
+        (click)="closeLiveSessionDetails()"
+        class="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+      >
+        ✕
+      </button>
+    </div>
+
+    <!-- ✅ Scrollable Content (only this scrolls) -->
+    <div class="max-h-[calc(90vh-120px)] overflow-y-auto px-5 py-4 space-y-5 text-[13px] text-gray-700">
+      <!-- Session Information -->
+      <div>
+        <div class="mb-3 text-[14px] font-semibold text-gray-900">
+          Session Information
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-8">
+          <div>
+            <div class="text-gray-500">Session ID</div>
+            <div class="font-medium">WEB-003</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Type</div>
+            <div class="font-medium">Regular Session</div>
+          </div>
+
+          <div>
+            <div class="text-gray-500">Course</div>
+            <div class="font-medium">Adobe XD for Web Design</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Level</div>
+            <div class="font-medium">Intermediate</div>
+          </div>
+
+          <div>
+            <div class="text-gray-500">Date</div>
+            <div class="font-medium">1/16/2025</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Time</div>
+            <div class="font-medium">2:00 PM – 3:00 PM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Schedule -->
+      <div class="rounded-[8px] bg-[#F7F3FF] px-4 py-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-8">
+          <div>
+            <div class="text-gray-500">Course Start Date</div>
+            <div class="font-medium">12/15/2024</div>
+          </div>
+          <div>
+            <div class="text-gray-500">First Session</div>
+            <div class="font-medium">12/22/2024</div>
+          </div>
+
+          <div>
+            <div class="text-gray-500">Session Frequency</div>
+            <div class="font-medium">Weekly</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Fixed Time Slot</div>
+            <div class="font-medium">2:00 PM – 3:00 PM</div>
+          </div>
+
+          <div>
+            <div class="text-gray-500">Progress</div>
+            <div class="font-medium">Session 3 of 12</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Module</div>
+            <div class="font-medium">Introduction</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Details -->
+      <div class="rounded-[8px] bg-[#F9FAFB] px-4 py-3">
+        <div class="mb-2 text-[14px] font-semibold text-gray-900">
+          Student Details
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-8">
+          <div>
+            <div class="text-gray-500">Name</div>
+            <div class="font-medium">Emily Johnson</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Email</div>
+            <div class="font-medium">sarah.johnson&#64;email.com</div>
+          </div>
+
+          <div>
+            <div class="text-gray-500">Grade</div>
+            <div class="font-medium">10th Grade</div>
+          </div>
+          <div>
+            <div class="text-gray-500">Age</div>
+            <div class="font-medium">15 years</div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div class="text-gray-500">Learning Preferences</div>
+          <div class="font-medium">
+            Interested in game development, prefers visual learning
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer (fixed) -->
+    <div class="flex justify-end gap-3 border-t px-5 py-4">
+      <button
+        type="button"
+        (click)="closeLiveSessionDetails()"
+        class="h-[34px] rounded-[8px] border border-gray-300 px-4 text-[12px]"
+      >
+        Close
+      </button>
+
+      <button
+        type="button"
+        class="h-[34px] rounded-[8px] bg-[#089BC4] px-4 text-[12px] font-semibold text-white"
+      >
+        Join Meeting
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-courses-session-detail
+  [isOpen]="showSessionDetail"
+  [data]="selectedSession"
+  (close)="closeSessionDetail()"
+  (join)="onJoinMeeting()"
+></app-courses-session-detail>
+
+<app-session-detail
+  [isOpen]="showSessionDetailModal"
+  [session]="selectedSession"
+  (close)="closeSessionDetail()"
+></app-session-detail>
+
+

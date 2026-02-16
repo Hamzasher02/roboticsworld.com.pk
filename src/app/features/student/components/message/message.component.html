@@ -1,0 +1,220 @@
+﻿<div class="min-h-screen w-full  sm:px-6 lg:px-4 sm:mb-10">
+  <div class="mx-auto w-full   overflow-hidden bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+    <!-- OUTER BORDER (wrap both panes) -->
+    <div class="bg-white">
+      <div class="flex min-h-[640px] w-full flex-col md:flex-row">
+        <!-- LEFT: Message list (its own border box on md+) -->
+        <aside class="w-full bg-white md:w-[320px] md:border md:border-[#cccccc]"
+          [ngClass]="showMobileChat ? 'hidden md:block' : 'block'">
+          <div class="p-0 sm:p-6">
+            <div class="text-[14px] font-semibold text-[#3a3a3a]">Message</div>
+
+            <!-- Search -->
+            <div class="mt-3">
+              <div class="flex h-[44px] items-center gap-2 rounded-[2px] border border-[#d7d7d7] bg-white px-4">
+                <svg class="h-[14px] w-[14px] text-[#888]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2" />
+                  <path d="M16.6 16.6 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <input class="w-full bg-transparent text-[12px] text-[#777] placeholder:text-[#9a9a9a] outline-none"
+                  placeholder="Search" type="text" />
+              </div>
+            </div>
+
+            <!-- Threads -->
+            <div class="mt-4 overflow-hidden rounded-[2px] border border-[#ececec]">
+              <!-- Selected -->
+              <div class="flex items-center gap-3 bg-[#ffe3d8] px-4 py-3 cursor-pointer" (click)="openChat()">
+                <div class="relative">
+                  <img class="h-[34px] w-[34px] rounded-full object-cover"
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=60"
+                    alt="" />
+                  <span
+                    class="absolute -bottom-[1px] -right-[1px] h-[10px] w-[10px] rounded-full border-2 border-[#ffe3d8] bg-[#2ecc71]"></span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="truncate text-[12px] font-semibold text-[#3a3a3a]">Jane Cooper</div>
+                    <div class="shrink-0 text-[12px] text-[#8a8a8a]">just now</div>
+                  </div>
+                  <div class="mt-[2px] truncate text-[11px] text-[#8a8a8a]">Yeah sure , tell me zafor</div>
+                </div>
+              </div>
+
+              <!-- Item -->
+              <div class="flex items-center gap-3 border-t border-[#f0f0f0] bg-white px-4 py-3 cursor-pointer"
+                (click)="openChat()">
+                <img class="h-[34px] w-[34px] rounded-full object-cover"
+                  src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&q=60"
+                  alt="" />
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="truncate text-[12px] font-semibold text-[#3a3a3a]">Jenny Wilson</div>
+                    <div class="flex items-center gap-2">
+                      <div class="text-[12px] text-[#8a8a8a]">2 d</div>
+                      <span class="h-[6px] w-[6px] rounded-full bg-[#ff5a2c]"></span>
+                    </div>
+                  </div>
+                  <div class="mt-[2px] truncate text-[11px] text-[#8a8a8a]">Thank you so much, sir</div>
+                </div>
+              </div>
+
+              <!-- Item -->
+              <div class="flex items-center gap-3 border-t border-[#f0f0f0] bg-white px-4 py-3 cursor-pointer"
+                (click)="openChat()">
+                <img class="h-[34px] w-[34px] rounded-full object-cover"
+                  src="https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?auto=format&fit=crop&w=120&q=60"
+                  alt="" />
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="truncate text-[12px] font-semibold text-[#3a3a3a]">Marvin McKinney</div>
+                    <div class="flex items-center gap-2">
+                      <div class="text-[12px] text-[#8a8a8a]">1 m</div>
+                      <span class="h-[6px] w-[6px] rounded-full bg-[#ff5a2c]"></span>
+                    </div>
+                  </div>
+                  <div class="mt-[2px] truncate text-[11px] text-[#8a8a8a]">Youre Welcome</div>
+                </div>
+              </div>
+
+              <!-- Item -->
+              <div class="flex items-center gap-3 border-t border-[#f0f0f0] bg-white px-4 py-3 cursor-pointer"
+                (click)="openChat()">
+                <img class="h-[34px] w-[34px] rounded-full object-cover"
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=60"
+                  alt="" />
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="truncate text-[12px] font-semibold text-[#3a3a3a]">Eleanor Pena</div>
+                    <div class="flex items-center gap-2">
+                      <div class="text-[12px] text-[#8a8a8a]">1 m</div>
+                      <span class="h-[6px] w-[6px] rounded-full bg-[#ff5a2c]"></span>
+                    </div>
+                  </div>
+                  <div class="mt-[2px] truncate text-[11px] text-[#8a8a8a]">Thank you so much, sir</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden h-full md:block"></div>
+        </aside>
+
+        <!-- GAP BETWEEN TWO BORDER BOXES (md+) -->
+        <div class="hidden w-[18px] bg-transparent md:block"></div>
+
+        <!-- RIGHT: Chat (its own border box on md+) -->
+        <section class="p-2 flex min-h-[640px] w-full flex-1 flex-col bg-white md:border md:border-[#cacaca]"
+          [ngClass]="showMobileChat ? 'flex' : 'hidden md:flex'">
+          <!-- Header -->
+          <div class="w-full border-b border-[#e7e7e7] px-0 py-5 sm:px-6">
+            <div class="relative w-full">
+              <button type="button"
+                class="absolute left-0 top-1/2 -translate-y-1/2 flex h-5 w-8 items-center justify-center     bg-white md:hidden"
+                (click)="closeChat()" aria-label="Back">
+                <img src="assets\student\buy course\LeftArrow.svg" alt="" class="w-4 h-4">
+              </button>
+
+              <div class="flex w-full items-center gap-2 ps-8 md:ps-0">
+                <div class="h-[56px] w-[56px] overflow-hidden rounded-full bg-[#e6e6e6]">
+                  <img class="h-full w-full object-cover"
+                    src="assets\student\studentHeader\studentProfile.svg"
+                    alt="" />
+                </div>
+
+                <div class="leading-tight">
+                  <div class="text-[14px] font-semibold text-[#2f2f2f]">Kevin Gilbert</div>
+                  <div class="mt-[2px] text-[11px] text-[#9a9a9a]">Active Now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Messages area -->
+          <div class="relative flex-1 px-0 sm:px-8 pt-6">
+            <div class="text-center text-[12px] text-[#8e8e8e]">Today</div>
+
+            <div class="mt-6 flex items-start gap-3">
+              <img class="mt-[2px] h-[18px] w-[18px] rounded-full object-cover"
+                src="https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?auto=format&fit=crop&w=80&q=60"
+                alt="" />
+              <div>
+                <div class="text-[12px] text-[#8e8e8e]">Time</div>
+                <div
+                  class="mt-2 max-w-[520px] rounded-[2px] bg-[#f7e6df] px-4 py-3 text-[11px] leading-[1.55] text-[#6a6a6a]">
+                  Hello and thanks for signing up to the course. If you have any questions about the course or Adobe XD,
+                  feel free to get in touch and I'll be happy to help ðŸ™‚
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-14 flex flex-col items-end">
+              <div class="text-[12px] text-[#8e8e8e]">Time</div>
+              <div class="mt-2 w-fit rounded-[2px] bg-[#ff5a2c] px-3 py-2 text-[11px] text-white">
+                Hello, Good Evening,
+              </div>
+              <div class="mt-2 w-fit rounded-[2px] bg-[#ff5a2c] px-3 py-2 text-[11px] text-white">
+                I'm Zafor
+              </div>
+              <div
+                class="mt-3 max-w-[420px] rounded-[2px] bg-[#ff5a2c] px-4 py-3 text-[11px] leading-[1.55] text-white">
+                I only have a small doubt about your lecture. can you give me some time for this?
+              </div>
+            </div>
+
+            <div class="mt-16 mb-6 flex items-start gap-3">
+              <img class="mt-[2px] h-[18px] w-[18px] rounded-full object-cover"
+                src="https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?auto=format&fit=crop&w=80&q=60"
+                alt="" />
+              <div>
+                <div class="text-[12px] text-[#8e8e8e]">Time</div>
+                <div class="mt-2 w-fit rounded-[2px] bg-[#f7e6df] px-4 py-3 text-[11px] text-[#6a6a6a]">
+                  Yeah sure , tell me zafor
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Composer -->
+          <div class="px-0 sm:px-6 pb-6">
+            <div class="rounded-[2px] border border-[#e7e7e7] bg-white p-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex h-[44px] flex-1 items-center gap-3 rounded-[2px] border border-[#e7e7e7] bg-white px-4">
+                  <svg class="h-[14px] w-[14px] text-[#ff5a2c]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 20h4l10.5-10.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L4 16v4Z" stroke="currentColor"
+                      stroke-width="2" stroke-linejoin="round" />
+                    <path d="M13.5 6.5 17.5 10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                  <input type="text"
+                    class="w-full bg-transparent text-[12px] text-[#7a7a7a] placeholder:text-[#a0a0a0] outline-none"
+                    placeholder="Type your message" />
+                </div>
+
+                <button type="button"
+                  class="hidden h-[44px] w-[44px] items-center justify-center rounded-[2px] border border-[#e7e7e7] bg-white md:flex"
+                  aria-label="Attach">
+                  <svg class="h-[16px] w-[16px] text-[#ff5a2c]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21 12.5 13 20.5a6 6 0 0 1-8.5-8.5L13 3.5a4 4 0 0 1 5.7 5.6L10 17.8a2 2 0 1 1-2.8-2.8l8-8"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+                <button type="button"
+                  class="flex h-[44px] w-[44px] sm:w-[92px] items-center justify-center gap-2 rounded-[2px] bg-[#ff5a2c] text-[12px] font-semibold text-white">
+                  <span class="hidden sm:inline">Send</span>
+                  <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

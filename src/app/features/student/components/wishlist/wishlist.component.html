@@ -1,0 +1,159 @@
+﻿<div class="min-h-screen bg-white">
+  <main class="mx-auto w-full max-w-[1180px] px-4  sm:mb-10">
+    <!-- Title -->
+    <h1 class="text-[18px] font-semibold text-slate-900">Wishlist ({{ wishlistItems.length }})</h1>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && wishlistItems.length === 0"
+      class="mt-10 text-center py-20 bg-slate-50 rounded-lg border border-slate-200">
+      <div class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 mb-4">
+        <svg class="h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-slate-900">Your wishlist is empty</h3>
+      <p class="mt-1 text-slate-500">Explore courses and add them to your wishlist!</p>
+      <a routerLink="/student/courses"
+        class="mt-6 inline-flex items-center justify-center rounded-md bg-orange-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500">
+        Browse Courses
+      </a>
+    </div>
+
+    <!-- Table Header (desktop/tablet only) -->
+    <div *ngIf="wishlistItems.length > 0" class="mt-5 hidden border-y border-slate-300 sm:block">
+      <div class="flex w-full items-center px-6 py-4 text-[12px] font-medium text-slate-900">
+        <div class="flex w-[46%] items-center">Course</div>
+        <div class="flex w-[34%] items-center justify-center">Prices</div>
+        <div class="flex w-[20%] items-center justify-center">Actions</div>
+      </div>
+    </div>
+
+    <!-- Rows -->
+    <div *ngIf="wishlistItems.length > 0"
+      class="mt-6 divide-y divide-slate-200 border-y border-slate-300 sm:mt-0 sm:border-y-0 sm:border-b sm:border-slate-300">
+
+      <!-- List Items Loop -->
+      <article *ngFor="let item of wishlistItems"
+        class="flex w-full flex-col gap-4 py-6 sm:flex-row sm:items-center sm:gap-4">
+        <!-- Desktop layout -->
+        <div class="hidden w-full sm:flex sm:flex-row sm:items-center sm:gap-5">
+          <!-- Course (46%) -->
+          <div class="flex w-[46%] items-center gap-5">
+            <div class="h-[88px] w-[150px] overflow-hidden rounded border border-slate-200 bg-slate-100">
+              <img [src]="item.imageUrl || 'assets/student/courseImage/courseImage.svg'" alt="Course thumbnail"
+                class="h-full w-full object-cover" onerror="this.src='assets/student/courseImage/courseImage.svg'" />
+            </div>
+
+            <div class="min-w-0">
+              <!-- Rating -->
+              <div class="flex items-center gap-5 text-[12px] text-slate-500">
+                <span class="inline-flex items-center gap-1">
+                  <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                  4.8 (256)
+                </span>
+                <span>Reviews</span>
+              </div>
+
+              <h2 class="mt-2 text-[15px] font-semibold leading-5 text-slate-900">
+                {{ item.title }}
+              </h2>
+            </div>
+          </div>
+
+          <!-- Prices (34%) -->
+          <div class="flex w-[34%] items-center justify-center">
+            <div class="flex w-full items-start justify-center gap-8 text-center">
+              <div>
+                <div class="text-[16px] font-semibold text-[#F97316]">$ {{ item.price }}</div>
+                <div class="text-[10px] text-slate-400">For Recorded Sessions</div>
+              </div>
+              <div>
+                <div class="text-[16px] font-semibold text-[#F97316]">$ {{ item.price }}</div>
+                <div class="text-[10px] text-slate-400">For Live Sessions</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions (20%) -->
+          <div class="flex w-[20%] items-center justify-center">
+            <div class="flex w-full items-center gap-2">
+              <!-- Buy Now (Move to Cart) -->
+              <button (click)="moveToCart(item)" [disabled]="updating"
+                class="flex h-[40px] w-full max-w-[240px] items-center justify-center rounded-[4px] bg-[#FFF3E8] text-[13px] font-semibold text-[#F97316] shadow-[0_1px_0_rgba(0,0,0,0.04)] hover:bg-[#FFE7D1] disabled:opacity-50">
+                Buy Now
+              </button>
+
+              <!-- Heart (Remove) -->
+              <button type="button" (click)="removeItem(item)" [disabled]="updating" aria-label="Remove from wishlist"
+                class="flex h-[40px] w-[56px] items-center justify-center rounded-[4px] bg-[#FFE4DE] text-red-500 shadow-[0_1px_0_rgba(0,0,0,0.04)] hover:bg-[#FFD5CC] disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile layout -->
+        <div class="flex w-full flex-col sm:hidden">
+          <!-- Course title first -->
+          <h2 class="text-[15px] font-semibold leading-5 text-slate-900">
+            {{ item.title }}
+          </h2>
+
+          <!-- Image below name -->
+          <div class="mt-3 w-full overflow-hidden rounded border border-slate-200 bg-slate-100">
+            <img [src]="item.imageUrl || 'assets/student/courseImage/courseImage.svg'" alt="Course thumbnail"
+              class="h-[180px] w-full object-cover" onerror="this.src='assets/student/courseImage/courseImage.svg'" />
+          </div>
+
+          <!-- Rating etc -->
+          <div class="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-slate-500">
+            <span class="inline-flex items-center gap-1">
+              <svg class="h-3.5 w-3.5 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+              </svg>
+              4.8 (256)
+            </span>
+            <span>Reviews</span>
+          </div>
+
+          <!-- Prices -->
+          <div class="mt-4 flex w-full flex-col gap-3 rounded-[8px] border border-slate-200 bg-white px-4 py-4">
+            <div class="flex items-center justify-between">
+              <div class="text-[14px] font-semibold text-[#F97316]">$ {{ item.price }}</div>
+              <div class="text-[11px] text-slate-400">Recorded Sessions</div>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="text-[14px] font-semibold text-[#F97316]">$ {{ item.price }}</div>
+              <div class="text-[11px] text-slate-400">Live Sessions</div>
+            </div>
+          </div>
+
+          <!-- Fav button then buy button at end -->
+          <div class="mt-4 flex w-full items-center gap-2">
+            <button (click)="moveToCart(item)" [disabled]="updating"
+              class="flex h-[44px] flex-1 items-center justify-center rounded-[4px] bg-[#FFF3E8] text-[13px] font-semibold text-[#F97316] shadow-[0_1px_0_rgba(0,0,0,0.04)] hover:bg-[#FFE7D1] disabled:opacity-50">
+              Buy Now
+            </button>
+            <button type="button" (click)="removeItem(item)" [disabled]="updating" aria-label="Remove"
+              class="flex h-[44px] w-[56px] shrink-0 items-center justify-center rounded-[4px] bg-[#FFE4DE] text-red-500 shadow-[0_1px_0_rgba(0,0,0,0.04)] hover:bg-[#FFD5CC] disabled:opacity-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                  clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+</div>

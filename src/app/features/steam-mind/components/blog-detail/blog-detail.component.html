@@ -1,0 +1,285 @@
+<section class="w-full bg-white">
+  <div class="mx-auto flex w-full max-w-[1200px] flex-col px-4 py-6 sm:px-6 lg:px-8">
+    <!-- Back -->
+    <div class="flex w-full items-center">
+      <button
+        type="button"
+        (click)="goBack()"
+        aria-label="Back"
+        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition hover:bg-black/5 active:scale-[0.98]"
+      >
+        <svg class="h-6 w-6 text-[#111827]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M15 18 9 12l6-6"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Title + meta -->
+    <header class="mt-3 flex w-full flex-col py-6">
+      <h1 class="text-[22px] font-extrabold leading-[1.15] text-[#111827] sm:text-[30px] lg:text-[34px]">
+        {{ article.title }}
+      </h1>
+
+      <p class="mt-2 text-[11px] font-medium text-[#6B7280] sm:text-[12px]">
+        {{ article.author }} on {{ article.date }}
+      </p>
+    </header>
+
+    <!-- CONTENT ROW -->
+    <div class="mt-6 flex w-full flex-col gap-10 lg:flex-row lg:items-start">
+      <!-- LEFT -->
+      <article class="flex w-full flex-1 flex-col">
+        <!-- Hero -->
+        <div
+          class="flex w-full overflow-hidden rounded-[6px] border border-[#E5E7EB] bg-white shadow-[0_10px_28px_rgba(17,24,39,0.08)]"
+        >
+          <img
+            [src]="article.coverImg"
+            [alt]="article.title"
+            class="h-[180px] w-full object-cover sm:h-[260px] lg:h-[340px]"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Intro -->
+        <div class="mt-8 flex w-full flex-col">
+          <p
+            *ngFor="let p of article.intro; trackBy: trackByIdx"
+            class="text-[14px] leading-[1.9] text-[#374151] sm:text-[15px]"
+            [class.mt-6]="p !== article.intro[0]"
+          >
+            {{ p }}
+          </p>
+        </div>
+
+        <!-- CARDS (1-10) -->
+        <section
+          *ngFor="let c of article.cards; trackBy: trackByCardId"
+          class="mt-12 w-full bg-white"
+        >
+          <div class="flex w-full flex-col">
+            <h2 class="text-[22px] font-extrabold leading-[1.25] text-[#7C3AED]">
+              {{ c.title }}
+            </h2>
+
+            <p class="mt-2 text-[12px] font-medium leading-5 text-[#111827]/80">
+              {{ c.meta }}
+              <ng-container *ngIf="c.metaLink">
+                (<a
+                  [href]="c.metaLink.url"
+                  target="_blank"
+                  class="cursor-pointer text-[#2563EB] underline"
+                  >{{ c.metaLink.label }}</a
+                >)
+              </ng-container>
+            </p>
+
+            <p *ngFor="let p of c.body; trackBy: trackByIdx" class="mt-4 text-[14px] leading-[1.9] text-[#374151]">
+              {{ p }}
+            </p>
+
+            <p *ngIf="c.example" class="mt-4 text-[13px] leading-[1.8] text-[#374151]">
+              <span class="font-semibold text-[#111827]">Example:</span>
+              <span class="ml-1">{{ c.example }}</span>
+            </p>
+
+            <div *ngIf="c.image" class="mt-5 flex w-full">
+              <img
+                [src]="c.image"
+                [alt]="c.imageAlt || c.title"
+                class="w-full rounded-[4px] border border-[#E5E7EB] object-cover"
+                draggable="false"
+              />
+            </div>
+
+            <p *ngIf="c.learningOutcome" class="mt-5 text-[13px] leading-[1.8] text-[#374151]">
+              <span class="font-semibold text-[#111827]">Learning Outcome:</span>
+              <span class="ml-1">{{ c.learningOutcome }}</span>
+            </p>
+
+            <div *ngIf="c.proTip" class="mt-4 flex items-start gap-2 text-[13px] leading-[1.8] text-[#374151]">
+              <span>💡</span>
+              <p>
+                <span class="font-semibold text-[#111827]">Pro Tip:</span>
+                <span class="ml-1">{{ c.proTip }}</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHY STEM + FINAL / CTA (Dynamic) -->
+        <section class="mt-14 w-full bg-white">
+          <div class="flex w-full flex-col">
+            <h2 class="text-[22px] font-extrabold leading-[1.25] text-[#7C3AED]">
+              {{ article.whyStem.title }}
+            </h2>
+
+            <p class="mt-3 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.whyStem.intro }}
+            </p>
+
+            <p class="mt-4 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.whyStem.subIntro }}
+            </p>
+
+            <ul class="mt-4 flex flex-col gap-2 text-[14px] leading-[1.9] text-[#374151]">
+              <li *ngFor="let b of article.whyStem.bullets; trackBy: trackByIdx" class="flex items-start gap-2">
+                <span>{{ b.icon }}</span>
+                <span>{{ b.text }}</span>
+              </li>
+            </ul>
+
+            <p class="mt-5 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.whyStem.footer }}
+            </p>
+
+            <h2 class="mt-10 text-[22px] font-extrabold leading-[1.25] text-[#7C3AED]">
+              {{ article.codingal.title }}
+            </h2>
+
+            <p class="mt-3 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.codingal.body }}
+            </p>
+
+            <p class="mt-4 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.codingal.subBody }}
+            </p>
+
+            <ul class="mt-4 flexi flex-col gap-2 text-[14px] leading-[1.9] text-[#374151]">
+              <li *ngFor="let p of article.codingal.projects; trackBy: trackByIdx" class="flex items-start gap-2">
+                <span>{{ p.icon }}</span>
+                <span>{{ p.text }}</span>
+              </li>
+            </ul>
+
+            <p class="mt-5 text-[14px] leading-[1.9] text-[#374151]">
+              {{ article.codingal.footer }}
+            </p>
+
+            <h2 class="mt-10 text-[22px] font-extrabold leading-[1.25] text-[#7C3AED]">
+              {{ article.finalThoughts.title }}
+            </h2>
+
+            <p *ngFor="let p of article.finalThoughts.paras; trackBy: trackByIdx" class="mt-4 text-[14px] leading-[1.9] text-[#374151]"
+              [class.mt-3]="p === article.finalThoughts.paras[0]"
+            >
+              {{ p }}
+            </p>
+
+            <h2 class="mt-10 text-[22px] font-extrabold leading-[1.25] text-[#7C3AED]">
+              {{ article.ready.title }}
+            </h2>
+
+            <p class="mt-3 text-[14px] leading-[1.9] text-[#374151]">
+              👉
+              <button
+                type="button"
+                (click)="openCta(article.ready.ctaUrl)"
+                class="cursor-pointer font-semibold text-[#7C3AED] underline underline-offset-2"
+              >
+                {{ article.ready.ctaText }}
+              </button>
+              {{ article.ready.tailText }}
+            </p>
+          </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="mt-14 h-px w-full bg-[#E5E7EB]"></div>
+
+        <!-- Share + CTA -->
+        <section class="mt-16 w-full bg-white">
+          <div class="flex w-full flex-col">
+            <p class="mb-4 text-[14px] font-medium text-[#111827]">
+              {{ article.share.title }}
+            </p>
+
+            <div
+              class="flex w-full flex-col items-center justify-center rounded-[16px]
+                     bg-gradient-to-r from-[#8F2C8D] to-[#6D2A7B]
+                     px-6 py-12 text-center
+                     shadow-[0_20px_40px_rgba(0,0,0,0.15)]
+                     sm:px-10 sm:py-14"
+            >
+              <div class="mb-5 flex items-center justify-center">
+                <img
+                  [src]="article.share.logo"
+                  alt="STEAM Minds logo"
+                  class="h-14 w-14 object-contain"
+                  draggable="false"
+                />
+              </div>
+
+              <h2 class="text-[22px] font-extrabold leading-[1.25] text-white sm:text-[24px]">
+                {{ article.share.heading }}
+              </h2>
+
+              <p class="mt-3 max-w-[620px] text-[14px] leading-[1.9] text-white/90">
+                {{ article.share.subHeading }}
+              </p>
+
+              <div class="mt-7 flex">
+                <button
+                  type="button"
+                  (click)="bookFreeClass()"
+                  class="cursor-pointer rounded-[10px] bg-white px-8 py-3 text-[14px] font-semibold text-[#7C3AED]
+                         shadow-[0_6px_18px_rgba(0,0,0,0.15)] transition
+                         hover:scale-[1.03] hover:shadow-[0_10px_25px_rgba(0,0,0,0.18)]
+                         active:scale-[0.98]"
+                >
+                  {{ article.share.buttonText }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- RIGHT: Sticky CTA (DO NOT CHANGE STICKY) -->
+      <aside class="flex w-full lg:w-[350px] lg:shrink-0 lg:sticky lg:top-6 lg:self-start">
+        <div
+          class="flex w-full min-h-[560px] flex-col items-center justify-between rounded-[10px]
+                 border border-[#E9D5FF] bg-[#F6EEFF]
+                 px-8 py-12 text-center
+                 shadow-[0_10px_30px_rgba(17,24,39,0.08)]"
+        >
+          <div class="flex w-full flex-col items-center">
+            <div class="flex h-[92px] w-[92px] items-center justify-center">
+              <img
+                src="assets/steam-mind/header/SteamMindLogo.svg"
+                alt="STEAM Minds"
+                class="h-[78px] w-[78px] object-contain"
+                draggable="false"
+              />
+            </div>
+
+            <h3 class="mt-7 text-[20px] font-extrabold leading-tight text-[#7E1F86]">
+              Join STEAM Minds
+            </h3>
+
+            <p class="mt-5 max-w-[280px] text-[14px] leading-[1.7] text-[#374151]">
+              Top-rated online programming, coding &amp; AI classes for kids. Start your learning journey today!
+            </p>
+          </div>
+
+          <button
+            type="button"
+            (click)="bookFreeClass()"
+            class="mt-10 inline-flex h-[48px] w-[240px] cursor-pointer items-center justify-center rounded-[9px]
+                   bg-[#8E3A86] text-[14px] font-semibold text-white
+                   shadow-[0_12px_22px_rgba(142,58,134,0.30)]
+                   transition hover:brightness-95 active:scale-[0.98]"
+          >
+            Book Free Class
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

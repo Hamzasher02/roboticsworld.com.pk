@@ -1,0 +1,150 @@
+﻿<!-- Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-3 py-4 sm:py-6">
+    <!-- Modal -->
+    <div class="flex w-full max-w-[600px] flex-col overflow-hidden rounded-[6px] bg-white shadow-2xl
+           max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)]">
+
+        <!-- Loading/Error -->
+        <div *ngIf="loading" class="p-10 text-center text-gray-500">Loading details...</div>
+        <div *ngIf="error" class="p-10 text-center text-red-500">{{ error }}</div>
+
+        <!-- Content -->
+        <ng-container *ngIf="session && !loading">
+            <!-- Header (sticky) -->
+            <div class="flex flex-none items-center justify-between border-b px-6 py-2">
+                <h2 class="text-[13px] font-semibold text-[#111827]">Session Details</h2>
+
+                <a [routerLink]="['/student/view-upcomming-sessions']"
+                    class="flex h-8 w-8 items-center justify-center cursor-pointer">
+                    <img src="assets/student/buy course/crossIcon.svg" alt="Close" class="h-4 w-4" />
+                </a>
+
+            </div>
+
+            <!-- Body (ONLY this scrolls when needed) -->
+            <div class="flex-1 overflow-y-auto px-6 py-2 text-[12px] text-[#374151]">
+                <div class="flex flex-col gap-2">
+                    <!-- Session Information -->
+                    <div class="flex flex-col">
+                        <div class="text-[12px] font-semibold text-[#111827]">Session Information</div>
+
+                        <div class="mt-2 flex flex-row flex-wrap gap-x-14 gap-y-3">
+                            <div class="flex w-full flex-col gap-3 sm:w-[calc(50%-28px)]">
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Session ID:</div>
+                                    <div class="font-semibold text-[#111827] truncate" [title]="session._id">{{
+                                        session._id | slice:0:8 }}...</div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Category</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.category || 'N/A' }}</div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Sub Category</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.subcategory || 'N/A' }}</div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Course :</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.course?.courseTitle || 'N/A' }}
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Date</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.preferredDate |
+                                        date:'mediumDate' }}</div>
+                                </div>
+                            </div>
+
+                            <div class="flex w-full flex-col gap-3 sm:w-[calc(50%-28px)]">
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Status:</div>
+                                    <div class="font-semibold" [ngClass]="{
+                                        'text-yellow-600': session.status === 'pending',
+                                        'text-green-600': session.status === 'approved',
+                                        'text-red-600': session.status === 'rejected'
+                                    }">{{ session.status | titlecase }}</div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Approved Date:</div>
+                                    <div class="font-semibold text-[#111827]">{{ (session.approvedDate |
+                                        date:'mediumDate') || 'Pending' }}</div>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <div class="text-[11px] text-[#9CA3AF]">Time:</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.preferredTime }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructor Details -->
+                    <div class="flex flex-col" *ngIf="session.instructor">
+                        <div class="text-[12px] font-semibold text-[#111827]">Instructor Details</div>
+
+                        <div class="mt-2 flex w-full flex-col rounded-[6px] bg-[#F9FAFB] px-5 py-3">
+                            <div class="flex flex-row flex-wrap gap-x-14 gap-y-3">
+                                <div class="flex w-full flex-col sm:w-[calc(50%-28px)]">
+                                    <div class="text-[11px] text-[#9CA3AF]">Name:</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.instructor.firstName }} {{
+                                        session.instructor.lastName }}</div>
+                                </div>
+
+                                <div class="flex w-full flex-col sm:w-[calc(50%-28px)]">
+                                    <div class="text-[11px] text-[#9CA3AF]">Email:</div>
+                                    <div class="font-semibold text-[#111827]">{{ session.instructor.email || 'N/A' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col" *ngIf="!session.instructor">
+                        <div class="text-[12px] font-semibold text-[#111827]">Instructor Details</div>
+                        <p class="mt-2 text-gray-500 italic">Instructor not assigned yet.</p>
+                    </div>
+
+                    <!-- Meeting Information -->
+                    <div class="flex flex-col" *ngIf="session.demoSessionLink && session.status === 'approved'">
+                        <div class="text-[12px] font-semibold text-[#111827]">Meeting Information</div>
+
+                        <div
+                            class="mt-2 flex flex-row flex-wrap items-start justify-between gap-3 rounded-[6px] bg-[#EAF2FF] px-5 py-3">
+                            <div class="flex min-w-0 flex-col">
+                                <div class="text-[11px] text-[#6B7280]">Meeting Link:</div>
+                                <a [href]="session.demoSessionLink" target="_blank"
+                                    class="truncate text-[12px] font-medium text-[#2563EB] underline">
+                                    {{ session.demoSessionLink }}
+                                </a>
+                            </div>
+
+                            <div class="flex flex-row flex-wrap items-center justify-end gap-2">
+                                <button type="button"
+                                    class="h-8 rounded-[6px] bg-[#2563EB] px-4 text-[12px] font-semibold text-white hover:opacity-90">
+                                    Copy Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer (sticky) -->
+            <div class="flex flex-none flex-row flex-wrap items-center justify-end gap-3 border-t px-6 py-3">
+                <a [routerLink]="['/student/view-upcomming-sessions']"
+                    class="flex items-center justify-center h-9 rounded-[8px] border border-[#D1D5DB] bg-white px-6 text-[12px] font-semibold text-[#111827] hover:bg-[#F9FAFB] cursor-pointer no-underline">
+                    Close
+                </a>
+
+                <a *ngIf="session.demoSessionLink" [href]="session.demoSessionLink" target="_blank"
+                    class="flex items-center justify-center h-9 rounded-[8px] bg-[#F97316] px-6 text-[12px] font-semibold text-white hover:opacity-90 no-underline cursor-pointer">
+                    Join Meeting
+                </a>
+            </div>
+        </ng-container>
+    </div>
+</div>

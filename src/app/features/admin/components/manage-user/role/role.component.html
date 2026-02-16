@@ -1,0 +1,478 @@
+<div class="min-h-screen bg-white p-3 sm:p-4 md:p-6">
+  <!-- Tabs -->
+  <div class="flex flex-wrap gap-2 rounded-lg bg-[#F5F5F5] p-2 sm:p-2.5 mb-4 sm:mb-6">
+    <ng-container *ngFor="let tab of tabs">
+      <button (click)="setActiveTab(tab)" [ngClass]="{
+          'bg-[#923D8C] text-white': activeTab === tab,
+          'text-gray-700': activeTab !== tab
+        }"
+        class="cursor-pointer px-3 sm:px-4 md:px-5 py-2 text-[11px] sm:text-sm md:text-base font-medium rounded-md transition-all duration-200 hover:bg-[#923D8C] hover:text-white whitespace-nowrap shrink-0">
+        {{ tab }}
+      </button>
+    </ng-container>
+  </div>
+
+  <!-- Filters + Actions -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4">
+    <!-- Filters -->
+    <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+      <select [(ngModel)]="roleFilter" (change)="loadUsers()"
+        class="w-full sm:w-44 md:w-52 h-9 md:h-10 text-xs sm:text-sm md:text-base px-3 border border-gray-200 rounded-full bg-white text-gray-700">
+        <option *ngFor="let r of roleOptions" [value]="r">
+          {{ r === 'All' ? 'Role' : r }}
+        </option>
+      </select>
+
+      <select *ngIf="activeTab !== 'Added Role'" [(ngModel)]="statusFilter" (change)="loadUsers()"
+        class="w-full sm:w-44 md:w-52 h-9 md:h-10 text-xs sm:text-sm md:text-base px-3 border border-gray-200 rounded-full bg-white text-gray-700">
+        <option value="All">Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option *ngIf="activeTab === 'Invited User'" value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <!-- Right Buttons -->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full lg:w-auto">
+      <button *ngIf="anySelected()" (click)="deleteSelected()"
+        class="w-full sm:w-auto px-4 py-2 bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base font-medium hover:bg-red-700 transition">
+        Delete
+      </button>
+
+      <div class="relative add-new-menu w-full sm:w-auto">
+        <button (click)="toggleAddNew()"
+          class="w-full sm:w-auto px-4 py-2 cursor-pointer bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base font-medium flex items-center justify-center sm:justify-start gap-2">
+          Add New <span class="text-[10px] md:text-xs">▾</span>
+        </button>
+
+        <div *ngIf="addNewOpen"
+          class="absolute right-0 mt-2 w-full sm:w-44 bg-white border rounded shadow z-50 overflow-hidden">
+          <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+            (click)="createUser()">
+            Create User
+          </button>
+          <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+            (click)="createRole()">
+            Create Role
+          </button>
+          <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+            (click)="assignRole()">
+            Assign Role
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table wrapper -->
+  <div class="overflow-x-auto rounded-lg border border-gray-200">
+    <table class="min-w-[900px] w-full">
+      <thead class="bg-[#923D8C33]">
+        <tr *ngIf="activeTab !== 'Added Role'">
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"
+                class="h-4 w-4 border-gray-300 rounded cursor-pointer" />
+              <span class="text-gray-700 text-xs sm:text-sm">Select All</span>
+            </label>
+          </th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            User Email</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Access Role</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Status</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-right text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Actions</th>
+        </tr>
+
+        <tr *ngIf="activeTab === 'Added Role'">
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"
+                class="h-4 w-4 border-gray-300 rounded cursor-pointer" />
+              <span class="text-gray-700 text-xs sm:text-sm">Select All</span>
+            </label>
+          </th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Role Name</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Description</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Type</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-left text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Permissions</th>
+          <th
+            class="px-3 sm:px-4 py-3 text-right text-[11px] sm:text-xs md:text-sm font-medium text-gray-600 uppercase tracking-wider">
+            Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of paginatedRows" class="hover:bg-gray-50">
+          <!-- USER ROW -->
+          <ng-container *ngIf="row.kind === 'user' && activeTab !== 'Added Role'">
+            <td class="px-3 sm:px-4 py-3">
+              <input type="checkbox" [(ngModel)]="row.selected" (change)="checkIfAllSelected()"
+                class="cursor-pointer h-4 w-4 border-gray-300 rounded" />
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-xs sm:text-sm md:text-base text-gray-700 max-w-[220px] truncate">
+              {{ row.email }}
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-xs sm:text-sm md:text-base text-gray-700 max-w-[180px] truncate">
+              {{ row.accessRole }}
+            </td>
+
+            <td class="px-3 sm:px-4 py-3">
+              <span [ngClass]="getStatusClass(row.status)"
+                class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs md:text-sm font-semibold inline-flex">
+                {{ row.status }}
+              </span>
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-right relative row-menu">
+              <button (click)="toggleRowMenu(row)" class="px-2 py-1 rounded hover:bg-gray-100">
+                <span class="text-lg leading-none font-bold cursor-pointer">...</span>
+              </button>
+
+              <div *ngIf="openedRow === row"
+                class="absolute right-0 mt-2 w-44 bg-white border rounded shadow z-50 overflow-hidden">
+                <ng-container *ngIf="activeTab === 'Invited User'">
+                  <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+                    (click)="changeRole(row)">
+                    Change Role
+                  </button>
+                  <button
+                    class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    (click)="removeRow(row)" [disabled]="removingRowEmails.has(row.email)">
+                    {{ removingRowEmails.has(row.email) ? 'Removing...' : 'Remove' }}
+                  </button>
+                </ng-container>
+
+                <ng-container *ngIf="activeTab === 'Added User'">
+                  <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+                    (click)="changeRole(row)">
+                    Update Role
+                  </button>
+                  <button
+                    class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    (click)="toggleStatus(row)" [disabled]="togglingStaffIds.has(row._id)">
+                    <ng-container *ngIf="!togglingStaffIds.has(row._id)">
+                      {{ getToggleStatusLabel(row) }}
+                    </ng-container>
+                    <ng-container *ngIf="togglingStaffIds.has(row._id)">
+                      {{ row.status === 'Active' ? 'Deactivating...' : 'Activating...' }}
+                    </ng-container>
+                  </button>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- ROLE ROW -->
+          <ng-container *ngIf="row.kind === 'role' && activeTab === 'Added Role'">
+            <td class="px-3 sm:px-4 py-3">
+              <input type="checkbox" [(ngModel)]="row.selected" (change)="checkIfAllSelected()"
+                class="cursor-pointer h-4 w-4 border-gray-300 rounded" />
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-xs sm:text-sm md:text-base text-gray-700 max-w-[180px] truncate">
+              {{ row.roleName }}
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-xs sm:text-sm md:text-base text-gray-700 max-w-[200px] truncate"
+              [title]="row.description">
+              {{ row.description }}
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-[10px] sm:text-xs md:text-sm text-gray-700 max-w-[150px]">
+              <div *ngFor="let p of row.routePermission" class="mb-1 last:mb-0 truncate capitalize font-bold">
+                {{ p.route }}
+              </div>
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-[10px] sm:text-xs md:text-sm text-gray-700 max-w-[180px]">
+              <div *ngFor="let p of row.routePermission" class="mb-1 last:mb-0 truncate text-gray-500">
+                {{ p.permissions.join(', ') }}
+              </div>
+            </td>
+
+            <td class="px-3 sm:px-4 py-3 text-right relative row-menu">
+              <button (click)="toggleRowMenu(row)" class="px-2 py-1 rounded hover:bg-gray-100">
+                <span class="text-lg leading-none font-bold cursor-pointer">...</span>
+              </button>
+
+              <div *ngIf="openedRow === row"
+                class="absolute right-0 mt-2 w-44 bg-white border rounded shadow z-50 overflow-hidden">
+                <button class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-gray-700"
+                  (click)="editRole(row)">
+                  Edit
+                </button>
+                <button
+                  class="w-full text-left px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 text-red-600 disabled:opacity-50"
+                  (click)="removeRole(row)" [disabled]="isDeleting">
+                  Remove
+                </button>
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+
+        <tr *ngIf="paginatedRows.length === 0">
+          <td class="px-3 py-10 text-center text-sm text-gray-500" [attr.colspan]="activeTab === 'Added Role' ? 6 : 5">
+            No records found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4 px-1 sm:px-2">
+    <button (click)="goPrev()" [disabled]="page === 1"
+      class="w-full sm:w-auto cursor-pointer px-4 py-2 bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base disabled:opacity-50 transition-colors hover:bg-[#7a3270]">
+      Previous
+    </button>
+
+    <span class="text-xs sm:text-sm md:text-base text-gray-600 font-medium text-center">
+      Page {{ page }} of {{ totalPages }}
+    </span>
+
+    <button (click)="goNext()" [disabled]="page === totalPages"
+      class="w-full sm:w-auto cursor-pointer px-4 py-2 bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base disabled:opacity-50 transition-colors hover:bg-[#7a3270]">
+      Next
+    </button>
+  </div>
+
+  <!-- ✅ Create User Modal -->
+  <div *ngIf="showCreateUserModal" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-3">
+    <div class="w-full max-w-3xl rounded-lg bg-white shadow-lg overflow-hidden">
+      <div class="px-5 py-4 border-b">
+        <h2 class="text-sm sm:text-base font-semibold text-gray-800">Create a User</h2>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <!-- Profile Picture Upload + Preview -->
+        <div class="flex items-center gap-5 my-2">
+          <div class="shrink-0">
+            <div
+              class="w-16 h-16 rounded-full border-2 border-[#923D8C22] overflow-hidden bg-gray-50 flex items-center justify-center">
+              <img *ngIf="createUserForm.profilePicturePreview" [src]="createUserForm.profilePicturePreview"
+                class="w-full h-full object-cover" />
+              <svg *ngIf="!createUserForm.profilePicturePreview" class="h-8 w-8 text-gray-300" fill="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Profile Picture</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*"
+              class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#923D8C22] file:text-[#923D8C] hover:file:bg-[#923D8C33]" />
+          </div>
+        </div>
+        <!-- Name Fields -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex-1 flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">First Name</label>
+            <input [(ngModel)]="createUserForm.firstName" type="text"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm" placeholder="First name" />
+          </div>
+          <div class="flex-1 flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Last Name</label>
+            <input [(ngModel)]="createUserForm.lastName" type="text"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm" placeholder="Last name" />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs sm:text-sm font-medium text-gray-700">Email Address</label>
+          <input [(ngModel)]="createUserForm.email" type="email"
+            class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm" placeholder="Enter email" />
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="flex-1 flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Enter Password</label>
+            <input [(ngModel)]="createUserForm.password" type="password"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm" placeholder="Password" />
+          </div>
+
+          <div class="flex-1 flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Confirm Password</label>
+            <input [(ngModel)]="createUserForm.confirmPassword" type="password"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm"
+              placeholder="Confirm password" />
+          </div>
+        </div>
+
+
+
+        <p *ngIf="createUserError" class="text-xs sm:text-sm text-red-600">{{ createUserError }}</p>
+      </div>
+
+      <div class="px-5 py-4 border-t flex items-center justify-end gap-3 bg-white">
+        <button (click)="closeCreateUserModal()"
+          class="px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm hover:bg-gray-300">Cancel</button>
+        <button (click)="submitCreateUser()" [disabled]="isSubmittingUser"
+          class="px-5 py-2 rounded bg-[#923D8C] text-white text-sm hover:bg-[#7a3270] disabled:opacity-50">
+          {{ isSubmittingUser ? 'Creating...' : 'Create User' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Create Role Modal (IMAGE LIKE) -->
+  <div *ngIf="showCreateRoleModal" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-3">
+    <div class="w-full max-w-2xl rounded-lg bg-white shadow-lg overflow-visible">
+      <div class="px-5 py-4 border-b">
+        <h2 class="text-sm sm:text-base font-semibold text-gray-800">{{ isEditMode ? 'Update Role' : 'Create a Role'
+          }}</h2>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs sm:text-sm font-medium text-gray-700">Enter Role Name</label>
+          <input [(ngModel)]="createRoleForm.roleName" type="text"
+            class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm" placeholder="Role name" />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-xs sm:text-sm font-medium text-gray-700">Role Description</label>
+          <textarea [(ngModel)]="createRoleForm.description" rows="4"
+            class="w-full px-3 py-2 border border-gray-200 rounded bg-gray-50 text-sm resize-none"
+            placeholder="Role description"></textarea>
+        </div>
+
+        <div class="flex flex-col gap-1 perms-dd-create relative">
+          <label class="text-xs sm:text-sm font-medium text-gray-700">Select Permissions</label>
+          <button (click)="togglePermissionsDropdownCreate()"
+            class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 flex items-center justify-between text-xs sm:text-sm text-gray-700">
+            <span>{{ getPermissionsLabel(createRoleForm.permissions) }}</span>
+            <span>▾</span>
+          </button>
+
+          <div *ngIf="showPermissionsDDCreate"
+            class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-xl z-[1000] max-h-60 overflow-y-auto p-2 flex flex-col gap-1">
+            <div *ngFor="let mod of permissionModules" class="border-b last:border-0 pb-1 mb-1">
+              <button (click)="toggleModuleCreate(mod.key)"
+                class="w-full flex items-center justify-between text-left px-2 py-1.5 hover:bg-gray-100 text-xs sm:text-sm font-medium text-gray-700">
+                <span>{{ mod.label }}</span>
+                <span class="text-[10px] transform transition-transform"
+                  [class.rotate-180]="expandedModuleCreate === mod.key">▼</span>
+              </button>
+
+              <div *ngIf="expandedModuleCreate === mod.key" class="px-2 pb-2 flex flex-col gap-2 bg-gray-50/50 rounded">
+                <div class="flex-col justify-between mt-1">
+                  <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="createRoleForm.permissions[mod.key].add"
+                      class="h-3.5 w-3.5 border-gray-300 rounded" />
+                    <span class="text-[11px] sm:text-xs text-gray-600">Add</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="createRoleForm.permissions[mod.key].update"
+                      class="h-3.5 w-3.5 border-gray-300 rounded" />
+                    <span class="text-[11px] sm:text-xs text-gray-600">Update</span>
+                  </label>
+                  <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="createRoleForm.permissions[mod.key].delete"
+                      class="h-3.5 w-3.5 border-gray-300 rounded" />
+                    <span class="text-[11px] sm:text-xs text-gray-600">Delete</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p *ngIf="createRoleError" class="text-xs sm:text-sm text-red-600">{{ createRoleError }}</p>
+      </div>
+
+      <div class="px-5 py-4 border-t flex items-center justify-end gap-3 bg-white">
+        <button (click)="closeCreateRoleModal()"
+          class="px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm hover:bg-gray-300">Cancel</button>
+        <button (click)="submitCreateRole()" [disabled]="isSubmittingRole"
+          class="px-5 py-2 rounded bg-[#923D8C] text-white text-sm hover:bg-[#7a3270] disabled:opacity-50">
+          {{ isEditMode ? 'Update' : 'Create Role' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Assign Role Modal (IMAGE LIKE) -->
+  <div *ngIf="showAssignRoleModal" class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 p-3">
+    <div class="w-full max-w-3xl rounded-lg bg-white shadow-lg overflow-visible">
+      <div class="px-5 py-4 border-b">
+        <h2 class="text-sm sm:text-base font-semibold text-gray-800">{{ isAssignMode ? 'Assign Role to User' : 'Change
+          Role' }}</h2>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <div class="flex flex-col sm:flex-row gap-4 mb-4">
+          <div class="flex-1 flex flex-col gap-1">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Select Role</label>
+            <select [(ngModel)]="assignRoleForm.selectedRole" (change)="onAssignRoleChange()"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 text-sm">
+              <option value="" disabled>Select Role</option>
+              <option *ngFor="let r of allRoles" [value]="r">{{ r }}</option>
+            </select>
+          </div>
+
+          <div class="flex-1 flex flex-col gap-1 email-dd-parent relative">
+            <label class="text-xs sm:text-sm font-medium text-gray-700">Email Address</label>
+            <button (mousedown)="onEmailDropdownClick($event)" [disabled]="isEmailsLoading"
+              class="w-full h-10 px-3 border border-gray-200 rounded bg-gray-50 flex items-center justify-between text-xs sm:text-sm text-gray-700">
+              <span class="truncate">{{ assignRoleForm.email || (isEmailsLoading ? 'Loading emails...' : 'Email
+                Address') }}</span>
+              <span class="shrink-0">▾</span>
+            </button>
+
+            <div *ngIf="isEmailDropdownOpen"
+              class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-xl z-[1000] max-h-48 overflow-y-auto">
+              <div *ngFor="let e of emailOptions" (click)="selectEmail(e)"
+                class="px-3 py-2 text-xs sm:text-sm hover:bg-gray-100 cursor-pointer text-gray-700 border-b last:border-0">
+                {{ e }}
+              </div>
+              <div *ngIf="emailOptions.length === 0 && !isEmailsLoading"
+                class="px-3 py-2 text-xs sm:text-sm text-gray-400">
+                No emails available
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-4 border-t flex items-center justify-end gap-3 bg-white">
+        <button (click)="closeAssignRoleModal()"
+          class="px-4 py-2 rounded bg-gray-200 text-gray-700 text-sm hover:bg-gray-300">Cancel</button>
+        <button (click)="submitAssignRole()" [disabled]="isAssigning"
+          class="px-5 py-2 rounded bg-[#923D8C] text-white text-sm hover:bg-[#7a3270] disabled:opacity-50">
+          <ng-container *ngIf="isAssigning">
+            {{ isAssignMode ? 'Assigning...' : 'Changing...' }}
+          </ng-container>
+          <ng-container *ngIf="!isAssigning">
+            {{ isAssignMode ? 'Assign' : 'Change' }}
+          </ng-container>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Standardized Status Modal -->
+  <app-status-modal [show]="showModal" [title]="modalTitle" [message]="modalMessage" [type]="modalType"
+    (close)="closeModal()">
+  </app-status-modal>
+</div>

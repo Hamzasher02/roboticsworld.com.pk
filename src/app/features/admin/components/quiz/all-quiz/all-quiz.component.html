@@ -1,0 +1,587 @@
+<!-- all-quiz.component.html -->
+<section class="min-h-screen w-full bg-[#F6F7FB]">
+  <div class="mx-auto w-full">
+    <!-- Card -->
+    <article class="w-full rounded-b-md border border-[#EEF0F4] bg-white">
+      <!-- ===== TOP FILTER STRIP ===== -->
+      <div class="px-5 pt-5 sm:px-6 sm:pt-6">
+        <div
+          class="flex w-full flex-col rounded-[10px] bg-[#F3F4F6] px-4 py-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4"
+        >
+          <!-- Left filters -->
+          <div class="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+            <!-- Search -->
+            <div class="flex w-full flex-col gap-1.5 sm:w-[220px]">
+              <label class="text-[12px] font-semibold text-[#111827]">Search</label>
+              <div
+                class="flex h-[34px] w-full items-center gap-2 rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-3"
+              >
+                <svg class="h-4 w-4 text-[#9CA3AF]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+
+                <input
+                  type="text"
+                  placeholder="Search quizzes..."
+                  class="h-full w-full bg-transparent text-[12px] text-[#111827] placeholder:text-[#9CA3AF] focus:outline-none"
+                  [value]="searchText"
+                  (input)="onSearch(($any($event.target).value || '').toString())"
+                />
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="flex w-full flex-col gap-1.5 sm:w-[150px]">
+              <label class="text-[12px] font-semibold text-[#111827]">Status</label>
+              <div class="relative">
+                <select
+                  class="h-[34px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-3 pr-9 text-[12px] text-[#111827] focus:outline-none cursor-pointer"
+                  [value]="statusFilter"
+                  (change)="onStatusChange(($any($event.target).value || '').toString())"
+                >
+                  <option value="All">All Status</option>
+                  <option value="Published">Published</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="Draft">Draft</option>
+                </select>
+
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Instructor -->
+            <div class="flex w-full flex-col gap-1.5 sm:w-[170px]">
+              <label class="text-[12px] font-semibold text-[#111827]">Instructor</label>
+              <div class="relative">
+                <select
+                  class="h-[34px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-3 pr-9 text-[12px] text-[#111827] focus:outline-none cursor-pointer"
+                  [value]="instructorFilter"
+                  (change)="onInstructorChange(($any($event.target).value || '').toString())"
+                >
+                  <option value="All">All Instructors</option>
+                  <option *ngFor="let ins of instructors" [value]="ins">{{ ins }}</option>
+                </select>
+
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Course -->
+            <div class="flex w-full flex-col gap-1.5 sm:w-[170px]">
+              <label class="text-[12px] font-semibold text-[#111827]">Course</label>
+              <div class="relative">
+                <select
+                  class="h-[34px] w-full appearance-none rounded-[8px] border border-[#E5E7EB] bg-[#F9FAFB] px-3 pr-9 text-[12px] text-[#111827] focus:outline-none cursor-pointer"
+                  [value]="courseFilter"
+                  (change)="onCourseChange(($any($event.target).value || '').toString())"
+                >
+                  <option value="All">All Courses</option>
+                  <option *ngFor="let c of courses" [value]="c">{{ c }}</option>
+                </select>
+
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- View -->
+          <div class="flex flex-col gap-1.5">
+            <label class="text-[12px] font-semibold text-[#111827]">View</label>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                (click)="setView('list')"
+                aria-label="List view"
+                class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-transparent cursor-pointer transition hover:opacity-90"
+                [ngClass]="viewMode === 'list' ? 'bg-[#923D8C] text-white' : 'bg-white text-[#6B7280] border border-[#E5E7EB] hover:bg-[#F3F4F6]'"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M3 6h1M3 12h1M3 18h1" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                (click)="setView('grid')"
+                aria-label="Grid view"
+                class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-transparent cursor-pointer transition hover:opacity-90"
+                [ngClass]="viewMode === 'grid' ? 'bg-[#923D8C] text-white' : 'bg-white text-[#6B7280] border border-[#E5E7EB] hover:bg-[#F3F4F6]'"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Showing + Buttons -->
+        <div class="flex w-full flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-[12px] text-[#6B7280]">
+            Showing {{ pageStart }}-{{ pageEnd }} of {{ filteredQuizzes.length }} quizzes
+          </p>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              (click)="exportCsv()"
+              class="inline-flex h-[30px] items-center justify-center gap-2 rounded-[8px] border border-[#E5E7EB] bg-white px-3 text-[12px] font-semibold text-[#374151] cursor-pointer transition hover:bg-[#F3F4F6]"
+            >
+              <svg class="h-4 w-4 text-[#6B7280]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3v10m0 0l4-4m-4 4l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              Export
+            </button>
+
+            <button
+              type="button"
+              (click)="refresh()"
+              class="inline-flex h-[30px] items-center justify-center gap-2 rounded-[8px] bg-[#923D8C] px-3 text-[12px] font-semibold text-white cursor-pointer transition hover:opacity-90"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20 12a8 8 0 10-2.34 5.66M20 12v-6m0 6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= LIST VIEW ================= -->
+      <div *ngIf="viewMode === 'list'" class="w-full overflow-x-auto p-4">
+        <!-- ✅ header rounded fix: wrapper -->
+  <div
+    class="w-full overflow-x-auto rounded-[10px] border border-[#EEF0F4] bg-white"
+  >
+          <table class="w-full min-w-[980px]">
+            <thead class="bg-gray-50">
+              <tr class="text-left text-[12px] font-semibold text-[#6B7280]">
+                <th class="px-6 py-4">Quiz</th>
+                <th class="px-6 py-4">Instructor</th>
+                <th class="px-6 py-4">Course</th>
+                <th class="px-6 py-4">Status</th>
+                <th class="px-6 py-4">Performance</th>
+                <th class="px-6 py-4">Actions</th>
+              </tr>
+              <tr>
+                <td colspan="6" class="h-px bg-[#EEF0F4]"></td>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-[#EEF0F4] bg-white">
+              <tr *ngFor="let q of pagedQuizzes">
+                <td class="px-6 py-4 align-top">
+                  <div class="flex flex-col">
+                    <div class="text-[14px] font-semibold leading-[1.25] text-[#111827]">
+                      {{ q.title }}
+                    </div>
+                    <div class="mt-1 text-[12px] leading-[1.25] text-[#6B7280]">ID: {{ q.id }}</div>
+                    <div class="mt-0.5 text-[12px] leading-[1.3] text-[#9CA3AF]">Created: {{ q.date }}</div>
+                  </div>
+                </td>
+
+                <td class="px-6 py-4 align-top">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-7 w-7 items-center justify-center rounded-full bg-[#D1D5DB]">
+                      <img [src]="q.instructorAvatar" alt="" class="h-7 w-7 rounded-full object-cover" />
+                    </div>
+                    <div class="text-[12px] font-medium text-[#111827]">{{ q.instructor }}</div>
+                  </div>
+                </td>
+
+                <td class="px-6 py-4 align-top">
+                  <div class="text-[12px] text-[#111827]">{{ q.course }}</div>
+                </td>
+
+                <td class="px-6 py-4 align-top whitespace-nowrap">
+                  <span
+                    class="inline-flex shrink-0 items-center whitespace-nowrap rounded-full px-3 py-1 text-[10px] font-semibold"
+                    [ngClass]="pillClasses(q.status)"
+                  >
+                    {{ q.status }}
+                  </span>
+                </td>
+
+                <td class="px-6 py-4 align-top">
+                  <div class="flex flex-col gap-1">
+                    <div class="text-[12px] font-semibold leading-[1.25] text-[#111827]">
+                      {{ q.attempts }} attempts
+                    </div>
+                    <div class="text-[12px] leading-[1.3] text-[#6B7280]">Avg: {{ q.avg }}%</div>
+                    <div class="text-[12px] leading-[1.3] text-[#6B7280]">Completion: {{ q.completion }}%</div>
+                  </div>
+                </td>
+
+                <td class="px-6 py-4 align-top">
+                  <div class="flex items-center gap-3">
+                    <button
+                      type="button"
+                      aria-label="View"
+                      (click)="viewQuiz(q)"
+                      class="text-[#923D8C] cursor-pointer transition hover:opacity-80"
+                    >
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="2" />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      aria-label="Stats"
+                      (click)="openStats(q)"
+                      class="text-[#22C55E] cursor-pointer transition hover:opacity-80"
+                    >
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 20V10M12 20V4M18 20v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                    </button>
+
+                    <button
+                      type="button"
+                      aria-label="Delete"
+                      (click)="openDeleteConfirm(q)"
+
+                      class="text-[#9CA3AF] cursor-pointer transition hover:text-[#EF4444]"
+                    >
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M8 6V4h8v2" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        <path d="M6 6l1 16h10l1-16" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngIf="pagedQuizzes.length === 0">
+                <td colspan="6" class="px-6 py-8">
+                  <div class="text-center text-[12px] text-[#6B7280]">No quizzes found.</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ================= GRID VIEW ================= -->
+      <div *ngIf="viewMode === 'grid'" class="px-5 py-5 sm:px-6 sm:py-6">
+        <div class="flex flex-wrap gap-4">
+          <article
+            *ngFor="let q of pagedQuizzes"
+            class="flex w-full flex-col rounded-[10px] border border-[#EEF0F4] bg-white px-4 py-4 shadow-[0_8px_20px_rgba(17,24,39,0.06)] sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-10.7px)]"
+          >
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <div class="text-[15px] font-semibold leading-[1.25] text-[#111827]">{{ q.title }}</div>
+                <div class="mt-1 text-[14px] leading-[1.25] text-[#6B7280]">ID: {{ q.id }}</div>
+              </div>
+
+              <span class="inline-flex shrink-0 items-center rounded-full px-3 py-1 text-[12px] font-semibold" [ngClass]="pillClasses(q.status)">
+                {{ q.status }}
+              </span>
+            </div>
+
+            <div class="mt-3 flex flex-col gap-2.5">
+              <div class="flex items-center gap-2.5">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full bg-[#D1D5DB]">
+                  <img [src]="q.instructorAvatar" alt="" class="h-6 w-6 rounded-full object-cover" />
+                </div>
+                <div class="text-[12px] text-[#111827]">{{ q.instructor }}</div>
+              </div>
+
+              <div class="flex items-center gap-2.5 text-[#6B7280]">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 6h16v12H4V6z" stroke="currentColor" stroke-width="2" />
+                  <path d="M8 10h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <div class="text-[12px] text-[#111827]">{{ q.course }}</div>
+              </div>
+
+              <div class="flex items-center gap-2.5 text-[#6B7280]">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 3v3M17 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M4 7h16v14H4V7z" stroke="currentColor" stroke-width="2" />
+                  <path d="M4 11h16" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <div class="text-[12px] text-[#111827]">{{ q.date }}</div>
+              </div>
+            </div>
+
+            <div class="mt-4 flex w-full overflow-hidden rounded-[8px] border border-[#EEF0F4] bg-[#FAFAFB]">
+              <div class="flex flex-1 flex-col items-center justify-center px-2 py-3">
+                <div class="text-[14px] font-semibold leading-[1.25] text-[#111827]">{{ q.attempts }}</div>
+                <div class="text-[12px] text-[#6B7280]">Attempts</div>
+              </div>
+              <div class="w-px bg-[#EEF0F4]"></div>
+              <div class="flex flex-1 flex-col items-center justify-center px-2 py-3">
+                <div class="text-[14px] font-semibold leading-[1.25] text-[#111827]">{{ q.avg }}%</div>
+                <div class="text-[12px] text-[#6B7280]">Avg Score</div>
+              </div>
+              <div class="w-px bg-[#EEF0F4]"></div>
+              <div class="flex flex-1 flex-col items-center justify-center px-2 py-3">
+                <div class="text-[14px] font-semibold leading-[1.25] text-[#111827]">{{ q.completion }}%</div>
+                <div class="text-[12px] text-[#6B7280]">Completion</div>
+              </div>
+            </div>
+
+            <div class="mt-4 flex w-full items-center gap-3">
+              <button
+                type="button"
+                (click)="viewQuiz(q)"
+                class="inline-flex h-[34px] flex-1 items-center justify-center gap-2 rounded-[6px] bg-[#923D8C] text-[12px] font-semibold text-white cursor-pointer transition hover:opacity-90"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="2" />
+                  <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="2" />
+                </svg>
+                View
+              </button>
+
+              <button
+                type="button"
+                (click)="openStats(q)"
+                class="inline-flex h-[34px] flex-1 items-center justify-center gap-2 rounded-[6px] border border-[#E5E7EB] bg-[#F3F4F6] text-[12px] font-semibold text-[#111827] cursor-pointer transition hover:bg-[#E5E7EB]"
+              >
+                <svg class="h-4 w-4 text-[#6B7280]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M6 20V10M12 20V4M18 20v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                Stats
+              </button>
+            </div>
+
+            <button
+              type="button"
+              (click)="openDeleteConfirm(q)"
+
+              class="mt-3 inline-flex h-[34px] w-full items-center justify-center rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-semibold text-[#EF4444] cursor-pointer transition hover:bg-[#FEF2F2]"
+            >
+              Delete
+            </button>
+          </article>
+
+          <div *ngIf="pagedQuizzes.length === 0" class="flex w-full items-center justify-center py-8">
+            <div class="text-[12px] text-[#6B7280]">No quizzes found.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PAGINATION (LIST + GRID) ===== -->
+      <div class="flex w-full flex-col gap-3 border-t border-[#EEF0F4] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div class="flex items-center gap-2">
+          <div class="text-[12px] font-medium text-[#6B7280]">Rows</div>
+
+          <div class="relative">
+            <select
+              class="h-[34px] w-[86px] appearance-none rounded-[8px] border border-[#E5E7EB] bg-white px-3 pr-8 text-[12px] font-semibold text-[#111827] focus:outline-none cursor-pointer"
+              [value]="pageSize"
+              (change)="changePageSize(+$any($event.target).value)"
+            >
+              <option [value]="3">3</option>
+              <option [value]="6">6</option>
+              <option [value]="9">9</option>
+              <option [value]="12">12</option>
+            </select>
+
+            <svg class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-2 sm:justify-end">
+          <div class="text-[12px] text-[#6B7280]">
+            Page <span class="font-semibold text-[#111827]">{{ currentPage }}</span>
+            of <span class="font-semibold text-[#111827]">{{ totalPages }}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              (click)="goToPage(1)"
+              [disabled]="currentPage === 1"
+              class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-[#6B7280] cursor-pointer transition hover:bg-[#F3F4F6] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="First page"
+            >
+              «
+            </button>
+
+            <button
+              type="button"
+              (click)="prevPage()"
+              [disabled]="currentPage === 1"
+              class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-[#6B7280] cursor-pointer transition hover:bg-[#F3F4F6] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="Previous page"
+            >
+              ‹
+            </button>
+
+            <button
+              *ngFor="let p of visiblePages"
+              type="button"
+              (click)="goToPage(p)"
+              class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border text-[12px] font-semibold cursor-pointer transition hover:opacity-90"
+              [ngClass]="p === currentPage ? 'border-[#923D8C] bg-[#923D8C] text-white' : 'border-[#E5E7EB] bg-white text-[#6B7280] hover:bg-[#F3F4F6]'"
+              [attr.aria-label]="'Page ' + p"
+            >
+              {{ p }}
+            </button>
+
+            <button
+              type="button"
+              (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+              class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-[#6B7280] cursor-pointer transition hover:bg-[#F3F4F6] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="Next page"
+            >
+              ›
+            </button>
+
+            <button
+              type="button"
+              (click)="goToPage(totalPages)"
+              [disabled]="currentPage === totalPages"
+              class="inline-flex h-[34px] w-[34px] items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-[#6B7280] cursor-pointer transition hover:bg-[#F3F4F6] disabled:cursor-not-allowed disabled:opacity-50"
+              aria-label="Last page"
+            >
+              »
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-4"></div>
+    </article>
+  </div>
+</section>
+<!-- ✅ CENTER MODAL: ONLY COMPONENT -->
+<ng-container *ngIf="showReview">
+  <!-- Backdrop -->
+  <div
+    class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 px-4"
+    (click)="closeReview()"
+  >
+    <!-- Panel -->
+    <div
+      class="w-full max-w-[980px] overflow-hidden rounded-[8px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- ✅ Only component -->
+      <app-quiz-reveiw
+        [quiz]="selectedQuiz"
+        (close)="closeReview()"
+      ></app-quiz-reveiw>
+    </div>
+  </div>
+</ng-container>
+
+<!-- ✅ STATS MODAL (Quiz Analytics) -->
+<ng-container *ngIf="showStats">
+  <div
+    class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 px-4"
+    (click)="closeStats()"
+  >
+    <div
+      class="w-full max-w-[980px] overflow-hidden rounded-[8px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+      (click)="$event.stopPropagation()"
+    >
+    <app-quiz-analytics         
+    [quiz]="selectedStatsQuiz"
+        (close)="closeStats()"/>
+    </div>
+  </div>
+</ng-container>
+<!-- ✅ DELETE CONFIRM MODAL -->
+<ng-container *ngIf="showDeleteConfirm">
+  <div
+    class="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 px-4"
+    (click)="closeDeleteConfirm()"
+  >
+    <div
+      class="w-full max-w-[420px] rounded-[12px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-[#EEF0F4] px-5 py-4">
+        <div class="text-[14px] font-semibold text-[#111827]">
+          Delete Quiz
+        </div>
+
+        <button
+          type="button"
+          (click)="closeDeleteConfirm()"
+          class="flex h-8 w-8 items-center justify-center rounded-[6px] text-[#9CA3AF] cursor-pointer transition hover:bg-[#F3F4F6]"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="px-5 py-5">
+        <p class="text-[13px] text-[#374151]">
+          Are you sure you want to delete
+          <span class="font-semibold text-[#111827]">
+            "{{ quizToDelete?.title }}"
+          </span
+          >?
+        </p>
+
+        <p class="mt-1 text-[12px] text-[#9CA3AF]">
+          This action cannot be undone.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-end gap-3 border-t border-[#EEF0F4] px-5 py-4">
+        <button
+          type="button"
+          (click)="closeDeleteConfirm()"
+          class="inline-flex h-[34px] items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white px-4 text-[12px] font-semibold text-[#374151] cursor-pointer transition hover:bg-[#F3F4F6]"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          (click)="confirmDelete()"
+          class="inline-flex h-[34px] items-center justify-center rounded-[8px] bg-[#923D8C] px-4 text-[12px] font-semibold text-white cursor-pointer transition hover:opacity-90"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

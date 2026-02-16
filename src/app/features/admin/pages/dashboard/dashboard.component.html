@@ -1,0 +1,184 @@
+<div class="p-4 md:p-6 lg:p-8 bg-[#D9D9D914] min-h-screen space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8">
+    <h1 class="font-inter font-bold text-xl md:text-2xl leading-8 tracking-normal text-gray-900">
+      Dashboard Overview
+    </h1>
+
+    <span class="flex items-center gap-2 text-sm font-normal leading-5 tracking-normal text-gray-500 mt-2 md:mt-0">
+      {{ currentDate | date:'MMMM d, y' }}
+      <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+      </svg>
+    </span>
+  </div>
+
+  <!-- Top Cards: Revenue, Verified, Pending, Student Metrics -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+
+    <!-- Total Revenue Card -->
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md flex flex-col">
+      <div class="flex justify-between items-center mb-3">
+        <h2
+          class="flex items-center gap-2 text-base md:text-[18px] leading-7 font-semibold tracking-normal text-gray-800">
+          Total Revenue
+        </h2>
+        <button class="text-sm text-gray-500 flex items-center hover:text-gray-700">
+          {{ selectedPeriod }}
+          <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+      </div>
+
+      <p class="text-2xl md:text-3xl font-bold text-gray-900">
+        ${{ totalRevenue | number:'1.0-0' }}
+      </p>
+
+      <span class="text-sm text-green-600 font-medium flex items-center mt-2">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+        {{ revenueChange }}%
+      </span>
+
+      <span class="text-xs text-gray-500">Compared to previous period</span>
+
+      <div class="mt-auto h-24 relative overflow-hidden">
+        <svg viewBox="0 0 100 50" preserveAspectRatio="none" class="w-full h-full">
+          <defs>
+            <linearGradient id="revenueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#b59ff5" stop-opacity="0.5" />
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1" />
+            </linearGradient>
+          </defs>
+          <path d="M0 45 C 20 20, 40 35, 60 10 C 80 5, 100 25, 100 25 V 50 H 0 Z" fill="url(#revenueGradient)"
+            stroke="none"></path>
+          <path d="M0 45 C 20 20, 40 35, 60 10 C 80 5, 100 25, 100 25" fill="none" stroke="#6C4EF9" stroke-width="2">
+          </path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Verified Instructors Card -->
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+      <div class="w-full flex justify-between mb-4">
+        <h2
+          class="flex items-center gap-2 text-base md:text-[18px] leading-7 font-semibold tracking-normal text-gray-800">
+          Verified Instructors
+        </h2>
+        <svg class="w-5 h-5 text-purple-700" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path>
+        </svg>
+      </div>
+
+      <div class="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mb-4">
+        <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90 overflow-visible">
+          <circle cx="50" cy="50" r="45" stroke="#F3F4F6" stroke-width="10" fill="none"></circle>
+          <circle cx="50" cy="50" r="45" stroke="#923D8C" stroke-width="10" fill="none" stroke-linecap="round"
+            [style.strokeDasharray]="2 * Math.PI * 45"
+            [style.strokeDashoffset]="(2 * Math.PI * 45) - ((2 * Math.PI * 45 * verifiedPercentage) / 100)">
+          </circle>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="text-xl sm:text-2xl font-bold text-gray-900">{{ verifiedPercentage }}%</span>
+        </div>
+      </div>
+
+      <p class="text-xl font-bold text-gray-900">{{ totalVerified }}</p>
+      <p class="text-sm text-gray-500">Total verified instructors</p>
+    </div>
+
+    <!-- Pending Verification Card -->
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+      <div class="w-full flex justify-between mb-4">
+        <h2
+          class="flex items-center gap-2 text-base md:text-[18px] leading-7 font-semibold tracking-normal text-gray-800">
+          Pending Verification
+        </h2>
+        <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z"
+            clip-rule="evenodd"></path>
+        </svg>
+      </div>
+
+      <div class="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mb-4">
+        <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90 overflow-visible">
+          <circle cx="50" cy="50" r="45" stroke="#F3F4F6" stroke-width="10" fill="none"></circle>
+          <circle cx="50" cy="50" r="45" stroke="#FCD34D" stroke-width="10" fill="none" stroke-linecap="round"
+            [style.strokeDasharray]="2 * Math.PI * 45"
+            [style.strokeDashoffset]="(2 * Math.PI * 45) - ((2 * Math.PI * 45 * pendingPercentage) / 100)">
+          </circle>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="text-xl sm:text-2xl font-bold text-gray-900">{{ pendingPercentage }}%</span>
+        </div>
+      </div>
+
+      <p class="text-xl font-bold text-gray-900">{{ totalPending }}</p>
+      <button (click)="onVerifyInstructors()"
+        class="mt-4 px-4 py-2 text-sm font-semibold text-white bg-[#923D8C] rounded-lg hover:bg-purple-700 transition duration-150">
+        Verify Instructors
+      </button>
+    </div>
+
+    <!-- Student Metrics Card -->
+    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md flex flex-col">
+      <div class="flex justify-between mb-4 items-center">
+        <h2
+          class="flex items-center gap-2 text-base md:text-[18px] leading-7 font-semibold tracking-normal text-gray-800">
+          Student Metrics
+        </h2>
+        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            d="M10 9a3 3 0 100-6 3 3 0 000 6zM9.002 14c-.176 0-.352-.03-.518-.094-.166-.064-.326-.153-.473-.263C7.51 12.984 6.67 11.968 6 11c-.525-.79-.575-1.554-.188-2.296l.006-.01A1.002 1.002 0 017 8h6c.38 0 .73.18.94.475l.006.01c.387.742.337 1.506-.188 2.296-.67.968-1.51 1.984-2.009 2.643-.147.11-.307.2-.473.263-.166.064-.342.094-.518.094z"
+            fill-rule="evenodd" clip-rule="evenodd"></path>
+        </svg>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <p class="text-xl md:text-2xl font-bold text-gray-900">{{ activeStudents | number:'1.0-0' }}</p>
+          <p class="text-sm text-gray-500">Active Students</p>
+        </div>
+
+        <div>
+          <p class="text-xl md:text-2xl font-bold text-gray-900">+{{ newRegistrations }}</p>
+          <span class="text-xs text-green-600 flex items-center mt-1">
+            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
+              </path>
+            </svg>
+            {{ registrationChange }}% this week
+          </span>
+          <p class="text-sm text-gray-500">New Registrations</p>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-sm text-gray-500 mb-2">Engagement Rate</p>
+        <div class="flex items-center">
+          <div class="grow bg-gray-200 rounded-full h-2 mr-3">
+            <div class="bg-[#923D8C] h-2 rounded-full" [style.width.%]="engagementRate"></div>
+          </div>
+          <span class="text-sm font-semibold text-gray-900">{{ engagementRate }}%</span>
+        </div>
+      </div>
+
+      <div class="h-24 flex items-end space-x-0.5 sm:space-x-1 overflow-hidden">
+        <ng-container *ngFor="let height of getBarChartData(); let last = last">
+          <div class="w-full rounded-t-lg transition-all duration-300" [style.height.%]="height"
+            [ngStyle]="{'background': last ? '#923D8C' : 'linear-gradient(to top, #dcd0f9 60%, #eee8fe 100%)'}">
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+  <app-today-session />
+  <app-ai-powered-analytics />
+  <app-payment-overview />
+</div>

@@ -1,0 +1,261 @@
+<section class="min-h-screen w-full bg-[#F7F8FA] p-3 sm:p-4">
+  <div class="w-full bg-white">
+    <div class="mx-auto flex w-full max-w-[1180px] flex-col px-4 py-5 sm:px-6 sm:py-6">
+      <!-- Top -->
+      <div class="flex w-full flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <h3 class="text-[20px] font-semibold tracking-[-0.01em] text-[#4A4A68] sm:text-[30px]">
+          Deletion History
+        </h3>
+
+        <div class="text-[12px] font-medium text-[#6B7280] sm:pt-2 sm:text-right">
+          {{ dateRangeText }}
+        </div>
+      </div>
+
+      <!-- Tabs + Filters -->
+      <div class="mt-4 flex w-full flex-col gap-2 sm:flex-row">
+        <!-- Tab -->
+        <div class="flex items-center gap-3">
+          <h6 type="button" class="text-[14px] font-semibold text-[#923D8C]"
+            [attr.aria-current]="activeTab === 'deletedItems' ? 'page' : null">
+            Deleted Items
+          </h6>
+        </div>
+
+        <!-- Filters -->
+        <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+          <!-- Type -->
+          <div class="relative w-full sm:w-auto">
+            <select [(ngModel)]="typeFilter" (ngModelChange)="onFilterChange()"
+              class="h-[34px] w-full cursor-pointer appearance-none rounded-full border border-[#E5E7EB] bg-white px-3 pr-7 text-[12px] font-medium text-[#6B7280] outline-none focus:border-[#D8B4FE] sm:h-[28px] sm:w-[100px]"
+              aria-label="Type filter">
+              <option value="All">Type</option>
+              <option value="User">User</option>
+              <option value="Course">Course</option>
+              <option value="Material">Material</option>
+            </select>
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]">
+              <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </span>
+          </div>
+
+          <!-- Date Range -->
+          <div class="relative w-full sm:w-auto">
+            <select [(ngModel)]="dateFilter" (ngModelChange)="onFilterChange()"
+              class="h-[34px] w-full cursor-pointer appearance-none rounded-full border border-[#E5E7EB] bg-white px-3 pr-7 text-[12px] font-medium text-[#6B7280] outline-none focus:border-[#D8B4FE] sm:h-[28px] sm:w-[130px]"
+              aria-label="Date range filter">
+              <option value="All">Date Range</option>
+              <option value="Today">Today</option>
+              <option value="This Week">This Week</option>
+              <option value="This Month">This Month</option>
+              <option value="Custom">Custom</option>
+            </select>
+            <span class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#9CA3AF]">
+              <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Card -->
+      <article
+        class="mt-5 flex w-full flex-col overflow-hidden rounded-[10px] border border-[#ECE7F5] bg-white shadow-[0_10px_26px_rgba(0,0,0,0.06)]">
+        <!-- ✅ ONE shared horizontal scroll for header + rows -->
+        <div class="w-full overflow-x-auto">
+          <div class="min-w-[760px]">
+            <!-- Header -->
+            <div class="flex w-full items-center bg-[#F6F1FB] px-4 py-3">
+              <div class="flex w-[42px] items-center justify-start">
+                <input type="checkbox"
+                  class="h-[14px] w-[14px] cursor-pointer rounded-[3px] border border-[#D1D5DB] accent-[#923D8C]"
+                  [checked]="allOnPageSelected" (change)="toggleSelectAllOnPage($any($event.target).checked)"
+                  aria-label="Select all" />
+              </div>
+
+              <div class="flex flex-1 items-center">
+                <div class="flex w-full items-center text-[12px] font-semibold text-[#4B5563]">
+                  <div class="flex w-[34%]">Item Name</div>
+                  <div class="flex w-[18%]">Deletion Date</div>
+                  <div class="flex w-[18%]">Deleted By</div>
+                  <div class="flex w-[14%]">Type</div>
+                  <div class="flex w-[16%] justify-end">Actions</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rows (vertical scroll only) -->
+            <div class="max-h-[520px] w-full overflow-y-auto">
+              <div *ngFor="let row of pagedItems; trackBy: trackById"
+                class="flex w-full items-center border-t border-[#F1F5F9] px-4 py-3">
+                <!-- Checkbox -->
+                <div class="flex w-[42px] items-center justify-start">
+                  <input type="checkbox"
+                    class="h-[14px] w-[14px] cursor-pointer rounded-[3px] border border-[#D1D5DB] accent-[#923D8C]"
+                    [(ngModel)]="row.selected" [attr.aria-label]="'Select ' + row.name"
+                    (ngModelChange)="onRowSelectChange()" />
+                </div>
+
+                <!-- Columns -->
+                <div class="flex flex-1 items-center">
+                  <div class="flex w-full items-center text-[12px] font-medium text-[#111827]">
+                    <div class="flex w-[34%]">
+                      <span class="break-words">{{ row.name }}</span>
+                    </div>
+
+                    <div class="flex w-[18%]">
+                      <span class="break-words">{{ row.deletionDate }}</span>
+                    </div>
+
+                    <div class="flex w-[18%]">
+                      <span class="break-words">{{ row.deletedBy }}</span>
+                    </div>
+
+                    <div class="flex w-[14%]">
+                      <span class="break-words">{{ row.type }}</span>
+                    </div>
+
+                    <div class="flex w-[16%] items-center justify-end gap-4">
+                      <button type="button"
+                        class="cursor-pointer text-[12px] font-semibold text-[#2563EB] hover:underline"
+                        (click)="restoreItem(row)">
+                        Restore
+                      </button>
+
+                      <div class="flex w-7 shrink-0 items-center justify-center">
+                        <button *ngIf="row.canTrash" type="button"
+                          class="cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded hover:bg-[#F3F4F6]"
+                          (click)="openDeleteModal(row)" aria-label="Delete permanently">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="h-4 w-4" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty state -->
+              <div *ngIf="pagedItems.length === 0" class="flex w-full items-center justify-center px-4 py-10">
+                <p class="text-[12px] font-medium text-[#6B7280]">
+                  No deleted items found.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <!-- Pagination -->
+      <div
+        class="flex w-full flex-col gap-2 border-t border-[#F1F5F9] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="text-[12px] font-medium text-[#6B7280]">
+          Page {{ page }} / {{ totalPages }}
+        </div>
+
+        <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+          <button type="button"
+            class="h-[36px] w-full cursor-pointer rounded-full border border-[#D1D5DB] bg-white px-5 text-[12px] font-semibold text-[#374151] hover:bg-[#F9FAFB] disabled:opacity-50 sm:w-auto"
+            (click)="prevPage()" [disabled]="page <= 1">
+            Prev
+          </button>
+
+          <button type="button"
+            class="h-[36px] w-full cursor-pointer rounded-full bg-[#923D8C] px-6 text-[12px] font-semibold text-white shadow-[0_8px_18px_rgba(124,58,237,0.25)] hover:opacity-95 disabled:opacity-60 sm:w-auto"
+            (click)="nextPage()" [disabled]="page >= totalPages">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESTORE CONFIRM MODAL -->
+    <div *ngIf="showRestoreModal" class="fixed inset-0 z-50 flex items-center justify-center" aria-modal="true"
+      role="dialog">
+      <div class="absolute inset-0 cursor-pointer bg-black/50" (click)="closeRestoreModal()" aria-label="Close modal">
+      </div>
+
+      <div
+        class="relative w-[420px] max-w-[92vw] rounded-[16px] bg-white px-6 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.20)]">
+        <button type="button"
+          class="absolute right-4 top-4 cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded-full text-[#111827] hover:bg-[#F3F4F6]"
+          (click)="closeRestoreModal()" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <p class="mt-6 text-left text-[14px] font-medium text-[#111827]">
+          Do you want to restore this item?
+        </p>
+
+        <div class="mt-5 flex items-center justify-center gap-6">
+          <button type="button"
+            class="h-[34px] w-[104px] cursor-pointer rounded-full bg-[#D9D9D9] text-[13px] font-medium text-[#111827] hover:opacity-95 disabled:opacity-50"
+            (click)="closeRestoreModal()" [disabled]="isLoading">
+            Cancel
+          </button>
+
+          <button type="button"
+            class="flex h-[34px] w-[104px] cursor-pointer rounded-full bg-[#2563EB] text-[13px] font-medium text-white hover:opacity-95 disabled:opacity-70 disabled:cursor-not-allowed items-center justify-center gap-2"
+            (click)="confirmRestore()" [disabled]="isLoading">
+            <span *ngIf="isLoading"
+              class="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+            <span>{{ isLoading ? 'Restoring...' : 'Restore' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div *ngIf="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center" aria-modal="true"
+      role="dialog">
+      <button type="button" class="absolute inset-0 cursor-pointer bg-black/50" (click)="closeDeleteModal()"
+        aria-label="Close modal" [disabled]="isLoading"></button>
+
+      <div
+        class="relative w-[420px] max-w-[92vw] rounded-[16px] bg-white px-6 py-5 shadow-[0_20px_60px_rgba(0,0,0,0.20)]">
+        <button type="button"
+          class="absolute right-4 top-4 cursor-pointer inline-flex h-7 w-7 items-center justify-center rounded-full text-[#111827] hover:bg-[#F3F4F6] disabled:opacity-50"
+          (click)="closeDeleteModal()" aria-label="Close" [disabled]="isLoading">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </button>
+
+        <p class="mt-6 text-left text-[14px] font-medium text-[#111827]">
+          Do you want to permanently delete this ?
+        </p>
+
+        <div class="mt-5 flex items-center justify-center gap-6">
+          <button type="button"
+            class="h-[34px] w-[104px] cursor-pointer rounded-full bg-[#D9D9D9] text-[13px] font-medium text-[#111827] hover:opacity-95 disabled:opacity-50"
+            (click)="closeDeleteModal()" [disabled]="isLoading">
+            Cancel
+          </button>
+
+          <button type="button"
+            class="flex h-[34px] w-[104px] cursor-pointer rounded-full bg-[#923D8C] text-[13px] font-medium text-white hover:opacity-95 disabled:opacity-70 disabled:cursor-not-allowed items-center justify-center gap-2"
+            (click)="confirmPermanentDelete()" [disabled]="isLoading">
+            <span *ngIf="isLoading"
+              class="h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+            <span>{{ isLoading ? 'Deleting...' : 'Confirm' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUS MODAL (TOAST) -->
+    <app-status-modal [show]="statusModal.show" [type]="statusModal.type" [title]="statusModal.title"
+      [message]="statusModal.message" (close)="closeStatusModal()"></app-status-modal>
+  </div>
+</section>

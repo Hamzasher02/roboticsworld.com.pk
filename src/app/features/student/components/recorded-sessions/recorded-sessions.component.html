@@ -1,0 +1,262 @@
+<section class="w-full bg-white" *ngIf="courseData">
+    <div class="mx-auto w-full max-w-[1200px] px-3 py-5 sm:px-6 sm:py-6">
+        <!-- Top back row -->
+        <a [routerLink]="['/student']"
+            class="inline-flex items-center gap-3 text-[16px] font-semibold text-gray-900 sm:text-[18px] lg:text-[20px]">
+            <span class="inline-flex h-6 w-6 items-center justify-center">
+                <img src="assets/student/buy course/LeftArrow.svg" alt="Back" class="h-5 w-5" />
+            </span>
+            Back to Dashboard
+        </a>
+
+        <!-- Hero image -->
+        <div
+            class="relative mt-6 sm:mt-10 w-full overflow-visible rounded-[2px] after:pointer-events-none after:absolute after:inset-0 after:rounded-[2px] after:border-[3px] after:border-[#880A73] after:-translate-y-[10px] after:translate-x-[10px] sm:after:-translate-y-[18px] sm:after:translate-x-[18px] lg:after:-translate-y-[20px] lg:after:translate-x-[20px] after:z-0 after:content-['']">
+            <!-- Image card -->
+            <div
+                class="relative z-10 overflow-hidden rounded-[2px] border border-gray-200 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.08)]">
+                <img [src]="courseData.course.thumbnail || 'assets/student/courseImage/coursesDetail.svg'"
+                    alt="Course banner" class="h-[170px] w-full object-cover sm:h-[240px] lg:h-[300px]" />
+            </div>
+        </div>
+
+        <!-- Title + description -->
+        <div class="mt-5 sm:mt-6">
+            <div class="text-[18px] sm:text-[28px] font-bold leading-6 sm:leading-7 text-[#111827]">
+                {{courseData.course.title}}
+            </div>
+
+            <p class="mt-2 max-w-[980px] text-[12px] leading-5 text-[#6B7280] sm:text-[12px]">
+                {{courseData.course.shortDescription || courseData.course.description}}
+            </p>
+
+            <!-- Progress -->
+            <div class="mt-3 flex items-center gap-3">
+                <div class="h-[6px] w-full rounded-full bg-[#E5E7EB]">
+                    <div class="h-[6px] rounded-full bg-[#F97316]"
+                        [style.width.%]="courseData.progress?.percentage || 0">
+                    </div>
+                </div>
+                <div class="shrink-0 text-[10px] font-medium text-[#6B7280]">{{courseData.progress?.percentage || 0}}%
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Total Modules -->
+            <div class="flex items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#E9D5FF] px-4 py-4">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-white/70">
+                    <img src="assets/student/courseImage/codeBok.svg" alt="" class="h-5 w-5" />
+                </div>
+                <div class="min-w-0">
+                    <div class="text-[12px] font-medium text-black">Total Modules</div>
+                    <div class="mt-0.5 text-[12px] font-semibold text-gray-600">{{courseData.modules.length}}</div>
+                </div>
+            </div>
+
+            <!-- Completed Module -->
+            <div class="flex items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#BBF7D0] px-4 py-4">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-white/70">
+                    <img src="assets/student/courseImage/CheckMark.svg" alt="" class="h-5 w-5" />
+                </div>
+                <div class="min-w-0">
+                    <div class="text-[12px] font-medium text-black">Completed Module</div>
+                    <div class="mt-0.5 text-[12px] font-semibold text-gray-600">{{courseData.progress?.completed || 0}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time spent -->
+            <div class="flex items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#CFFAFE] px-4 py-4">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-white/70">
+                    <img src="assets/student/courseImage/Clock (1).svg" alt="" class="h-5 w-5" />
+                </div>
+                <div class="min-w-0">
+                    <div class="text-[12px] font-medium text-black">Time spent</div>
+                    <div class="mt-0.5 text-[12px] font-semibold text-gray-600">{{courseData.course.duration || 160}}
+                        hours</div>
+                </div>
+            </div>
+
+            <!-- Estimated remaining -->
+            <div class="flex items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#FFE4E6] px-4 py-4">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] bg-white/70">
+                    <img src="assets/student/courseImage/Clock (1).svg" alt="" class="h-5 w-5" />
+                </div>
+                <div class="min-w-0">
+                    <div class="text-[12px] font-medium text-black">Estimated remaining</div>
+                    <div class="mt-0.5 text-[12px] font-semibold text-gray-600">160 hours</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Learning -->
+        <div class="mt-7 sm:mt-8" *ngIf="currentLesson">
+            <div class="text-[18px] sm:text-[24px] font-bold text-black">Continue Learning</div>
+
+            <div class="mt-4 rounded-[12px] border border-[#E5E7EB] bg-white shadow-[0_6px_18px_rgba(0,0,0,0.12)]">
+                <div class="flex flex-col gap-4 px-4 py-4 sm:px-10 sm:py-8">
+                    <!-- Left -->
+                    <div class="min-w-0 w-full">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                            <div class="text-[14px] sm:text-[16px] font-semibold text-black">
+                                {{currentLesson.lecture.title}}
+                            </div>
+
+                            <div class="shrink-0">
+                                <div class="text-[12px] sm:text-[14px] font-bold text-black sm:text-right">
+                                    {{currentLesson.moduleTitle}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-2 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                            <div class="text-[12px] sm:text-[14px] leading-5 text-[#6B7280] sm:max-w-[520px]">
+                                {{currentLesson.lecture.description}}
+                            </div>
+
+                            <div
+                                class="shrink-0 inline-flex w-fit items-center rounded-full bg-[#B3E3C5] px-4 py-1 text-[12px] font-semibold text-black">
+                                Lesson {{currentLesson.lectureIndex}} of {{currentLesson.totalLessons}}
+                            </div>
+                        </div>
+
+                        <div class="mt-3 flex items-center gap-2 text-[12px] text-[#6B7280]">
+                            <img src="assets/student/forum/ClockIcon.svg" alt="" class="h-4 w-4" />
+                            <span>{{currentLesson.lecture.duration}} min</span>
+                        </div>
+
+                        <button [routerLink]="['/student/recorded-course-video', courseData.course._id]"
+                            class="group mt-4 sm:mt-5 inline-flex h-[40px] w-full sm:w-[320px] items-center justify-center gap-2 rounded-[2px] bg-[#F97316] text-[12px] font-semibold text-white transition-colors duration-150 hover:bg-[#FFF1E6] hover:text-[#F97316]">
+                            <img src="assets/student/dashboard/PlayButtonArrowhead.svg" alt=""
+                                class="h-3 w-3 block group-hover:hidden" />
+                            <img src="assets/student/courseImage/OrangePlayButton.svg" alt=""
+                                class="h-3 w-3 hidden group-hover:block" />
+                            <span>Continue Learning</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Lessons -->
+        <div class="mt-7 sm:mt-8">
+            <div class="mb-3 sm:mb-4 text-[18px] sm:text-[24px] font-bold text-black">Course Lessons</div>
+
+            <div *ngFor="let module of courseData.modules" class="mt-6">
+                <div class="text-[14px] font-bold text-gray-900 sm:text-[16px]">{{module.title}}</div>
+
+                <div class="mt-3 space-y-3">
+                    <!-- Lectures -->
+                    <button *ngFor="let lecture of module.lectures; let i = index" type="button"
+                        (click)="playLecture(module, lecture)"
+                        class="flex w-full items-start sm:items-center gap-3 sm:gap-4 rounded-[10px] border px-3 py-2 sm:px-5 sm:py-2 shadow-[0_6px_14px_rgba(0,0,0,0.10)] transition-colors hover:bg-gray-50"
+                        [ngClass]="getLectureClass(lecture._id)">
+
+                        <div
+                            class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[12px] bg-white sm:h-[60px] sm:w-[60px]">
+                            <span *ngIf="isCompleted(lecture._id)"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-full sm:h-10 sm:w-10">
+                                <img src="assets/student/buy course/CheckGreenTick.svg" alt=""
+                                    class="h-5 w-5 sm:h-8 sm:w-8" />
+                            </span>
+                            <span *ngIf="!isCompleted(lecture._id)"
+                                class="inline-flex h-8 w-8 items-center justify-center rounded-full sm:h-10 sm:w-10 text-[18px] sm:text-[22px] font-bold">
+                                {{i + 1}}
+                            </span>
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <div class="min-w-0 text-left">
+                                <div class="text-[13px] sm:text-[16px] font-bold text-gray-900 truncate">
+                                    {{lecture.title}}
+                                </div>
+                            </div>
+
+                            <div
+                                class="mt-1 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                                <span
+                                    class="block text-[12px] leading-4 text-[#6B7280] line-clamp-2 sm:line-clamp-1 text-left">
+                                    {{lecture.description}}
+                                </span>
+
+                                <span class="shrink-0 flex items-center gap-2 text-[12px] text-[#111827]">
+                                    <img src="assets/student/courseImage/Clock (1).svg" alt="" class="h-4 w-4" />
+                                    <span class="whitespace-nowrap">{{lecture.duration}} min</span>
+                                </span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- PDFs -->
+                    <!-- PDFs -->
+                    <!-- PDFs (List Layout) -->
+                    <div *ngIf="module.pdfs?.length > 0" class="mt-4 flex flex-col gap-4">
+                        <div *ngFor="let pdf of module.pdfs"
+                            class="group relative flex items-center gap-4 rounded-[12px] border border-transparent bg-[#F5F3FF] p-4 transition-all hover:border-[#880A73] hover:shadow-md cursor-pointer"
+                            (click)="openPdf(module, pdf)">
+
+                            <!-- Icon -->
+                            <div
+                                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] bg-white text-[#880A73]">
+                                <img src="assets/student/courseImage/codeBok.svg" alt="PDF" class="h-6 w-6" />
+                            </div>
+
+                            <!-- Content -->
+                            <div class="min-w-0 flex-1">
+                                <div class="mb-1 flex items-center gap-2">
+                                    <span
+                                        class="inline-flex items-center rounded-full bg-[#ccfbf1] px-2.5 py-0.5 text-[10px] font-bold text-[#0f766e]">
+                                        PDF
+                                    </span>
+                                    <!-- Optional: Date or Size -->
+                                    <span *ngIf="pdf.size" class="text-[10px] text-gray-500">{{pdf.size}}</span>
+                                </div>
+                                <h4 class="text-[14px] font-bold text-gray-900 line-clamp-2">
+                                    {{pdf.title}}
+                                </h4>
+                            </div>
+
+                            <!-- Action Icon (External Link/Download) -->
+                            <div class="shrink-0 text-gray-400 group-hover:text-[#880A73]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Resources -->
+        <section class="mt-8 sm:mt-10">
+            <h2 class="text-[18px] font-extrabold text-gray-900 sm:text-[22px] lg:text-[24px]">Course Resources</h2>
+
+            <a [routerLink]="['/student/recorded-sessions', courseData.course._id, 'course-feedback']"
+                class="block mt-5 rounded-[2px] bg-[#E8FFF0] px-5 py-6 sm:px-8 sm:py-8 hover:opacity-95">
+                <div class="flex items-start gap-4">
+                    <img src="assets/student/buy course/Comment.svg" alt="" class="h-9 w-9 sm:h-10 sm:w-10" />
+                    <div>
+                        <div class="text-[14px] font-extrabold text-gray-900">
+                            Course Feedback
+                        </div>
+                        <div class="mt-1 text-[12px] text-gray-500">
+                            Share your Thoughts
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a [routerLink]="['/student/recorded-sessions', courseData.course._id, 'generate-certificate']"
+                class="mt-6 sm:mt-8 flex h-[46px] w-full items-center justify-center rounded-[2px] bg-[#FDE2DB] text-[14px] font-bold text-gray-900 sm:h-[50px] sm:text-[16px]">
+                Generate Certificate
+            </a>
+        </section>
+    </div>
+</section>
+
+<router-outlet></router-outlet>

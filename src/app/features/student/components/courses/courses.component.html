@@ -1,0 +1,196 @@
+﻿<!-- Courses Component (Responsive like Dashboard) -->
+<div class="mx-auto w-full max-w-[1300px] px-0 sm:px-6 lg:px-4">
+    <!-- Top Tabs -->
+    <div class="mb-6 flex w-full flex-col gap-2 px-0 sm:flex-row sm:items-center sm:gap-6">
+        <button type="button"
+            class="text-[17px] w-fit border-b border-orange-500 pb-2 text-base font-semibold text-gray-900">
+            Enrolled Courses
+        </button>
+
+        <a [routerLink]="['/student/view-upcomming-sessions']"
+            class="w-fit text-[17px] font-medium text-gray-500 hover:text-orange-600">
+            View Upcoming Sessions
+        </a>
+    </div>
+
+    <!-- Enrolled Courses Section -->
+    <section class="mb-10 px-0">
+        <!-- User is not enrolled message -->
+        <div *ngIf="enrollments.length === 0"
+            class="mb-6 rounded-lg bg-blue-50 p-4 border border-blue-200 flex items-center gap-3">
+            <svg class="w-5 h-5 text-blue-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-blue-800">
+                User is not enrolled in any course yet.
+            </p>
+        </div>
+
+        <!-- Pending Enrollments Message -->
+        <div *ngIf="pendingEnrollments.length > 0 && !loading.enrollments"
+            class="mb-6 rounded-lg bg-orange-50 p-4 border border-orange-200 flex items-center gap-3">
+            <svg class="w-5 h-5 text-orange-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-orange-800">
+                Waiting your request at pending until approved by admin.
+            </p>
+        </div>
+
+        <!-- No Enrolled Courses -->
+        <div *ngIf="enrolledCoursesData.length === 0 && !loading.enrollments && pendingEnrollments.length === 0"
+            class="rounded-lg border border-dashed border-gray-300 p-10 text-center mb-6">
+            <div class="flex justify-center mb-4">
+                <div class="rounded-full bg-orange-50 p-4">
+                    <svg class="h-12 w-12 text-orange-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Start Your Learning Journey!</h3>
+            <p class="text-gray-500 mb-4 max-w-md mx-auto">You haven't enrolled in any courses yet. Explore our wide
+                range of courses and start learning today.</p>
+            <a routerLink="/student/courses"
+                class="inline-flex items-center gap-2 rounded-md bg-[#FF6A3D] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Explore Courses
+            </a>
+        </div>
+
+        <!-- Enrolled Course Content -->
+        <div *ngIf="enrolledCoursesData.length > 0 && !loading.enrollments">
+            <!-- Search -->
+            <p class="mb-1 text-gray-400 text-[13px]">Search</p>
+
+            <div
+                class="mb-6 flex w-full max-w-lg items-center gap-2 rounded border border-gray-200 bg-white p-2 shadow-sm">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+
+                <input type="text" placeholder="Search in your courses..." [(ngModel)]="searchTerm"
+                    (input)="onSearch($event)"
+                    class="w-full text-[14px] flex-1 text-black placeholder-black focus:outline-none" />
+            </div>
+
+            <!-- Enrolled Course Cards -->
+            <div class="flex w-full flex-col gap-6 md:flex-row md:flex-wrap">
+                <!-- Card Loop -->
+                <div *ngFor="let data of filteredEnrolledData"
+                    class="w-full overflow-hidden border border-gray-200 bg-white shadow-md md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]">
+                    <div class="relative h-40">
+                        <img [src]="data.course.thumbnail || 'assets/student/courseImage/CourseImages.svg'" alt=""
+                            class="h-full w-full object-cover" />
+
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div
+                                class="flex justify-center items-center gap-2 h-9 bg-[#F5ECE1] px-4 py-2 shadow-sm backdrop-blur-sm">
+                                <img src="assets/student/dashboard/VideoPlayButtonIcone.svg" alt="" class="h-4 w-4" />
+                                <span class="text-sm font-medium text-black">
+                                    {{ data.enrollment.enrollmentType === 'Live Classes' ? 'Live Sessions' : 'Recorded
+                                    Sessions' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex w-full flex-col">
+                        <div class="p-4">
+                            <h3 class="mb-1 text-[15px] font-semibold text-gray-800 line-clamp-1 truncate">
+                                {{data.course.title}}
+                            </h3>
+
+                            <p class="mb-3 line-clamp-2 text-xs text-gray-500">
+                                {{data.course.shortDescription || data.course.description}}
+                            </p>
+
+                            <div class="">
+                                <div class="mb-1 flex items-center justify-between text-xs text-gray-500">
+                                    <span>Progress</span>
+                                    <span>{{data.progress?.percentage || 0}}%</span>
+                                </div>
+                                <div class="h-1 w-full rounded-full bg-gray-200">
+                                    <div class="h-1 rounded-full bg-orange-500"
+                                        [style.width.%]="data.progress?.percentage || 0"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ng-container *ngIf="data.enrollment.enrollmentStatus === 'approved'; else pendingButton">
+                            <a [routerLink]="[data.enrollment.enrollmentType === 'Recorded Lectures' ? '/student/recorded-sessions' : '/student/live-sessions', data.course._id]"
+                                class="group flex h-10 w-full items-center justify-center gap-2 bg-orange-500 py-2 text-sm font-medium text-white hover:text-orange-600 transition-colors duration-200 hover:bg-orange-100">
+                                <span class="relative flex h-4 w-4 items-center justify-center">
+                                    <img src="assets/student/dashboard/PlayButtonArrowhead.svg" alt=""
+                                        class="absolute h-3 w-3 opacity-100 transition-opacity duration-200 group-hover:opacity-0" />
+                                    <img src="assets/student/courseImage/OrangePlayButton.svg" alt=""
+                                        class="absolute h-3 w-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                                </span>
+                                <span class="text-[12px]">Continue Learning</span>
+                            </a>
+                        </ng-container>
+                        <ng-template #pendingButton>
+                            <div
+                                class="flex h-10 w-full items-center justify-center gap-2 bg-gray-200 py-2 text-sm font-medium text-gray-500 cursor-not-allowed">
+                                <span class="text-[12px]">Pending Approval</span>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Single / Bundle Tabs -->
+    <!-- Tabs -->
+    <div class="mb-6 flex w-full flex-col gap-2 px-0 sm:flex-row sm:items-center sm:gap-6">
+        <!-- Single Courses -->
+        <button type="button" (click)="activeTab = 'single'" class="w-fit pb-2 text-base font-semibold"
+            [class.border-b-2]="activeTab === 'single'" [class.border-orange-500]="activeTab === 'single'"
+            [class.text-black]="activeTab === 'single'" [class.text-gray-500]="activeTab !== 'single'">
+            Single Courses
+        </button>
+
+        <!-- Bundle Courses -->
+        <button type="button" (click)="activeTab = 'bundle'" class="w-fit pb-2 text-base font-semibold"
+            [class.border-b-2]="activeTab === 'bundle'" [class.border-orange-500]="activeTab === 'bundle'"
+            [class.text-black]="activeTab === 'bundle'" [class.text-gray-500]="activeTab !== 'bundle'">
+            Bundle Courses
+        </button>
+    </div>
+
+    <!-- Content -->
+    <div class="w-full">
+        @if (activeTab === 'single') {
+        <app-single-courses></app-single-courses>
+        } @else {
+        <app-bundle-courses></app-bundle-courses>
+        }
+    </div>
+
+</div>
+
+
+
+<div class="relative overflow-visible">
+    <button type="button" aria-label="Talk with us" (click)="isChatOpen = true"
+        class="absolute right-6 -bottom-4 z-50  flex items-center gap-2  rounded-full bg-[#FF6A3D]   px-4 py-2 text-[12px] font-semibold text-white   shadow-[0_10px_20px_rgba(0,0,0,0.22)]   hover:bg-[#ff7a55]">
+        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
+            <img src="assets/student/courseImage/AiIcon.svg" alt="" class="h-4 w-4" />
+        </span>
+        <span class="leading-none">Talk with Us</span>
+    </button>
+</div>
+
+<app-ai-assistant *ngIf="isChatOpen" (close)="isChatOpen = false"></app-ai-assistant>

@@ -1,0 +1,158 @@
+<div class="p-4 sm:p-6 bg-white min-h-screen">
+  <!-- Top Actions: Tabs + Search + Bulk -->
+  <!-- Top Actions: Tabs + Search + Bulk -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+    <!-- Tabs -->
+    <div class="flex flex-wrap bg-[#F5F5F5] p-1 gap-2 rounded-lg">
+      <ng-container *ngFor="let tab of tabs">
+        <button (click)="setActiveTab(tab)" [ngClass]="{
+            'bg-[#923D8C] text-white': activeTab === tab,
+            'text-gray-700': activeTab !== tab
+          }"
+          class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md cursor-pointer transition-all duration-200 hover:bg-[#923D8C] hover:text-white whitespace-nowrap">
+          {{ tab }}
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="flex items-center gap-2 w-full sm:w-auto">
+      <!-- Search Input -->
+      <div class="relative w-full sm:w-64">
+        <input type="text" placeholder="Search instructors..." [(ngModel)]="searchQuery" (ngModelChange)="onSearch()"
+          class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#923D8C] focus:border-transparent" />
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Bulk Action Button -->
+      <div *ngIf="anySelected()">
+        <button (click)="deleteSelectedUsers()"
+          class="px-3 py-1 sm:px-4 sm:py-2 bg-red-600 text-white rounded text-xs sm:text-sm font-medium hover:bg-red-700 transition">
+          Delete All
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#923D8C]"></div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="flex justify-center items-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#923D8C]"></div>
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto" *ngIf="!isLoading">
+    <table class="min-w-full border border-gray-200">
+      <thead class="bg-[#923D8C33]">
+        <tr>
+          <th class="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()"
+                class="h-4 w-4 text-indigo-600 border-gray-300 rounded cursor-pointer" />
+              <span class="text-gray-700 text-xs sm:text-sm">Select All</span>
+            </label>
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Name
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Email
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Course
+          </th>
+          <th class="px-2 sm:px-4 py-2 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Status
+          </th>
+          <th
+            class="px-2 sm:px-4 py-2 text-right text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of paginatedUsers" class="hover:bg-gray-50">
+          <td class="px-2 sm:px-4 py-2">
+            <input type="checkbox" [(ngModel)]="user.selected" (change)="checkIfAllSelected()"
+              class="cursor-pointer ml-2 sm:ml-0 h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+          </td>
+          <td class="px-2 sm:px-4 py-2 flex items-center gap-2 sm:gap-3">
+            <img [src]="user.avatar" alt="avatar" class="h-6 w-6 sm:h-8 sm:w-8 rounded-full object-cover" />
+            <span class="text-gray-900 font-medium text-xs sm:text-sm truncate">{{ user.name }}</span>
+          </td>
+          <td class="px-2 sm:px-4 py-2 text-xs sm:text-sm text-gray-600 truncate">
+            {{ user.email }}
+          </td>
+          <td class="px-2 sm:px-4 py-2 text-xs sm:text-sm text-gray-600 truncate">
+            {{ user.course }}
+          </td>
+          <td class="px-2 sm:px-4 py-2">
+            <span [ngClass]="getStatusColor(user.status)"
+              class="px-2 py-1 rounded-full text-[10px] sm:text-xs font-semibold">{{ user.status }}</span>
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="px-2 sm:px-4 py-2 text-right relative action-menu">
+            <button (click)="toggleMenu(user)">
+              <img src="assets/admin/user-manage/3dots.svg" class="w-4 h-3 sm:w-4 sm:h-1.5 cursor-pointer" />
+            </button>
+
+            <div *ngIf="openedUser === user" class="absolute right-0 mt-2 w-44 bg-white border rounded shadow z-50">
+              <button class="w-full text-left px-3 py-2 text-xs hover:bg-gray-100" (click)="viewProfile(user)">
+                View Profile
+              </button>
+              <button *ngIf="user.status === 'Active'"
+                class="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-gray-100 disabled:opacity-50"
+                [disabled]="isLoading" (click)="changeStatus(user, 'Inactive')">
+                Inactive
+              </button>
+              <button *ngIf="user.status === 'Inactive'"
+                class="w-full text-left px-3 py-2 text-xs text-green-600 hover:bg-gray-100 disabled:opacity-50"
+                [disabled]="isLoading" (click)="changeStatus(user, 'Active')">
+                Active
+              </button>
+              <button *ngIf="user.status === 'Pending'"
+                class="w-full text-left px-3 py-2 text-xs text-blue-600 hover:bg-gray-100 disabled:opacity-50"
+                [disabled]="isLoading" (click)="verifyDocuments(user)">
+                Verify Documents
+              </button>
+              <button *ngIf="user.status === 'Flagged'"
+                class="w-full text-left px-3 py-2 text-xs text-yellow-600 hover:bg-gray-100"
+                (click)="viewDocuments(user)">
+                View Documents
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-between items-center mt-4 px-2">
+    <button (click)="goPrev()" [disabled]="page === 1"
+      class="cursor-pointer px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base disabled:opacity-50 transition-colors hover:bg-[#7a3270]">
+      Previous
+    </button>
+    <span class="text-xs sm:text-sm md:text-base text-gray-600 font-medium text-center flex-1">Page {{ page }} of {{
+      totalPages }}</span>
+    <button (click)="goNext()" [disabled]="page === totalPages"
+      class="cursor-pointer px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 bg-[#923D8C] text-white rounded text-xs sm:text-sm md:text-base disabled:opacity-50 transition-colors hover:bg-[#7a3270]">
+      Next
+    </button>
+  </div>
+
+  <!-- Standardized Status Modal -->
+  <app-status-modal [show]="showModal" [title]="modalTitle" [message]="modalMessage" [type]="modalType"
+    (close)="closeModal()">
+  </app-status-modal>
+</div>

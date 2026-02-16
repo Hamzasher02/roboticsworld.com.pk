@@ -1,0 +1,312 @@
+<section class="w-full bg-white px-4 py-5 sm:px-6">
+  <!-- ===== TOP STATS (responsive) ===== -->
+  <div class="flex flex-wrap w-full flex-col gap-4 md:flex-row md:gap-6">
+    <div
+      *ngFor="let c of statCards"
+      class="flex w-full items-center justify-between rounded-lg px-5 py-4 md:flex-1 md:px-6 md:py-5"
+      [ngStyle]="{ backgroundColor: c.bg }"
+    >
+      <!-- Text -->
+      <div class="flex flex-col gap-1">
+        <span class="text-[12px] font-medium text-white/90">
+          {{ c.title }}
+        </span>
+
+        <span
+          class="text-[24px] font-semibold leading-7 text-white md:text-[28px] md:leading-8"
+        >
+          {{ c.value }}
+        </span>
+
+        <span class="text-[11px] text-white/80 md:text-[12px]">
+          {{ c.subtitle }}
+        </span>
+      </div>
+
+      <!-- Icon -->
+      <div
+        class="flex h-9 w-9 items-center justify-center rounded-md md:h-10 md:w-10"
+        [ngStyle]="{ backgroundColor: c.iconBg }"
+      >
+        <img [src]="c.iconSrc" [alt]="c.title" class="h-5 w-5 object-contain" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ACTIVITY + SUBMISSIONS ===== -->
+  <div class="mt-6 flex w-full flex-col justify-between lg:flex-row ">
+    <!-- Recent Activity -->
+    <div
+      class="flex w-full flex-col rounded-[8px] border border-[#EEF2F6] bg-white px-6 py-5 lg:w-[540px]"
+    >
+      <div class="text-[16px] font-semibold text-[#111827]">
+        Recent Activity
+      </div>
+
+      <div class="mt-4 flex  flex-col gap-4">
+        <div *ngFor="let a of recentActivities" class="flex  items-start gap-3">
+          <div
+            class="flex h-8 w-8 items-center justify-center rounded-full"
+            [ngStyle]="{ backgroundColor: a.badgeBg }"
+          >
+            <ng-container [ngSwitch]="a.icon">
+              <!-- ✅ Green Check -->
+              <svg
+                *ngSwitchCase="'check'"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-[#22C55E]"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.704 5.29a1 1 0 010 1.42l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 011.414-1.414l2.493 2.493 6.493-6.493a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <!-- ⬆️ Blue Upload -->
+              <svg
+                *ngSwitchCase="'upload'"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-[#3B82F6]"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M12 16V6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M8 10l4-4 4 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 18h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+
+              <!-- 🕒 Yellow Clock -->
+              <svg
+                *ngSwitchCase="'clock'"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-[#F59E0B]"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M12 8v4l2.5 1.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <img
+                *ngSwitchDefault
+                src="/assets/admin/quiz/ai.svg"
+                alt="AI"
+                class="h-4 w-4 object-contain"
+              />
+            </ng-container>
+          </div>
+
+          <div class="flex flex-col">
+            <div class="text-[14px] font-medium text-[#111827]">
+              {{ a.title }}
+            </div>
+            <div class="mt-0.5 text-[12px] text-[#6B7280]">
+              {{ a.time }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Submissions -->
+    <div class="flex w-full flex-col lg:w-[330px]">
+      <div class="text-[16px] font-semibold text-[#111827]">
+        Recent Submissions
+      </div>
+
+      <div class="mt-4 flex justify-end flex-col gap-3">
+        <div
+          *ngFor="let s of recentSubmissions"
+          class="flex items-center justify-between rounded-[8px] px-4 py-3"
+          [ngStyle]="{ backgroundColor: s.bg }"
+        >
+          <div class="flex flex-col">
+            <div class="text-[14px] font-medium text-[#111827]">
+              {{ s.title }}
+            </div>
+            <div class="mt-0.5 text-[12px] text-[#6B7280]">
+              {{ s.subtitle }}
+            </div>
+          </div>
+
+          <ng-container [ngSwitch]="s.statusIcon">
+            <!-- 👁 Pending = Eye icon (Image matched) -->
+            <svg
+              *ngSwitchCase="'pending'"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-[#F59E0B]"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="2.5"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+
+            <!-- ✅ Approved = Green check -->
+            <svg
+              *ngSwitchDefault
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-[#22C55E]"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 5.29a1 1 0 010 1.42l-7.2 7.2a1 1 0 01-1.414 0l-3.2-3.2a1 1 0 011.414-1.414l2.493 2.493 6.493-6.493a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PERFORMANCE OVERVIEW ===== -->
+  <div class="mt-6 w-full rounded-[8px] border border-[#EEF2F6] bg-white">
+    <div class="flex items-center justify-between px-6 py-4">
+      <div class="text-[16px] font-semibold text-[#111827]">
+        Performance Overview
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          (click)="setRange('7d')"
+          class="cursor-pointer rounded-[4px] border px-3 py-1 text-[12px] font-medium"
+          [ngClass]="
+            range === '7d'
+              ? 'border-[#923D8C] bg-[#923D8C] text-white'
+              : 'border-[#E5E7EB] bg-[#F9FAFB] text-[#6B7280]'
+          "
+        >
+          Last 7 days
+        </button>
+
+        <button
+          type="button"
+          (click)="setRange('30d')"
+          class="cursor-pointer rounded-[4px] border px-3 py-1 text-[12px] font-medium"
+          [ngClass]="
+            range === '30d'
+              ? 'border-[#923D8C] bg-[#923D8C] text-white'
+              : 'border-[#E5E7EB] bg-[#F9FAFB] text-[#6B7280]'
+          "
+        >
+          Last 30 days
+        </button>
+      </div>
+    </div>
+
+    <div class="flex w-full flex-col gap-6 px-6 pb-6 lg:flex-row">
+      <!-- Top Quizzes -->
+      <div class="flex w-full flex-col lg:w-[52%]">
+        <div class="text-[14px] font-semibold text-[#111827]">
+          Top Performing Quizzes
+        </div>
+
+        <div class="mt-3 flex flex-col gap-2 rounded-[6px] bg-white p-2">
+          <div
+            *ngFor="let q of topQuizzes"
+            class="flex items-center justify-between rounded-[6px] bg-[#F9FAFB] px-4 py-3"
+          >
+            <div>
+              <div class="text-[14px] font-medium text-[#111827]">
+                {{ q.title }}
+              </div>
+              <div class="text-[12px] text-[#6B7280]">
+                {{ q.subtitle }}
+              </div>
+            </div>
+
+            <div
+              class="text-[12px] font-semibold"
+              [ngStyle]="{ color: q.gradeColor }"
+            >
+              {{ q.grade }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructor Contributions -->
+      <div class="flex w-full flex-col lg:flex-1">
+        <div class="text-[14px] font-semibold text-[#111827]">
+          Instructor Contributions
+        </div>
+
+        <div class="mt-3 flex flex-col gap-3">
+          <div
+            *ngFor="let p of instructors"
+            class="flex items-center justify-between"
+          >
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 overflow-hidden rounded-full">
+                <img
+                  [src]="p.avatarUrl"
+                  [alt]="p.name"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+
+              <div>
+                <div class="text-[14px] font-medium text-[#111827]">
+                  {{ p.name }}
+                </div>
+                <div class="text-[12px] text-[#6B7280]">
+                  {{ p.quizzesCreatedText }}
+                </div>
+              </div>
+            </div>
+
+            <div class="text-[12px] font-semibold text-[#923D8C]">
+              {{ p.count }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

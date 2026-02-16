@@ -1,0 +1,510 @@
+<!-- manage-request.component.html -->
+<section class="w-full bg-[#F7F8FA] px-4 py-4 sm:px-6">
+  <!-- =================== HEADER =================== -->
+  <div class="w-full rounded-[10px] border border-[#E5E7EB] bg-white">
+    <!-- Row 1 -->
+    <div class="flex w-full items-center justify-between px-4 pt-3 sm:px-6">
+      <div class="flex min-w-0 items-center gap-3 sm:gap-4">
+        <!-- Back -->
+        <button type="button" aria-label="Back" (click)="goBack()"
+          class="cursor-pointer flex h-8 w-8 items-center justify-center rounded-[6px] text-[#6B7280] hover:bg-[#F3F4F6]">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+            <path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <!-- Tabs -->
+        <nav class="flex min-w-0 items-end gap-6 overflow-x-auto pb-2 sm:gap-10">
+          <button type="button" (click)="setTab('demo')"
+            class="cursor-pointer relative flex h-10 items-end pb-1 text-[11px] font-semibold whitespace-nowrap sm:text-[12px]"
+            [ngClass]="
+              activeTab === 'demo' ? 'text-[#8B3C8A]' : 'text-[#111827]'
+            ">
+            Students Demo Requests
+            <span class="absolute bottom-0 left-0 h-[2px] w-full" [ngClass]="
+                activeTab === 'demo' ? 'bg-[#8B3C8A]' : 'bg-transparent'
+              "></span>
+          </button>
+
+          <button type="button" (click)="setTab('live')"
+            class="cursor-pointer relative flex h-10 items-end pb-1 text-[11px] font-semibold whitespace-nowrap sm:text-[12px]"
+            [ngClass]="
+              activeTab === 'live' ? 'text-[#8B3C8A]' : 'text-[#111827]'
+            ">
+            Students Live Session Requests
+            <span class="absolute bottom-0 left-0 h-[2px] w-full" [ngClass]="
+                activeTab === 'live' ? 'bg-[#8B3C8A]' : 'bg-transparent'
+              "></span>
+          </button>
+
+          <button type="button" (click)="setTab('name')"
+            class="cursor-pointer relative flex h-10 items-end pb-1 text-[11px] font-semibold whitespace-nowrap sm:text-[12px]"
+            [ngClass]="
+              activeTab === 'name' ? 'text-[#8B3C8A]' : 'text-[#111827]'
+            ">
+            Student Name Change Request
+            <span class="absolute bottom-0 left-0 h-[2px] w-full" [ngClass]="
+                activeTab === 'name' ? 'bg-[#8B3C8A]' : 'bg-transparent'
+              "></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Refresh -->
+      <button type="button" (click)="refresh()"
+        class="cursor-pointer hidden h-8 items-center justify-center gap-2 rounded-[6px] bg-[#8B3C8A] px-3 text-[11px] font-semibold text-white hover:brightness-95 sm:flex">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+          <path d="M20 12a8 8 0 0 1-14.9 3.6M4 12a8 8 0 0 1 14.9-3.6" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" />
+          <path d="M20 4v6h-6M4 20v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Refresh Requests
+      </button>
+    </div>
+
+    <!-- Row 2 (filters aligned under first tab like screenshot) -->
+    <div class="flex w-full flex-col px-4 pb-4 sm:px-6">
+      <div class="mt-3 flex w-full items-center">
+        <!-- spacer (back button area) -->
+        <div class="w-[44px] shrink-0 sm:w-[48px]"></div>
+
+        <div class="flex w-full flex-wrap items-center gap-4 sm:gap-8">
+          <!-- Date -->
+          <div class="flex items-center gap-2">
+            <label class="text-[10px] font-medium text-[#111827] sm:text-[11px]">Date</label>
+            <div class="relative">
+              <select [(ngModel)]="filters.date" (ngModelChange)="applyFilters()"
+                class="h-[30px] w-[108px] appearance-none rounded-[6px] border border-[#D1D5DB] bg-white px-3 pr-7 text-[10px] font-medium text-[#111827] outline-none focus:border-[#8B3C8A]">
+                <option *ngFor="let d of dateOptions" [value]="d.value">
+                  {{ d.label }}
+                </option>
+              </select>
+
+              <svg class="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-[#6B7280]"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Course -->
+          <div class="flex items-center gap-2">
+            <label class="text-[10px] font-medium text-[#111827] sm:text-[11px]">Course</label>
+            <div class="relative">
+              <select [(ngModel)]="filters.course" (ngModelChange)="applyFilters()"
+                class="h-[30px] w-[120px] appearance-none rounded-[6px] border border-[#D1D5DB] bg-white px-3 pr-7 text-[10px] font-medium text-[#111827] outline-none focus:border-[#8B3C8A]">
+                <option *ngFor="let c of courseOptions" [value]="c.value">
+                  {{ c.label }}
+                </option>
+              </select>
+
+              <svg class="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-[#6B7280]"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div class="flex items-center gap-2">
+            <label class="text-[10px] font-medium text-[#111827] sm:text-[11px]">Status</label>
+            <div class="relative">
+              <select [(ngModel)]="filters.status" (ngModelChange)="applyFilters()"
+                class="h-[30px] w-[104px] appearance-none rounded-[6px] border border-[#D1D5DB] bg-white px-3 pr-7 text-[10px] font-medium text-[#111827] outline-none focus:border-[#8B3C8A]">
+                <option *ngFor="let s of statusOptions" [value]="s.value">
+                  {{ s.label }}
+                </option>
+              </select>
+
+              <svg class="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-[#6B7280]"
+                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.24a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08Z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Refresh (mobile) -->
+          <button type="button" (click)="refresh()"
+            class="cursor-pointer ml-auto flex h-8 items-center justify-center gap-2 rounded-[6px] bg-[#8B3C8A] px-3 text-[11px] font-semibold text-white hover:brightness-95 sm:hidden">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+              <path d="M20 12a8 8 0 0 1-14.9 3.6M4 12a8 8 0 0 1 14.9-3.6" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" />
+              <path d="M20 4v6h-6M4 20v-6h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== TABLES AREA =================== -->
+  <div class="mt-4 w-full rounded-[10px] border border-[#E5E7EB] bg-white">
+    <!-- ===== Tab 3 has its own title block (like screenshot) ===== -->
+    <ng-container *ngIf="activeTab === 'name'">
+      <div class="flex w-full items-center gap-3 px-5 py-5 sm:px-6">
+        <!-- Replace your current icon block with this (matches the gradient + medal icon) -->
+        <div
+          class="flex h-8 w-8 items-center justify-center rounded-[12px] bg-gradient-to-br from-[#7C3AED] via-[#A855F7] to-[#F97316]">
+          <!-- Medal / badge -->
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <!-- Ring -->
+            <circle cx="12" cy="10" r="5.5" stroke="#FFFFFF" stroke-width="2.6" />
+
+            <!-- Ribbon (left + right) -->
+            <path d="M9.2 14.1V21l2.8-1.7L9.2 17.6" fill="#FFFFFF" />
+            <path d="M14.8 14.1V21L12 19.3l2.8-1.7" fill="#FFFFFF" />
+
+            <!-- Small ribbon notch -->
+            <path d="M10.5 14.4 12 15.5l1.5-1.1" fill="#FFFFFF" />
+          </svg>
+        </div>
+
+        <div class="flex flex-col">
+          <div class="text-[14px] font-semibold text-[#111827] sm:text-[16px]">
+            Name Corrections
+          </div>
+          <div class="mt-0.5 text-[11px] font-medium text-[#6B7280] sm:text-[12px]">
+            Manage student name correction requests
+          </div>
+        </div>
+      </div>
+      <div class="h-px w-full bg-[#E5E7EB]"></div>
+    </ng-container>
+
+    <!-- ===== Universal table wrapper ===== -->
+    <div class="w-full overflow-x-auto">
+      <!-- =================== TAB 1: DEMO =================== -->
+      <ng-container *ngIf="activeTab === 'demo'">
+        <table class="w-full min-w-[980px]">
+          <thead>
+            <tr class="bg-[#FAFAFA] border-b border-[#E5E7EB]">
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Student
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Course
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Preferred Time
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Request Date
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let r of viewRows; trackBy: trackById"
+              class="border-t border-[#E5E7EB] hover:bg-[#F9FAFB] transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <img *ngIf="r.avatar" [src]="r.avatar" alt="" class="h-8 w-8 rounded-full object-cover shadow-sm" />
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-bold text-[#111827]">
+                      {{ r.name }}
+                    </div>
+                    <div class="text-[10px] font-medium text-[#6B7280]">
+                      {{ r.email }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-4 py-4 text-[12px] font-medium text-[#111827]">
+                {{ r.course }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.preferredTime }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.requestDate }}
+              </td>
+
+              <td class="px-4 py-4">
+                <span class="inline-flex rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-tight"
+                  [ngClass]="statusPill(r.status)">
+                  {{ r.status }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <button type="button"
+                    class="cursor-pointer h-7 rounded-[6px] bg-[#8B3C8A] px-4 text-[11px] font-bold text-white hover:brightness-95 transition-all"
+                    (click)="demoView(r)">
+                    View
+                  </button>
+                  <button type="button"
+                    class="cursor-pointer h-7 rounded-[6px] border border-[#E5E7EB] bg-white px-4 text-[11px] font-bold text-[#111827] hover:bg-[#F9FAFB] transition-all"
+                    (click)="reject(r)">
+                    Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="flex w-full flex-wrap items-center justify-between gap-3 px-6 py-4">
+          <div class="flex items-center gap-2 text-[9px] font-medium text-[#6B7280]">
+            {{ showingText }}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-[9px] font-semibold text-[#111827]">
+              Page {{ page.current }}/{{ page.total }}
+            </div>
+
+            <button type="button"
+              class="cursor-pointer h-[22px] rounded-[10px] border border-[#E5E7EB] bg-white px-5 text-[9px] font-semibold text-[#111827] disabled:cursor-not-allowed disabled:opacity-50"
+              (click)="prevPage()" [disabled]="!canPrev">
+              Prev
+            </button>
+
+            <button type="button"
+              class="cursor-pointer h-[22px] rounded-[10px] bg-[#8B3C8A] px-6 text-[9px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              (click)="nextPage()" [disabled]="!canNext">
+              Next
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- =================== TAB 2: LIVE =================== -->
+      <ng-container *ngIf="activeTab === 'live'">
+        <table class="w-full min-w-[980px]">
+          <thead>
+            <tr class="bg-[#FAFAFA] border-b border-[#E5E7EB]">
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Student
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Course & Module
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Preferred Time
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Request Date
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let r of viewRows; trackBy: trackById"
+              class="border-t border-[#E5E7EB] hover:bg-[#F9FAFB] transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <img *ngIf="r.avatar" [src]="r.avatar" alt="" class="h-8 w-8 rounded-full object-cover shadow-sm" />
+                  <div class="flex flex-col">
+                    <div class="text-[12px] font-bold text-[#111827]">
+                      {{ r.name }}
+                    </div>
+                    <div class="text-[10px] font-medium text-[#6B7280]">
+                      {{ r.email }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-4 py-4 text-[12px] font-medium text-[#111827]">
+                {{ r.course }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.preferredTime }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.requestDate }}
+              </td>
+
+              <td class="px-4 py-4">
+                <span class="inline-flex rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-tight"
+                  [ngClass]="statusPill(r.status)">
+                  {{ r.status }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <ng-container *ngIf="r.status === 'Rejected'; else liveActions">
+                  <button type="button"
+                    class="cursor-pointer h-7 rounded-[6px] border border-[#E5E7EB] bg-white px-4 text-[11px] font-bold text-[#111827] hover:bg-[#F9FAFB] transition-all"
+                    (click)="viewDetails(r)">
+                    View Details
+                  </button>
+                </ng-container>
+
+                <ng-template #liveActions>
+                  <div class="flex items-center gap-2">
+                    <button type="button"
+                      class="cursor-pointer h-7 rounded-[6px] bg-[#8B3C8A] px-4 text-[11px] font-bold text-white hover:brightness-95 transition-all"
+                      (click)="liveView(r)">
+                      View
+                    </button>
+                  </div>
+                </ng-template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="flex w-full flex-wrap items-center justify-between gap-3 px-6 py-4">
+          <div class="flex items-center gap-2 text-[9px] font-medium text-[#6B7280]">
+            {{ showingText }}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-[9px] font-semibold text-[#111827]">
+              Page {{ page.current }}/{{ page.total }}
+            </div>
+
+            <button type="button"
+              class="cursor-pointer h-[22px] rounded-[10px] border border-[#E5E7EB] bg-white px-5 text-[9px] font-semibold text-[#111827] disabled:cursor-not-allowed disabled:opacity-50"
+              (click)="prevPage()" [disabled]="!canPrev">
+              Prev
+            </button>
+
+            <button type="button"
+              class="cursor-pointer h-[22px] rounded-[10px] bg-[#8B3C8A] px-6 text-[9px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+              (click)="nextPage()" [disabled]="!canNext">
+              Next
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- =================== TAB 3: NAME =================== -->
+      <ng-container *ngIf="activeTab === 'name'">
+        <table class="w-full min-w-[1050px]">
+          <thead>
+            <tr class="bg-[#FAFAFA] border-b border-[#E5E7EB]">
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Student
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Current Name
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Requested Name
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Request Date
+              </th>
+              <th class="px-4 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-4 text-left text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let r of nameRows; trackBy: trackById" class="border-t border-[#E5E7EB]">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <img [src]="r.avatar" alt="" class="h-7 w-7 rounded-full object-cover" />
+                  <div class="flex flex-col">
+                    <div class="text-[11px] font-semibold text-[#111827]">
+                      {{ r.name }}
+                    </div>
+                    <div class="text-[9px] font-medium text-[#6B7280]">
+                      {{ r.email }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.currentName }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.requestedName }}
+              </td>
+              <td class="px-4 py-4 text-[11px] font-medium text-[#6B7280] whitespace-nowrap">
+                {{ r.requestDate }}
+              </td>
+
+              <td class="px-4 py-4">
+                <span class="inline-flex rounded-full px-3 py-1 text-[9px] font-semibold"
+                  [ngClass]="statusPill(r.status)">
+                  {{ r.status }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <button type="button"
+                    class="cursor-pointer h-[22px] rounded-[2px] bg-[#8B3C8A] px-3 text-[9px] font-semibold text-white"
+                    (click)="cirtificateCorrection(r)">
+                    Approve
+                  </button>
+
+                  <button type="button"
+                    class="cursor-pointer h-[22px] rounded-[2px] border border-[#E5E7EB] bg-white px-3 text-[9px] font-semibold text-[#111827]"
+                    (click)="cirtificateCorrection(r)">
+                    Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ng-container>
+    </div>
+  </div>
+</section>
+<!-- ✅ Popup wrapper -->
+<div *ngIf="showCertificatePopup" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/20 px-4 py-6"
+  (click)="closeCertificatePopup()">
+  <div class="flex w-full items-center justify-center" (click)="$event.stopPropagation()">
+    <!-- ✅ DATA PASS HERE -->
+    <app-cirtificate *ngIf="showCertificatePopup" [row]="selectedRow" (closePopup)="closeCertificatePopup()"
+      (approveRequest)="approveNameChange($event)" (rejectRequest)="rejectNameChange($event)">
+    </app-cirtificate>
+  </div>
+</div>
+
+<app-status-modal *ngIf="statusModal.show" [title]="statusModal.title" [message]="statusModal.message"
+  [type]="statusModal.type" (close)="statusModal.show = false"></app-status-modal>

@@ -1,0 +1,47 @@
+﻿<div class="relative min-h-screen overflow-hidden">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  @if (!isFullscreen) {
+  <app-header></app-header>
+  }
+
+  @if (!isFullscreen) {
+  <div class="absolute inset-0 -z-10 flex flex-col">
+    <div class="h-[280px] bg-[#880A73]"></div>
+    <div class="flex-1 bg-[#F5F5F5] p-0 m-0"></div>
+  </div>
+  }
+
+  @if (!isFullscreen) {
+  @if (!noContainer) {
+  <div class="mx-auto flex w-full max-w-[1270px] flex-col px-4 pt-[50px] pb-10">
+    <div class="flex w-full flex-col bg-white shadow-[0_10px_26px_rgba(0,0,0,0.10)]">
+
+      @if (showStudentHeader) {
+      <app-student-header></app-student-header>
+      }
+
+      <div class="flex w-full flex-col px-4 pt-5 md:px-8 mb-6" [class.pt-10]="!showStudentHeader">
+        <router-outlet></router-outlet>
+      </div>
+
+    </div>
+  </div>
+
+  
+  } @else {
+  <div class="flex min-h-screen w-full flex-col bg-[#F5F5F5]">
+    <router-outlet></router-outlet>
+  </div>
+  }
+  } @else {
+  <!-- ✅ Fullscreen route output only -->
+  <router-outlet></router-outlet>
+  }
+
+  @if (!isFullscreen) {
+  <app-footer></app-footer>
+  }
+
+</div>

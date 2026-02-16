@@ -1,0 +1,195 @@
+<div class="w-full">
+  <!-- Top Heading (same) -->
+  <div class="flex w-full mt-2 mb-4 items-center justify-between">
+    <h2 class="text-[20px] font-semibold text-[#111827]">Payment Overview</h2>
+    <span class="h-0 w-0"></span>
+  </div>
+
+  <section class="w-full bg-white px-4 py-4 sm:px-6 sm:py-5">
+    <!-- Top summary + buttons -->
+    <div class="mt-3 flex w-full flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <!-- Left stats -->
+      <div class="flex w-full flex-col gap-4 sm:flex-row sm:items-start sm:gap-6 md:w-auto">
+        <!-- Total Transactions -->
+        <div class="flex flex-col">
+          <div class="text-[10px] font-medium text-[#9CA3AF]">Total Transactions</div>
+          <div class="mt-1 text-[16px] font-semibold leading-5 text-[#111827]">
+            {{ totalTransactions }}
+          </div>
+          <div class="mt-1 flex items-center gap-1 text-[10px] font-medium text-[#16A34A]">
+            <span class="inline-flex">
+              <svg viewBox="0 0 24 24" class="h-3 w-3" fill="none" aria-hidden="true">
+                <path d="M12 5v14M12 5l-5 5M12 5l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>{{ totalTransactionsDelta }}</span>
+          </div>
+        </div>
+
+        <!-- Divider (only from sm+) -->
+        <div class="hidden h-[44px] w-px bg-[#E5E7EB] sm:block"></div>
+
+        <!-- Pending Payments -->
+        <div class="flex flex-col">
+          <div class="text-[10px] font-medium text-[#9CA3AF]">Pending Payments</div>
+          <div class="mt-1 flex items-baseline gap-1">
+            <span class="text-[16px] font-semibold leading-5 text-[#F97316]">{{ pendingPayments }}</span>
+            <span class="text-[10px] font-medium text-[#9CA3AF]">{{ pendingTransactionsCount }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right buttons -->
+      <div class="flex w-full items-center justify-start gap-2 md:w-auto md:justify-end">
+        <button type="button" (click)="onExport()"
+          class="cursor-pointer inline-flex h-8 flex-1 items-center justify-center gap-2 rounded-[4px] border border-[#E5E7EB] bg-white px-3 text-[11px] font-medium text-[#374151] hover:bg-[#F9FAFB] sm:flex-none">
+          <span class="inline-flex text-[#6B7280]">
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+              <path d="M12 3v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <path d="M8 9l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </span>
+          Export
+        </button>
+
+        <button type="button" (click)="viewAll()"
+          class="cursor-pointer inline-flex h-8 flex-1 items-center justify-center rounded-[4px] bg-[#923D8C] px-3 text-[11px] font-medium text-white hover:opacity-95 sm:flex-none">
+          View All
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- TABLE (md+ only) -->
+    <!-- ========================= -->
+    <div class="mt-4 hidden w-full md:block">
+      <!-- Header row -->
+      <div class="flex w-full items-center border-b border-[#EEF2F7] py-2">
+        <div class="flex w-[18%] items-center px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          TRANSACTION ID
+        </div>
+        <div class="flex w-[14%] items-center px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          DATE
+        </div>
+        <div class="flex w-[26%] items-center px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          COURSE
+        </div>
+        <div class="flex w-[22%] items-center px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          STUDENT
+        </div>
+        <div class="flex w-[12%] items-center justify-start px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          AMOUNT
+        </div>
+        <div class="flex w-[8%] items-center justify-center px-2 text-[9px] font-semibold tracking-wide text-[#9CA3AF]">
+          STATUS
+        </div>
+
+      </div>
+
+      <!-- Rows -->
+      <div class="flex w-full flex-col">
+        <div *ngFor="let r of rows; trackBy: trackById" class="flex w-full items-center border-b border-[#F3F4F6] py-2">
+          <div class="flex w-[18%] items-center px-2 text-[10px] font-medium text-[#111827]">
+            {{ r.id }}
+          </div>
+
+          <div class="flex w-[14%] items-center px-2 text-[10px] font-medium text-[#6B7280]">
+            {{ r.date }}
+          </div>
+
+          <div class="flex w-[26%] items-center px-2 text-[10px] font-medium text-[#111827]">
+            {{ r.course }}
+          </div>
+
+          <div class="flex w-[22%] items-center gap-2 px-2">
+            <div class="h-5 w-5 overflow-hidden rounded-full bg-[#F3F4F6]">
+              <img [src]="r.studentAvatar" alt="" class="h-full w-full object-cover" />
+            </div>
+            <div class="truncate text-[10px] font-medium text-[#111827]">
+              {{ r.studentName }}
+            </div>
+          </div>
+
+          <div class="flex w-[12%] items-center px-2 text-[10px] font-semibold text-[#111827]">
+            {{ r.amount }}
+          </div>
+
+          <div class="flex w-[8%] items-center justify-center px-2">
+            <span class="inline-flex items-center justify-center rounded-full px-2 py-[3px] text-[9px] font-semibold"
+              [ngClass]="statusPill(r.status)">
+              {{ r.status }}
+            </span>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- MOBILE CARDS (below md) -->
+    <!-- ========================= -->
+    <div class="mt-4 flex w-full flex-col gap-3 md:hidden">
+      <div *ngFor="let r of rows; trackBy: trackById"
+        class="flex w-full flex-col gap-3 rounded-[10px] border border-[#EEF2F7] bg-white p-4">
+        <!-- Top row: id + status -->
+        <div class="flex w-full items-start justify-between gap-3">
+          <div class="flex min-w-0 flex-col">
+            <div class="text-[9px] font-semibold tracking-wide text-[#9CA3AF]">TRANSACTION ID</div>
+            <div class="mt-1 truncate text-[12px] font-semibold text-[#111827]">
+              {{ r.id }}
+            </div>
+          </div>
+
+          <span
+            class="inline-flex shrink-0 items-center justify-center rounded-full px-2 py-[3px] text-[9px] font-semibold"
+            [ngClass]="statusPill(r.status)">
+            {{ r.status }}
+          </span>
+        </div>
+
+        <!-- Course -->
+        <div class="flex w-full flex-col">
+          <div class="text-[9px] font-semibold tracking-wide text-[#9CA3AF]">COURSE</div>
+          <div class="mt-1 text-[12px] font-medium text-[#111827]">
+            {{ r.course }}
+          </div>
+        </div>
+
+        <!-- Student -->
+        <div class="flex w-full items-center justify-between gap-3">
+          <div class="flex min-w-0 items-center gap-2">
+            <div class="h-6 w-6 overflow-hidden rounded-full bg-[#F3F4F6]">
+              <img [src]="r.studentAvatar" alt="" class="h-full w-full object-cover" />
+            </div>
+            <div class="min-w-0">
+              <div class="text-[9px] font-semibold tracking-wide text-[#9CA3AF]">STUDENT</div>
+              <div class="mt-1 truncate text-[12px] font-medium text-[#111827]">
+                {{ r.studentName }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div class="flex flex-col items-end">
+            <div class="text-[9px] font-semibold tracking-wide text-[#9CA3AF]">AMOUNT</div>
+            <div class="mt-1 text-[12px] font-semibold text-[#111827]">
+              {{ r.amount }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div class="flex w-full items-center justify-between">
+          <div class="text-[9px] font-semibold tracking-wide text-[#9CA3AF]">DATE</div>
+          <div class="text-[12px] font-medium text-[#6B7280]">
+            {{ r.date }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

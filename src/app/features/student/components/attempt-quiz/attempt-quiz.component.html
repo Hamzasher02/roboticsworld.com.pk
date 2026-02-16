@@ -1,0 +1,104 @@
+﻿<section class="min-h-screen w-full bg-white">
+  <!-- Top gradient bar -->
+  <header class="w-full bg-gradient-to-r from-[#7A2C86] to-[#FF6A3D]">
+    <div class="mx-auto flex w-full max-w-[1180px] items-start justify-between px-6 py-4">
+      <div class="flex flex-col">
+        <h1 class="text-[16px] font-semibold leading-5 text-white">
+          Quiz Attempt
+        </h1>
+        <div class="mt-1 flex items-center gap-2 text-[13px] font-medium text-white/90">
+          <span>Question: {{currentQuestionIndex + 1}} / {{questions.length}}</span>
+          <span>•</span>
+          <span>Time: {{formatTime(totalTimeSeconds)}}</span>
+        </div>
+      </div>
+
+      <a [routerLink]="['/student/quiz']"
+        class="flex h-8 w-8 items-center justify-center text-white/90 hover:text-white" aria-label="Close">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" aria-hidden="true">
+          <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="mx-auto w-full max-w-[1180px] px-4 pb-16 pt-6 sm:px-6" *ngIf="!loading && questions.length > 0">
+    <div class="flex w-full flex-col gap-6">
+
+      <!-- Question Card -->
+      <article class="w-full rounded-[8px] border border-[#E6EAF0] bg-white">
+        <div class="flex w-full items-start justify-between px-6 pt-6">
+          <div class="flex flex-col">
+            <h2 class="text-[14px] font-semibold text-[#111827]">Question {{currentQuestionIndex + 1}}</h2>
+            <p class="mt-3 text-[13px] text-[#4B5563]">
+              {{currentQuestion.prompt}}
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-[13px] text-[#9CA3AF]">{{formatTime(answersMap[currentQuestion._id].timeTakenSeconds ||
+              0)}}</span>
+          </div>
+        </div>
+
+        <div class="mt-4 flex w-full flex-col gap-2 px-6 pb-6">
+          <!-- Option -->
+          <ng-container *ngFor="let option of currentQuestion.options; let i = index">
+            <button (click)="toggleOption(option._id)"
+              class="flex w-full items-center gap-3 rounded-[8px] border px-4 py-3 transition-colors text-left"
+              [ngClass]="{
+                      'border-[#FF6A3D] bg-[#FFF1E6]': isOptionSelected(option._id),
+                      'border-[#EEF2F7] bg-[#F9FAFB] hover:bg-gray-50': !isOptionSelected(option._id)
+                  }">
+              <span
+                class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[13px] font-semibold"
+                [ngClass]="{
+                      'border-[#FF6A3D] bg-[#FF6A3D] text-white': isOptionSelected(option._id),
+                      'border-[#D1D5DB] bg-white text-[#111827]': !isOptionSelected(option._id)
+                  }">
+                {{ ['A','B','C','D','E','F'][i] || i + 1 }}
+              </span>
+              <span class="text-[13px] text-[#1F2937]">{{option.text}}</span>
+            </button>
+          </ng-container>
+
+          <!-- Short Answer Input -->
+          <div *ngIf="currentQuestion.type === 'shortAnswer'" class="mt-2">
+            <textarea (input)="handleShortAnswer($event)"
+              class="w-full rounded-[8px] border border-[#EEF2F7] bg-[#F9FAFB] p-4 text-[13px] text-[#1F2937] outline-none focus:border-[#FF6A3D]"
+              placeholder="Type your answer here..." rows="4"></textarea>
+          </div>
+        </div>
+      </article>
+
+      <!-- Navigation & Submit -->
+      <div class="mt-2 flex w-full items-center justify-between px-2">
+        <button type="button" (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0"
+          class="flex h-[44px] w-[120px] items-center justify-center rounded-[4px] border border-gray-300 bg-white text-[13px] font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50">
+          Previous
+        </button>
+
+        <button *ngIf="currentQuestionIndex < questions.length - 1" type="button" (click)="nextQuestion()"
+          class="flex h-[44px] w-[120px] items-center justify-center rounded-[4px] bg-[#FF6A3D] text-[13px] font-semibold text-white hover:bg-orange-600">
+          Next
+        </button>
+
+        <button *ngIf="currentQuestionIndex === questions.length - 1" type="button" (click)="submitQuiz()"
+          [disabled]="submitting"
+          class="flex h-[44px] w-[140px] items-center justify-center rounded-[4px] bg-green-600 text-[13px] font-semibold text-white hover:bg-green-700 disabled:opacity-50">
+          {{submitting ? 'Submitting...' : 'Submit Quiz'}}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="w-full flex justify-center pt-20" *ngIf="loading">
+    <span class="text-gray-500">Loading quiz...</span>
+  </div>
+
+  <div class="w-full flex justify-center pt-20" *ngIf="error">
+    <span class="text-red-500">{{error}}</span>
+  </div>
+</section>

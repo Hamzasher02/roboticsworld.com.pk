@@ -1,0 +1,121 @@
+<div class="min-h-screen w-full bg-gray-50 border-gray-200">
+  <div class="mx-auto w-full max-w-6xl px-4 py-4">
+    <!-- Breadcrumb (top) -->
+    <div class="flex w-full items-center gap-2 text-xs text-gray-500">
+      <button type="button" (click)="goDashboard()" class="cursor-pointer hover:text-sky-600">
+        Dashboard
+      </button>
+      <span>/</span>
+      <span class="text-gray-700">Notifications</span>
+    </div>
+
+    <!-- Back Arrow (below breadcrumb) -->
+    <div class="mt-2 flex w-full items-center">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-gray-50"
+        aria-label="Back"
+      >
+        <span class="text-xl text-sky-600">‹</span>
+      </button>
+    </div>
+
+    <!-- Page title -->
+    <h1 class="mb-4 text-[28px] font-bold text-gray-900">
+      Reviews &amp; Feedback
+    </h1>
+
+    <!-- Main Card (ONLY ONE BORDER) -->
+    <div class="border border-[#BDBDBD] bg-white shadow-[0_1px_0_rgba(0,0,0,0.10)]">
+      <!-- Card header (heading + dropdown together) -->
+      <div class="flex w-full items-center justify-between px-5 py-4">
+        <div class="flex items-center gap-4">
+          <h2 class="text-[16px] font-semibold text-gray-900">
+            Students Feedback
+          </h2>
+
+          <select
+            [(ngModel)]="filter"
+            (change)="onFilterChange()"
+            class="h-9 rounded-full border border-gray-200 bg-white px-4 text-xs text-gray-700
+                   focus:outline-none focus:ring-2 focus:ring-sky-200"
+          >
+            <option value="Student">Student</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Scroll area -->
+      <div class="h-[560px] overflow-y-auto px-5 pb-6">
+        <div *ngIf="isLoading" class="py-6 text-center text-xs text-gray-500">
+          Loading...
+        </div>
+
+        <!-- Columns (Flex-wrap instead of grid) -->
+        <div *ngIf="!isLoading" class="flex w-full flex-wrap gap-x-10 gap-y-10">
+          <div
+            *ngFor="let f of filteredFeedbacks; trackBy: trackById"
+            class="w-full md:w-[calc(50%-20px)] lg:w-[calc(33.333%-27px)]"
+          >
+            <div class="flex w-full flex-col gap-2">
+             <!-- Top row -->
+<div class="flex w-full items-start justify-between gap-3">
+  <!-- LEFT -->
+  <div class="flex min-w-0 flex-1 items-start gap-3">
+    <img
+      [src]="f.avatar"
+      alt="avatar"
+      class="h-10 w-10 rounded-full object-cover bg-gray-200"
+      (error)="onImgError($event)"
+    />
+
+    <div class="min-w-0 flex-1">
+      <!-- Name + time -->
+     <div class="flex min-w-0 items-center gap-2">
+  <p class="text-[13px] font-semibold text-gray-900 whitespace-nowrap">
+    {{ f.name }}
+  </p>
+
+  <span class="text-[10px] text-gray-400">•</span>
+
+  <p class="text-[10px] text-gray-400 whitespace-nowrap">
+    {{ f.timeAgo }}
+  </p>
+</div>
+
+      <!-- Stars -->
+      <div class="mt-1 flex items-center gap-1">
+        <ng-container *ngFor="let filled of starsArray(f.rating)">
+          <!-- same svg as yours -->
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT TAG (truncate so it doesn't eat left space) -->
+ <span
+  class="shrink-0 w-[110px] truncate rounded bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 whitespace-nowrap text-center"
+  title="{{ f.tag }}"
+>
+  {{ f.tag }}
+</span>
+</div>
+
+
+              <!-- Message -->
+              <p class="text-[12px] leading-5 text-gray-500">
+                {{ f.message }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && filteredFeedbacks.length === 0" class="py-6 text-center text-xs text-gray-500">
+          No feedback found.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

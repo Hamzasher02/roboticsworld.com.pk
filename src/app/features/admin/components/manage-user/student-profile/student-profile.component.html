@@ -1,0 +1,235 @@
+<div class="min-h-screen bg-gray-50 p-4 sm:p-6">
+  <!-- Merged Header + Top Info Card -->
+  <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-sm flex flex-col p-4 sm:p-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <button
+          (click)="goBack()"
+          class="p-2 text-gray-700 cursor-pointer transition hover:text-gray-900 hover:bg-gray-200 rounded-full focus:outline-none"
+        >
+          <img
+            src="/assets/admin/backicon.svg"
+            alt="Back"
+            class="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+          />
+        </button>
+        <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+          Student Profile
+        </h1>
+      </div>
+    </div>
+
+    <!-- Top Info Card -->
+    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 sm:p-6">
+      <img [src]="student.avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover" />
+      <div class="flex-1 flex flex-col sm:flex-row sm:justify-between items-start w-full">
+        <div class="flex flex-col gap-1 sm:gap-2 w-full">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span class="text-lg sm:text-xl font-semibold text-gray-900">{{ student.name }}</span>
+            <span
+              class="px-3 py-0.5 text-xs sm:text-sm font-medium rounded-full bg-[#22C55E33] text-[#22C55E] border border-green-200"
+            >
+              {{ student.status }}
+            </span>
+            <span
+              class="px-3 py-0.5 text-xs sm:text-sm font-medium rounded-full bg-[#923D8C33] text-[#923D8C] border border-purple-200"
+            >
+              {{ student.level }}
+            </span>
+          </div>
+          <div class="text-sm sm:text-base text-gray-500 mt-1 sm:mt-0">{{ student.id }}</div>
+        </div>
+<button
+  class="mt-3 block cursor-pointer px-4 py-2 sm:px-6 bg-[#923D8C] text-white rounded-md text-sm sm:text-sm font-medium hover:bg-purple-700 transition whitespace-nowrap"
+>
+  View Progress
+</button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="max-w-7xl mx-auto mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <!-- Left Column -->
+    <div class="space-y-4">
+      <!-- Profile Information -->
+      <div class="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4">Profile Information</h2>
+        <div class="space-y-3 text-sm sm:text-base">
+          <div class="flex items-start gap-2">
+            <img src="/assets/admin/user-manage/email.svg" class="w-5 h-5 mt-1 sm:mt-0.5" />
+            <div>
+              <p class="text-gray-500 font-medium">Email</p>
+              <p class="text-gray-700">{{ profile.email }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <img src="/assets/admin/user-manage/phone.svg" class="w-5 h-5 mt-1 sm:mt-0.5" />
+            <div>
+              <p class="text-gray-500 font-medium">Phone</p>
+              <p class="text-gray-700">{{ profile.phone }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <img src="/assets/admin/user-manage/location.svg" class="w-5 h-5 mt-1 sm:mt-0.5" />
+            <div>
+              <p class="text-gray-500 font-medium">Location</p>
+              <p class="text-gray-700">{{ profile.location }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 ml-7">
+            <div>
+              <p class="text-gray-500 font-medium">Age Group</p>
+              <p class="text-gray-700">{{ profile.ageGroup }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 ml-7">
+            <div>
+              <p class="text-gray-500 font-medium">Course</p>
+              <p class="text-gray-700">{{ profile.course }}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 ml-7">
+            <div>
+              <p class="text-gray-500 font-medium">Level</p>
+              <p class="text-gray-700">{{ profile.level }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Live Sessions -->
+      <div class="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm max-w-md mx-auto lg:max-w-full">
+        <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-3">Upcoming Live Sessions</h2>
+
+        <div class="space-y-6">
+          <div *ngFor="let s of upcomingSessions" class="px-2 sm:px-6 py-4">
+            <!-- ROW 1 -->
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col gap-1">
+                <span class="text-[#6B6B6B] text-sm sm:text-base">Course Name</span>
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px] font-medium">{{ s.course }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <img src="/assets/admin/user-manage/clander.svg" class="w-4 h-4 sm:w-5 sm:h-5" />
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px]">{{ s.date }}</span>
+              </div>
+            </div>
+
+            <!-- ROW 2 -->
+            <div class="flex justify-between items-center mt-4">
+              <div class="flex flex-col gap-1">
+                <span class="text-[#6B6B6B] text-sm sm:text-base">Module</span>
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px] font-medium">{{ s.module }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <img src="/assets/admin/user-manage/clock.svg" class="w-4 h-4 sm:w-5 sm:h-5" />
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px]">{{ s.time }}</span>
+              </div>
+            </div>
+
+            <!-- ROW 3 -->
+            <div class="flex justify-between items-center mt-4">
+              <div class="flex flex-col gap-1">
+                <span class="text-[#6B6B6B] text-sm sm:text-base">Live Session</span>
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px] font-medium">{{ s.session }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <img src="/assets/admin/user-manage/liveseesion.svg" class="w-4 h-4 sm:w-5 sm:h-5" />
+                <span class="text-[#2F2F2F] text-[15px] sm:text-[16px]">Instructor: {{ s.instructor }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="mt-3 w-full py-1.5 cursor-pointer bg-[#EDEDED] text-[#923D8C] border border-[#923D8C] rounded-lg hover:bg-purple-50 transition text-sm sm:text-base"
+        >
+          View All Sessions
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="space-y-4">
+      <!-- Learning Information -->
+      <div class="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm w-full">
+        <h2 class="text-[17px] sm:text-lg font-semibold text-[#2F2F2F] mb-4">Learning Information</h2>
+        <div class="space-y-3 text-[15px] sm:text-base text-[#2F2F2F]">
+          <div class="flex justify-between items-center">
+            <span class="text-[#6B6B6B]">Plan</span>
+            <span class="font-medium">{{ plan.type }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-[#6B6B6B]">Enrollment Date</span>
+            <span class="font-medium">{{ plan.enrollmentDate }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-[#6B6B6B]">Expiry Date</span>
+            <span class="font-medium">{{ plan.expiryDate }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-[#6B6B6B]">Access Duration</span>
+            <span class="font-medium">{{ plan.duration }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enrolled Courses -->
+      <div class="bg-white p-4 sm:p-6 rounded-xl border border-gray-200 shadow-sm">
+        <h2 class="text-[17px] sm:text-lg font-semibold text-[#2F2F2F] mb-4">Enrolled Courses</h2>
+        <div class="space-y-4">
+          <div *ngFor="let c of enrolledCourses" class="border border-gray-100 rounded-xl p-4 flex flex-col justify-between h-full">
+            <div>
+              <!-- Title + Status -->
+              <div class="flex justify-between items-center mb-2">
+                <p class="text-[15px] sm:text-[16px] font-medium text-[#2F2F2F]">{{ c.title }}</p>
+                <span
+                  class="text-[13px] sm:text-sm font-semibold px-2 py-0.5 rounded-full border"
+                  [ngClass]="
+                    c.status === 'Completed'
+                      ? 'text-green-600 bg-green-100 border-green-200'
+                      : 'text-yellow-600 bg-yellow-100 border-yellow-200'
+                  "
+                >
+                  {{ c.status }}
+                </span>
+              </div>
+
+              <!-- Instructor -->
+              <p class="text-[13px] sm:text-sm text-[#6B6B6B] mb-3">
+                Instructor: <span class="font-medium text-[#2F2F2F]">{{ c.instructor }}</span>
+              </p>
+
+              <!-- Progress -->
+              <div class="mb-2">
+                <div class="flex justify-between">
+                  <p class="text-[13px] sm:text-sm text-[#6B6B6B] mb-1">Course Progress</p>
+                  <p class="text-[13px] sm:text-sm text-[#2F2F2F] mt-1 font-medium">{{ c.progress }}%</p>
+                </div>
+                <div class="w-full h-2 rounded-full bg-gray-200">
+                  <div
+                    class="h-full rounded-full bg-[#923D8C]"
+                    [style.width.%]="c.progress"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- View Details at bottom-right -->
+            <div class="flex justify-end mt-2">
+              <p class="text-[13px] sm:text-sm text-[#923D8C] cursor-pointer hover:underline">
+                View Details
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

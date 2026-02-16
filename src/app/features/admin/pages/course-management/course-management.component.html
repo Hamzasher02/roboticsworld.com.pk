@@ -1,0 +1,706 @@
+<div class="min-h-screen bg-white px-4 py-3">
+  <div class="bg-[#D9D9D914] p-2 sm:p-3 rounded-[10px]">
+    <!-- Back -->
+    <button type="button" (click)="goBack()" class="m-1 ml-1 cursor-pointer" aria-label="Back">
+      <img src="/assets/admin/backicon.svg" alt="Back" class="h-5 w-5 object-contain" />
+    </button>
+
+    <div class="px-1">
+      <!-- Title -->
+      <div class="text-[16px] sm:text-lg font-semibold text-gray-900">
+        Course Management
+      </div>
+
+      <!-- Filters + Buttons -->
+      <div class="mt-2 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <!-- Filters -->
+        <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-1.5">
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-[150px]">
+            <input [(ngModel)]="searchText" (input)="onInputChange()" type="text" placeholder="Search..."
+              class="h-8 sm:h-5 w-full rounded-full border border-gray-300 bg-white pl-3 pr-2 text-[11px] sm:text-[10px] text-gray-700 outline-none placeholder:text-gray-400" />
+          </div>
+
+          <select [(ngModel)]="category" (change)="onFilterChange()"
+            class="h-8 sm:h-5 w-full sm:w-auto rounded-full border border-gray-300 bg-white px-2 text-[11px] sm:text-[10px] text-gray-700 outline-none">
+            <option>All Categories</option>
+            <option *ngFor="let cat of categoriesList" [value]="cat.categoryName">
+              {{ cat.categoryName }}
+            </option>
+          </select>
+
+          <select [(ngModel)]="status" (change)="onFilterChange()"
+            class="h-8 sm:h-5 w-full sm:w-auto rounded-full border border-gray-300 bg-white px-2 text-[11px] sm:text-[10px] text-gray-700 outline-none">
+            <option>All Status</option>
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+
+          <select [(ngModel)]="priceRange" (change)="onFilterChange()"
+            class="h-8 sm:h-5 w-full sm:w-auto rounded-full border border-gray-300 bg-white px-2 text-[11px] sm:text-[10px] text-gray-700 outline-none">
+            <option>Price Range</option>
+            <option>$0 - $50</option>
+            <option>$50 - $100</option>
+            <option>$100+</option>
+          </select>
+
+          <select [(ngModel)]="bundleCourses" (change)="onFilterChange()"
+            class="h-8 sm:h-5 w-full sm:w-auto rounded-full border border-gray-300 bg-white px-2 text-[11px] sm:text-[10px] text-gray-700 outline-none">
+            <option>All</option>
+            <option>Courses</option>
+            <option>Bundles</option>
+          </select>
+
+          <button type="button" (click)="clearFilters()"
+            class="h-8 sm:h-5 w-full sm:w-auto rounded-full border border-gray-300 bg-white px-2 text-[11px] sm:text-[10px] text-gray-700 hover:bg-gray-50">
+            Clear Filters
+          </button>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2 shrink-0">
+          <button type="button" (click)="goToViewCategories()"
+            class="h-9 sm:h-6 w-full sm:w-auto rounded cursor-pointer bg-[#923D8C] px-3 text-[12px] font-medium text-white hover:bg-[#7a3270]">
+            View Categories
+          </button>
+
+          <button type="button" (click)="manageBundles()"
+            class="h-9 sm:h-6 w-full sm:w-auto rounded cursor-pointer bg-[#923D8C] px-3 text-[12px] font-medium text-white hover:bg-[#7a3270]">
+            Manage Bundles
+          </button>
+
+          <!-- Add Course Dropdown -->
+          <div class="relative w-full sm:w-auto z-30">
+            <button type="button" (click)="toggleAddMenu()"
+              class="h-9 sm:h-6 w-full sm:w-auto rounded cursor-pointer bg-[#923D8C] px-3 text-[12px] font-medium text-white hover:bg-[#7a3270] inline-flex items-center justify-center gap-1"
+              [attr.aria-expanded]="showAddMenu" aria-haspopup="menu">
+              Add Course
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" class="opacity-90">
+                <path d="M6 9l12 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+
+            <div *ngIf="showAddMenu"
+              class="absolute right-0 mt-1 w-[165px] rounded-[3px] border border-gray-200 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.10)] z-30 overflow-hidden"
+              role="menu">
+              <button type="button" (click)="addNewCourse()"
+                class="w-full text-left px-3 py-1.5 text-[10px] text-gray-700 hover:bg-gray-50" role="menuitem">
+                Add new course
+              </button>
+
+              <button type="button" (click)="createBundle()"
+                class="w-full text-left px-3 py-1.5 text-[10px] text-gray-700 hover:bg-gray-50" role="menuitem">
+                Create Bundle
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pills -->
+      <div class="mt-2 flex flex-wrap items-center gap-2">
+        <ng-container *ngFor="let p of pills">
+          <span *ngIf="p.color === 'purple'"
+            class="inline-flex items-center gap-1.5 rounded bg-[#923D8C33] px-2 py-[3px] text-[12px] text-[#923D8C]">
+            {{ p.label }}
+            <button type="button" class="opacity-60 hover:opacity-100" (click)="removePill(p)">
+              ×
+            </button>
+          </span>
+
+          <span *ngIf="p.color === 'green'"
+            class="inline-flex items-center gap-1.5 rounded bg-[#16653433] px-2 py-[3px] text-[12px] text-[#166534]">
+            {{ p.label }}
+            <button type="button" class="opacity-60 hover:opacity-100" (click)="removePill(p)">
+              ×
+            </button>
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== Cards grid ====================== -->
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5 md:gap-6">
+    <div *ngFor="let c of courses" (click)="goToCourseDetail(c)"
+      class="w-full cursor-pointer rounded-lg border border-gray-200 bg-white">
+      <div class="overflow-hidden rounded-t-lg">
+        <div class="relative bg-[#F3EDF6] flex items-center justify-center h-[140px] sm:h-[130px] lg:h-[115px]">
+          <span
+            class="absolute font-bold left-3 top-3 rounded-full bg-[#EBD8F1] px-2 py-0.5 text-[12px] sm:text-[10px] text-[#923D8C]">
+            {{ c.type }}
+          </span>
+
+          <img [src]="c.imgUrl" alt="course" class="object-contain w-[78%] h-[95px] sm:h-[90px] lg:h-20" />
+        </div>
+      </div>
+
+      <div class="px-3 sm:px-4 pt-2 pb-3 sm:pb-4">
+        <div class="flex items-start justify-between gap-2">
+          <div class="font-semibold text-gray-900 leading-snug text-[12px] sm:text-[11px] md:text-xs">
+            {{ getTitleLine1(c) }}<br />
+            {{ getTitleLine2(c) }}
+          </div>
+
+          <button type="button" (click)="$event.stopPropagation(); toggleActive(c)"
+            class="relative mt-0.5 rounded-full shrink-0 h-4 w-[34px] sm:h-[15px] sm:w-[30px] cursor-pointer disabled:opacity-50"
+            aria-label="toggle" [ngClass]="c.isActive ? 'bg-[#923D8C]' : 'bg-gray-400'"
+            [disabled]="visibilityLoading[c.id]">
+            <span
+              class="absolute top-1/2 -translate-y-1/2 rounded-full bg-white transition-all duration-200 h-3 w-3 sm:h-[11px] sm:w-[11px]"
+              [ngClass]="c.isActive ? 'right-0.5' : 'left-0.5'"></span>
+          </button>
+        </div>
+
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <span class="rounded-full font-bold bg-[#923D8C33] px-2 py-0.5 text-[#923D8C] text-[10px]">
+            {{ c.type }}
+          </span>
+        </div>
+
+        <div class="mt-2 flex items-center gap-2 text-gray-700 text-[10px]">
+          <img src="/assets/admin/course-manage/noto_student.svg" alt="student" class="h-3.5 w-3.5 object-contain" />
+          <span>Level: {{ c.level }}</span>
+        </div>
+
+        <div class="mt-2 flex items-center justify-between">
+          <div class="font-semibold text-gray-900 text-[12px] sm:text-[11px]">
+            ${{ c.price.toFixed(2) }}
+          </div>
+
+          <div class="relative flex items-center gap-3">
+            <!-- delete -->
+
+
+            <!-- edit -->
+            <button type="button" (click)="$event.stopPropagation(); goToCourseDetail(c)"
+              class="text-gray-500 hover:text-gray-800 cursor-pointer" aria-label="edit">
+              <img src="/assets/admin/course-manage/edit.svg" alt="edit" class="h-3.5 w-3.5 object-contain" />
+            </button>
+          </div>
+          <!-- end actions -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isCoursesLoading" class="mt-4 text-center text-gray-500 text-sm">
+    Loading courses...
+  </div>
+
+  <div *ngIf="!isCoursesLoading && courses.length === 0" class="mt-4 text-center text-gray-500 text-sm">
+    No courses found.
+  </div>
+
+  <!-- ====================== Delete Modal ====================== -->
+  <div *ngIf="showDeleteModal" class="fixed inset-0 z-999 flex items-center justify-center bg-black/30 px-3">
+    <div class="w-full max-w-[540px] rounded-lg bg-white shadow-lg relative overflow-hidden">
+      <button type="button" (click)="cancelDelete()"
+        class="absolute right-3 top-2 text-gray-500 hover:text-gray-700 cursor-pointer" aria-label="close">
+        ×
+      </button>
+
+      <div class="px-5 sm:px-6 py-6">
+        <p class="text-center text-[13px] text-gray-800">
+          Do you want to delete this Course?
+        </p>
+
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button type="button" (click)="cancelDelete()"
+            class="cursor-pointer h-9 sm:h-7 min-w-[110px] sm:min-w-[90px] rounded-full bg-gray-200 text-gray-700 text-[11px] font-medium hover:bg-gray-300">
+            Cancel
+          </button>
+
+          <button type="button" (click)="confirmDelete()"
+            class="cursor-pointer h-9 sm:h-7 min-w-[110px] sm:min-w-[90px] rounded-full bg-[#923D8C] text-white text-[11px] font-medium hover:bg-[#7a3270]">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bundle Pricing Popup -->
+  <div *ngIf="showBundlePricing"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-[1px] px-3 sm:px-4">
+    <div class="relative w-full max-w-[980px]">
+      <button type="button" (click)="closeBundlePricing()" aria-label="Close"
+        class="absolute right-2 sm:right-4 top-2 sm:top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-500 shadow hover:text-gray-800 cursor-pointer">
+        ✕
+      </button>
+
+      <div class="max-h-[88vh] overflow-y-auto rounded-[10px] bg-white">
+        <app-bundle (editBundle)="onEditBundle($event)"></app-bundle>
+      </div>
+    </div>
+  </div>
+
+  <!-- Click-outside overlay for AddCourse dropdown -->
+  <div *ngIf="showAddMenu" class="fixed inset-0 z-20" (click)="closeAddMenu()"></div>
+
+  <!-- ✅ ADD/UPDATE COURSE POPUP (REVERTED UI) -->
+  <div *ngIf="showAddCoursePopup"
+    class="fixed inset-0 z-1000 flex items-center justify-center bg-black/30 px-3 sm:px-4">
+    <div class="w-full max-w-[680px]">
+      <div class="overflow-hidden rounded-[14px] bg-white shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+          <h2 class="text-[12px] sm:text-[13px] font-semibold text-gray-900">
+            {{ coursePopupTitle }}
+          </h2>
+
+          <button type="button" (click)="closeAllPopups()"
+            class="h-7 w-7 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+            aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <!-- Body (scrollable) -->
+        <div class="max-h-[92vh] overflow-y-auto px-4 sm:px-6 pb-4 sm:pb-5">
+          <!-- Thumbnail -->
+          <label class="block text-[10px] font-semibold text-gray-800 mb-2">
+            Course Thumbnail
+          </label>
+
+          <label
+            class="w-full rounded-lg border border-dashed border-gray-300 bg-white h-24 sm:h-[110px] flex items-center justify-center cursor-pointer overflow-hidden">
+            <img *ngIf="courseThumbPreview; else thumbPlaceholder" [src]="courseThumbPreview" alt="Thumbnail Preview"
+              class="h-full w-full object-contain" />
+
+            <ng-template #thumbPlaceholder>
+              <div class="flex flex-col items-center justify-center text-center px-3">
+                <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-[#F3EDF6] flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-[#923D8C]">
+                    <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" />
+                    <path d="M12 12V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M8 8l4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                </div>
+
+                <p class="mt-2 text-[9px] sm:text-[10px] text-gray-600">
+                  Drag &amp; drop your image here or
+                  <span class="text-[#923D8C] font-semibold">browse</span>
+                </p>
+                <p class="text-[8px] sm:text-[9px] text-gray-400">
+                  Supported formats: JPG, PNG
+                </p>
+              </div>
+            </ng-template>
+
+            <input type="file" accept="image/*" class="hidden" (change)="onCourseThumbSelected($event)" />
+          </label>
+
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Course Title</label>
+              <input [(ngModel)]="addCourseForm.title" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Level</label>
+              <select [(ngModel)]="addCourseForm.level" [disabled]="isMetaLoading"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none">
+                <option value="" disabled selected>Select Level</option>
+                <option *ngFor="let l of levelsList" [value]="l">{{ l }}</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Course Category</label>
+              <select [(ngModel)]="addCourseForm.category" (change)="onCategoryChange()"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none">
+                <option value="" disabled selected>Select Category</option>
+                <option *ngFor="let cat of categoriesList" [value]="cat._id">{{ cat.categoryName }}</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Price</label>
+              <input [(ngModel)]="addCourseForm.price" type="text" placeholder="Add Price"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Sub Category</label>
+              <select [(ngModel)]="addCourseForm.subCategory" [disabled]="!addCourseForm.category || isMetaLoading"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-50">
+                <option value="">Select Sub Category</option>
+                <option *ngFor="let sub of subCategoriesList" [value]="sub">{{ sub }}</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Age Group</label>
+              <select [(ngModel)]="addCourseForm.ageGroup" [disabled]="!addCourseForm.category || isMetaLoading"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-50">
+                <option value="">Select Age Group</option>
+                <option *ngFor="let age of ageGroupsList" [value]="age">{{ age }}</option>
+              </select>
+            </div>
+
+            <!-- Outline -->
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-2">Course Outline</label>
+
+              <label
+                class="w-full rounded-lg border border-dashed border-gray-300 bg-white h-24 sm:h-[110px] flex items-center justify-center cursor-pointer overflow-hidden px-3">
+                <div *ngIf="outlinePdfMeta; else pdfPlaceholder" class="w-full">
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-[#F3EDF6]">
+                        <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#923D8C]" fill="none">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor"
+                            stroke-width="2" />
+                          <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                      </div>
+
+                      <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="inline-flex rounded-full bg-[#EBD8F1] px-2 py-0.5 text-[9px] font-semibold text-[#923D8C]">
+                            PDF Selected
+                          </span>
+                          <span class="text-[9px] text-gray-400">{{ outlinePdfMeta.sizeLabel }}</span>
+                        </div>
+                        <p class="mt-1 truncate text-[10px] font-semibold text-gray-700">{{ outlinePdfMeta.name }}</p>
+                        <p class="text-[9px] text-gray-400">Tap to change PDF</p>
+                      </div>
+                    </div>
+
+                    <button type="button" (click)="removeOutlinePdf($event)"
+                      class="shrink-0 rounded-md border border-gray-200 bg-white px-2 py-1 text-[9px] font-semibold text-gray-600 hover:bg-gray-50"
+                      aria-label="Remove PDF">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+
+                <ng-template #pdfPlaceholder>
+                  <div class="flex flex-col items-center justify-center text-center">
+                    <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-[#F3EDF6] flex items-center justify-center">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-[#923D8C]">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor"
+                          stroke-width="2" />
+                        <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" />
+                      </svg>
+                    </div>
+
+                    <p class="mt-2 text-[9px] sm:text-[10px] text-gray-600">
+                      Drag &amp; drop your PDF here or
+                      <span class="text-[#923D8C] font-semibold">browse</span>
+                    </p>
+                    <p class="text-[8px] sm:text-[9px] text-gray-400">
+                      Only PDF format is supported
+                    </p>
+                  </div>
+                </ng-template>
+
+                <input type="file" accept="application/pdf" class="hidden" (change)="onOutlineSelected($event)" />
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Access(Duration)</label>
+              <input [(ngModel)]="addCourseForm.access" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+              <!-- Enrollment Type -->
+              <div class="mt-3">
+                <label class="block text-[10px] font-semibold text-gray-800 mb-1">Enrollment Type</label>
+                <select [(ngModel)]="addCourseForm.enrollmentType"
+                  class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none">
+                  <option value="live">Live</option>
+                  <option value="recorded">Recorded</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="mt-4 flex items-center justify-end gap-3">
+            <button type="button" (click)="closeAllPopups()" [disabled]="isCreatingCourse"
+              class="h-8 min-w-[90px] rounded-sm border border-gray-300 bg-white text-[10px] font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50">
+              Cancel
+            </button>
+
+            <button type="button" (click)="createCourseNow()" [disabled]="isCreatingCourse"
+              class="h-8 min-w-[110px] rounded-sm bg-[#923D8C] text-white text-[10px] font-semibold hover:bg-[#7a3270] disabled:opacity-50">
+              <ng-container *ngIf="isCreatingCourse">Creating...</ng-container>
+              <ng-container *ngIf="!isCreatingCourse">{{ coursePopupActionLabel }}</ng-container>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Bundle Popup -->
+  <div *ngIf="showCreateBundlePopup"
+    class="fixed inset-0 z-1000 flex items-center justify-center bg-black/30 px-3 sm:px-4">
+    <div class="w-full max-w-[620px]">
+      <div class="overflow-hidden rounded-[14px] bg-white shadow-[0_20px_45px_rgba(0,0,0,0.18)]">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+          <h2 class="text-[12px] sm:text-[13px] font-semibold text-gray-900">
+            {{ editingBundleId ? 'Update Course Bundle' : 'Create Course Bundle' }}
+          </h2>
+          <button type="button" (click)="closeAllPopups()"
+            class="h-7 w-7 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+            aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="max-h-[92vh] overflow-y-auto px-4 sm:px-6 pb-4 sm:pb-5">
+          <!-- Thumbnail -->
+          <label class="block text-[10px] font-semibold text-gray-800 mb-2">
+            Add Thumbnail
+          </label>
+
+          <label
+            class="w-full overflow-hidden rounded-lg border border-dashed border-gray-300 bg-white h-24 sm:h-[110px] flex flex-col items-center justify-center cursor-pointer">
+            <img *ngIf="bundleThumbPreview; else bundleThumbPlaceholder" [src]="bundleThumbPreview"
+              alt="Bundle Thumbnail Preview" class="h-full w-full object-contain" />
+
+            <ng-template #bundleThumbPlaceholder>
+              <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-[#F3EDF6] flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-[#923D8C]">
+                  <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" />
+                  <path d="M12 12V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M8 8l4-4 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </div>
+
+              <p class="mt-2 text-[9px] sm:text-[10px] text-gray-600 text-center px-3">
+                Drag &amp; drop your image here or
+                <span class="text-[#923D8C] font-semibold">browse</span>
+              </p>
+              <p class="text-[8px] sm:text-[9px] text-gray-400">
+                Supported formats: JPG, PNG
+              </p>
+            </ng-template>
+
+            <input type="file" accept="image/*" class="hidden" (change)="onBundleThumbSelected($event)" />
+          </label>
+
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Bundle Name</label>
+              <input [(ngModel)]="bundleForm.bundleName" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Price</label>
+              <input [(ngModel)]="bundleForm.price" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Category</label>
+              <select [(ngModel)]="bundleForm.category" (change)="onBundleCategoryChange()"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none">
+                <option value="" disabled selected>Select Category</option>
+                <option *ngFor="let cat of categoriesList" [value]="cat._id">{{ cat.categoryName }}</option>
+              </select>
+            </div>
+
+            <!-- Sub Category (Multi) -->
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Sub Category</label>
+              <div class="flex gap-2">
+                <select [(ngModel)]="bundleSubCategoryToAdd" [disabled]="!bundleForm.category || isBundleMetaLoading"
+                  class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-50">
+                  <option value="" disabled selected>Select Sub Category</option>
+                  <option *ngFor="let sub of bundleSubCategoriesList" [value]="sub">{{ sub }}</option>
+                </select>
+                <button type="button" (click)="addBundleSubCategory()" [disabled]="!bundleSubCategoryToAdd"
+                  class="h-7 sm:h-8 px-2 rounded-sm bg-[#EBD8F1] text-[10px] font-semibold text-[#923D8C] hover:bg-[#e4c7ee] disabled:opacity-50">
+                  Add
+                </button>
+              </div>
+              <!-- Chips -->
+              <div *ngIf="bundleForm.subCategory.length" class="mt-2 flex flex-wrap gap-1.5">
+                <span *ngFor="let sub of bundleForm.subCategory; let i = index"
+                  class="inline-flex items-center gap-1.5 rounded-sm border border-gray-300 bg-white px-1.5 py-0.5 text-[9px] text-gray-700">
+                  {{ sub }}
+                  <button type="button" (click)="removeBundleSubCategory(i)"
+                    class="h-3.5 w-3.5 flex items-center justify-center rounded-[3px] border border-gray-300 text-[9px] leading-none text-gray-500 hover:bg-gray-50"
+                    aria-label="Remove">
+                    ×
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <!-- Age Group (Multi) -->
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Age Group</label>
+              <div class="flex gap-2">
+                <select [(ngModel)]="bundleAgeGroupToAdd" [disabled]="!bundleForm.category || isBundleMetaLoading"
+                  class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-50">
+                  <option value="" disabled selected>Select Age Group</option>
+                  <option *ngFor="let age of bundleAgeGroupsList" [value]="age">{{ age }}</option>
+                </select>
+                <button type="button" (click)="addBundleAgeGroup()" [disabled]="!bundleAgeGroupToAdd"
+                  class="h-7 sm:h-8 px-2 rounded-sm bg-[#EBD8F1] text-[10px] font-semibold text-[#923D8C] hover:bg-[#e4c7ee] disabled:opacity-50">
+                  Add
+                </button>
+              </div>
+              <!-- Chips -->
+              <div *ngIf="bundleForm.ageGroup.length" class="mt-2 flex flex-wrap gap-1.5">
+                <span *ngFor="let age of bundleForm.ageGroup; let i = index"
+                  class="inline-flex items-center gap-1.5 rounded-sm border border-gray-300 bg-white px-1.5 py-0.5 text-[9px] text-gray-700">
+                  {{ age }}
+                  <button type="button" (click)="removeBundleAgeGroup(i)"
+                    class="h-3.5 w-3.5 flex items-center justify-center rounded-[3px] border border-gray-300 text-[9px] leading-none text-gray-500 hover:bg-gray-50"
+                    aria-label="Remove">
+                    ×
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <!-- Level (Multi) -->
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Level</label>
+              <div class="flex gap-2">
+                <select [(ngModel)]="bundleLevelToAdd" [disabled]="!bundleForm.category || isBundleMetaLoading"
+                  class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-50">
+                  <option value="" disabled selected>Select Level</option>
+                  <option *ngFor="let l of bundleLevelsList" [value]="l">{{ l }}</option>
+                </select>
+                <button type="button" (click)="addBundleLevel()" [disabled]="!bundleLevelToAdd"
+                  class="h-7 sm:h-8 px-2 rounded-sm bg-[#EBD8F1] text-[10px] font-semibold text-[#923D8C] hover:bg-[#e4c7ee] disabled:opacity-50">
+                  Add
+                </button>
+              </div>
+              <!-- Chips -->
+              <div *ngIf="bundleForm.level.length" class="mt-2 flex flex-wrap gap-1.5">
+                <span *ngFor="let lvl of bundleForm.level; let i = index"
+                  class="inline-flex items-center gap-1.5 rounded-sm border border-gray-300 bg-white px-1.5 py-0.5 text-[9px] text-gray-700">
+                  {{ lvl }}
+                  <button type="button" (click)="removeBundleLevel(i)"
+                    class="h-3.5 w-3.5 flex items-center justify-center rounded-[3px] border border-gray-300 text-[9px] leading-none text-gray-500 hover:bg-gray-50"
+                    aria-label="Remove">
+                    ×
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Access</label>
+              <input [(ngModel)]="bundleForm.access" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Discount (%)</label>
+              <input [(ngModel)]="bundleForm.discount" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Coupon Code</label>
+              <input [(ngModel)]="bundleForm.couponCode" type="text"
+                class="h-7 sm:h-8 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-[10px] font-semibold text-gray-800 mb-1">Visibility</label>
+              <div class="h-7 sm:h-8 flex items-center gap-5">
+                <label class="inline-flex items-center gap-2 text-[10px] text-gray-700">
+                  <input type="radio" name="bundleVis" value="Active" [(ngModel)]="bundleForm.visibility"
+                    class="h-3 w-3" />
+                  Active
+                </label>
+                <label class="inline-flex items-center gap-2 text-[10px] text-gray-700">
+                  <input type="radio" name="bundleVis" value="Inactive" [(ngModel)]="bundleForm.visibility"
+                    class="h-3 w-3" />
+                  Inactive
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <label class="block text-[10px] font-semibold text-gray-800 mb-1">Description</label>
+            <textarea [(ngModel)]="bundleForm.description" rows="2"
+              class="w-full rounded-md border border-gray-300 bg-white px-2 py-2 text-[10px] text-gray-700 outline-none resize-none"></textarea>
+          </div>
+
+          <div class="mt-4 rounded-lg border border-gray-300 bg-[#F7F7F7] px-4 py-3">
+            <div class="flex items-center justify-between">
+              <div class="text-[10px] font-semibold text-gray-800">
+                Add Courses to Bundle
+              </div>
+
+              <button *ngIf="!showBundleCoursesPanel" type="button" (click)="openBundleCoursesPanel()"
+                class="inline-flex items-center gap-2 h-7 rounded-sm bg-[#EBD8F1] px-3 text-[10px] font-semibold text-[#923D8C] hover:bg-[#e4c7ee]">
+                <span class="text-[12px] leading-none">＋</span>
+                Add Course
+              </button>
+            </div>
+
+            <div *ngIf="showBundleCoursesPanel" class="mt-3 rounded-md bg-[#E6E6E6] p-3">
+              <div class="text-[9px] font-semibold text-gray-800">
+                Courses *
+              </div>
+
+              <div class="mt-2 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2 items-center">
+                <select [(ngModel)]="bundleCourseToAdd" [disabled]="isLoadingBundleCourses"
+                  class="h-7 w-full rounded-sm border border-gray-300 bg-white px-2 text-[10px] text-gray-700 outline-none disabled:bg-gray-100">
+                  <option value="" disabled selected>{{ isLoadingBundleCourses ? 'Loading courses...' : 'Select Course'
+                    }}</option>
+                  <option *ngFor="let c of availableCoursesForBundle" [value]="c.id">{{ c.title }}</option>
+                </select>
+
+                <button type="button" (click)="addCourseToBundle()"
+                  [disabled]="isLoadingBundleCourses || !bundleCourseToAdd"
+                  class="h-7 min-w-[90px] rounded-sm bg-[#EBD8F1] px-3 text-[10px] font-semibold text-[#923D8C] hover:bg-[#e4c7ee] disabled:opacity-50">
+                  Add
+                </button>
+              </div>
+
+              <div *ngIf="bundleSelectedCourses.length" class="mt-3 flex flex-wrap gap-2">
+                <span *ngFor="let course of bundleSelectedCourses; let i = index"
+                  class="inline-flex items-center gap-2 rounded-sm border border-gray-300 bg-white px-2 py-1 text-[9px] text-gray-700">
+                  {{ course.title }}
+                  <button type="button" (click)="removeBundleCourse(i)"
+                    class="h-4 w-4 flex items-center justify-center rounded-[3px] border border-gray-300 text-[10px] leading-none text-gray-500 hover:bg-gray-50"
+                    aria-label="Remove">
+                    ×
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 flex items-center justify-end gap-3">
+            <button type="button" (click)="closeAllPopups()"
+              class="h-8 min-w-[90px] rounded-sm border border-gray-300 bg-white text-[10px] font-semibold text-gray-700 hover:bg-gray-50">
+              Cancel
+            </button>
+            <button type="button" (click)="createBundleNow()" [disabled]="isCreatingBundle"
+              class="h-8 min-w-[110px] rounded-sm bg-[#923D8C] text-white text-[10px] font-semibold hover:bg-[#7a3270] disabled:opacity-50">
+              {{ isCreatingBundle ? (editingBundleId ? 'Updating Bundle...' : 'Creating Bundle...') : (editingBundleId ?
+              'Update Bundle' : 'Create Bundle') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-status-modal [show]="showStatusModal" [title]="statusModalTitle" [message]="statusModalMessage"
+  [type]="statusModalType" (close)="closeStatusModal()"></app-status-modal>

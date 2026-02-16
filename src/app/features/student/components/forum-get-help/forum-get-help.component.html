@@ -1,0 +1,206 @@
+﻿<!-- Get Help -->
+<div class="min-h-screen bg-white">
+  <div class="mx-auto max-w-6xl sm:px-6 py-8">
+    <!-- Title -->
+    <div class="flex flex-col">
+      <a aria-label="Back" [routerLink]="['/student/forum']"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-50">
+        <img src="assets/student/buy course/LeftArrow.svg" alt="Back" class="h-5 w-5" />
+      </a>
+
+      <div class="flex items-center">
+        <h1 class="text-[24px] font-bold text-red-500">Get Help</h1>
+      </div>
+
+      <div>
+        <p class="mt-2 hidden text-[14px] font-semibold sm:block">
+          Find answers and get support from the community
+        </p>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="mt-4 rounded-md border border-gray-200 bg-white px-4 py-3 shadow-sm">
+      <label class="block text-[10px] text-gray-500">Search</label>
+
+      <div class="mt-2 flex h-9 items-center gap-2 rounded-sm border border-gray-200 bg-gray-100 px-3">
+        <svg class="h-4 w-4 text-gray-500" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" />
+        </svg>
+
+        <input type="text" placeholder="Search for help topics, questions or keywords..."
+          class="h-full w-full bg-transparent text-[13px] text-black placeholder:text-black focus:outline-none" />
+      </div>
+    </div>
+
+    <!-- Browse Help Categories -->
+    <div class="mt-8">
+      <h2 class="text-[20px] font-bold text-gray-900">Browse Help Categories</h2>
+
+      <!-- Cards Wrapper (Flexbox only) -->
+      <div class="mt-3 flex w-full flex-col flex-wrap gap-10 sm:flex-row">
+        <!-- Card 1 -->
+        <a [routerLink]="['/student/study-help']"
+          class="flex w-full sm:flex-[0_0_calc(50%-20px)] lg:flex-[0_0_calc(33.333%-27px)]">
+          <article
+            class="flex h-full w-full min-h-[170px] flex-col rounded-lg border border-gray-200 bg-gray-100 p-6 shadow-sm transition hover:bg-gray-200">
+            <!-- Top: Icon + Title -->
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-[56px] w-[56px] flex-none items-center justify-center rounded-xl border border-gray-200 bg-white">
+                <img src="assets/student/forum/OpenMagazine.svg" alt="Study Help" class="h-6 w-6" />
+              </div>
+
+              <h3 class="text-[15px] font-semibold text-gray-900">Study Help</h3>
+            </div>
+
+            <!-- Middle: Description (fixed height so all cards match) -->
+            <p class="mt-3 min-h-[32px] text-[13px] leading-4 text-gray-500">
+              Get assistance with coursework and assignments
+            </p>
+
+            <!-- Spacer pushes badge to bottom (same alignment on all cards) -->
+            <div class="flex-1"></div>
+
+            <!-- Bottom: Topics Count -->
+            <span
+              class="mt-2 inline-flex h-6 w-fit items-center rounded-full bg-orange-500 px-4 text-[11px] font-semibold text-white">
+              42 topics
+            </span>
+          </article>
+        </a>
+
+        <!-- Card 2 -->
+        <a [routerLink]="['/student/peer-mentoring']"
+          class="flex w-full sm:flex-[0_0_calc(50%-20px)] lg:flex-[0_0_calc(33.333%-27px)]">
+          <article
+            class="flex h-full w-full min-h-[170px] flex-col rounded-lg border border-gray-200 bg-gray-100 p-6 shadow-sm transition hover:bg-gray-200">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-[56px] w-[56px] flex-none items-center justify-center rounded-xl border border-gray-200 bg-white">
+                <img src="assets/student/forum/peerMeeting.svg" alt="Peer Mentoring" class="h-6 w-6" />
+              </div>
+
+              <h3 class="text-[15px] font-semibold text-gray-900">Peer Mentoring</h3>
+            </div>
+
+            <p class="mt-3 min-h-[32px] text-[13px] leading-4 text-gray-500">Connect with experienced students</p>
+
+            <div class="flex-1"></div>
+
+            <span
+              class="mt-2 inline-flex h-6 w-fit items-center rounded-full bg-orange-500 px-4 text-[11px] font-semibold text-white">
+              42 topics
+            </span>
+          </article>
+        </a>
+
+        <!-- Card 3 -->
+        <a [routerLink]="['/student/technical-support']"
+          class="flex w-full sm:flex-[0_0_calc(50%-20px)] lg:flex-[0_0_calc(33.333%-27px)]">
+          <article
+            class="flex h-full w-full min-h-[170px] flex-col rounded-lg border border-gray-200 bg-gray-100 p-6 shadow-sm transition hover:bg-gray-200">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex h-[56px] w-[56px] flex-none items-center justify-center rounded-xl border border-gray-200 bg-white">
+                <img src="assets/student/forum/SpeechBlackIcon.svg" alt="Technical Support" class="h-6 w-6" />
+              </div>
+
+              <h3 class="text-[15px] font-semibold text-gray-900">Technical Support</h3>
+            </div>
+
+            <p class="mt-3 min-h-[32px] text-[13px] leading-4 text-gray-500">Platform and technical issues</p>
+
+            <div class="flex-1"></div>
+
+            <span
+              class="mt-2 inline-flex h-6 w-fit items-center rounded-full bg-orange-500 px-4 text-[11px] font-semibold text-white">
+              42 topics
+            </span>
+          </article>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Questions -->
+    <div class="mt-6">
+      <h2 class="text-[20px] font-bold text-gray-900">Recent Questions</h2>
+
+      <div class="mt-3 flex flex-col gap-3">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-4">
+          <p class="text-gray-500 text-sm">Loading questions...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && (!recentQuestions || recentQuestions.length === 0)" class="text-center py-4">
+          <p class="text-gray-500 text-sm">No recent questions found.</p>
+        </div>
+
+        <!-- Rows -->
+        <article *ngFor="let question of recentQuestions"
+          class="flex w-full items-start justify-between gap-3 rounded-[6px] border border-gray-200 bg-white px-4 py-3 shadow-[0_2px_8px_rgba(0,0,0,0.08)] cursor-pointer">
+          <!-- Left -->
+          <div class="flex min-w-0 flex-col" [routerLink]="['/student/question-detail']"
+            [queryParams]="{ postId: question.id || question.postId, title: question.title }">
+            <div class="flex min-w-0 items-start gap-2">
+              <span class="mt-[6px] h-2.5 w-2.5 flex-none rounded-full bg-gray-900"></span>
+
+              <h3 class="min-w-0 truncate text-[13px] font-semibold leading-5 text-gray-900">
+                {{question.title}}
+              </h3>
+            </div>
+
+            <div class="mt-1 flex items-center gap-2 text-[11px] text-gray-400">
+              <span class="whitespace-nowrap">{{question.commentCount}} answers</span>
+              <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+              <span class="whitespace-nowrap">{{question.createdAt | date:'shortTime'}}</span>
+            </div>
+          </div>
+
+          <!-- Right tag -->
+          <div *ngIf="question.category" class="flex flex-none items-start">
+            <span class="rounded-full bg-amber-200 px-2.5 py-1 text-[10px] font-bold leading-none text-gray-900">
+              {{question.category.categoryName || question.category.name || question.category.category || 'Unnamed
+              Category'}}
+            </span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-6">
+      <h2 class="text-[20px] font-bold text-gray-900">Quick Actions</h2>
+      <div class="mt-3 space-y-3">
+        <!-- Ask a Question -->
+        <div class="overflow-hidden border border-gray-200 bg-white">
+          <a [routerLink]="['/student/start-discussion']"
+            class="flex w-full items-center gap-2 bg-[#089BC4] px-4 py-3 text-left text-[14px] font-semibold text-white">
+            <img src="assets/student/forum/SpeechIcon.svg" alt="" class="h-6 w-6" />
+            Ask a Question
+          </a>
+        </div>
+
+        <!-- Browse FAQ -->
+        <div class="overflow-hidden border border-gray-200 bg-white">
+          <a [routerLink]="['/student/forum/faq']"
+            class="flex w-full items-center gap-2 bg-gray-100 px-4 py-3 text-left text-[11px] font-semibold text-gray-700 hover:bg-gray-200">
+            <img src="assets/student/forum/OpenMagazine.svg" alt="" class="h-6 w-6" />
+            Browse FAQ
+          </a>
+        </div>
+
+        <!-- Find a Mentor -->
+        <div class="overflow-hidden border border-gray-200 bg-white">
+          <a [routerLink]="['/student/peer-mentoring']"
+            class="flex w-full items-center gap-2 bg-gray-100 px-4 py-3 text-left text-[11px] font-semibold text-gray-700 hover:bg-gray-200">
+            <img src="assets/student/forum/peerMeeting.svg" alt="" class="h-6 w-6" />
+            Find a Mentor
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

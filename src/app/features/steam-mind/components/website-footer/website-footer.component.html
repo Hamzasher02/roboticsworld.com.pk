@@ -1,0 +1,120 @@
+<!-- Footer (same max width as header: max-w-[1320px]) -->
+<footer class="w-full bg-[#FF6A3D]">
+<div
+  class="mx-auto grid w-full max-w-[1320px]
+         grid-cols-2
+         sm:grid-cols-3
+         md:grid-cols-4
+         lg:grid-cols-5
+         gap-y-8 gap-x-4
+         px-6 py-10 sm:px-8">
+        <!-- 1) Logo + Tagline -->
+        <div class=" ">
+            <div class="flex items-start gap-2 sm:ms-5">
+                <div class="flex h-[64px] w-[50px] items-center justify-center rounded-[8px] ">
+                    <img src="assets/steam-mind/about-us/RW-logo.png" alt="Steam Mind"
+                        class="object-contain" />
+                </div>
+            </div>
+
+            <div class="mt-6 text-[16px] font-semibold leading-[1.25] text-white">
+                Empowering<br />
+                Young Minds!
+            </div>
+        </div>
+
+        <!-- 2) Categories -->
+        <div class=" ">
+            <div class="text-[14px] font-semibold text-white">Categories</div>
+
+            <div class="mt-4 flex flex-col gap-2">
+                <a routerLink="/categories/science" class="text-[12px] font-medium text-white/95 hover:text-white">
+                    Science
+                </a>
+                <a routerLink="/categories/technology" class="text-[12px] font-medium text-white/95 hover:text-white">
+                    Technology
+                </a>
+                <a routerLink="/categories/engineering" class="text-[12px] font-medium text-white/95 hover:text-white">
+                    Engineering
+                </a>
+                <a routerLink="/categories/arts" class="text-[12px] font-medium text-white/95 hover:text-white">
+                    Arts
+                </a>
+                <a routerLink="/categories/mathematics" class="text-[12px] font-medium text-white/95 hover:text-white">
+                    Mathematics
+                </a>
+            </div>
+        </div>
+        <div>
+            <!-- Support -->
+            <div class="flex flex-col">
+                <div class="text-[14px] font-semibold text-white">Support</div>
+                <div class="mt-4 flex flex-col gap-2">
+                    <a routerLink="/help-centre" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        Help Centre
+                    </a>
+                    <a routerLink="/faqs" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        FAQs
+                    </a>
+                    <a routerLink="/terms" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        Terms &amp; Conditions
+                    </a>
+                    <a routerLink="/privacy" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        Privacy Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <!-- Company -->
+            <div class="flex flex-col">
+                <div class="text-[14px] font-semibold text-white">Company</div>
+                <div class="mt-4 flex flex-col gap-2">
+                    <a routerLink="/steam-mind/contactus" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        Contact Us
+                    </a>
+                    <a routerLink="/steam-mind/aboutus" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        About Us
+                    </a>
+                    <a routerLink="/steam-mind/blog" class="text-[12px] font-medium text-white/95 hover:text-white">
+                        Blog
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4) Social -->
+        <div class=" ">
+            <div class="text-[14px] font-semibold text-white">
+                Follow Us On
+            </div>
+
+            <div class="mt-4 flex items-center gap-3">
+                <!-- Facebook -->
+                <a href="#" aria-label="Facebook" class="flex h-[38px] w-[38px] items-center justify-center bg-white">
+                    <img src="assets/steam-mind/footer/fb.svg" alt="" class="h-4 w-4" />
+                </a>
+
+                <!-- Instagram -->
+                <a href="#" aria-label="Instagram" class="flex h-[38px] w-[38px] items-center justify-center bg-white">
+                    <img src="assets/steam-mind/footer/insta.svg" alt="" class="h-4 w-4" />
+                </a>
+
+                <!-- LinkedIn -->
+                <a href="#" aria-label="LinkedIn" class="flex h-[38px] w-[38px] items-center justify-center bg-white">
+                    <img src="assets/steam-mind/footer/LinkedinIcon.svg" alt="" class="h-4 w-4" />
+                </a>
+
+                <!-- X -->
+                <a href="#" aria-label="X" class="flex h-[38px] w-[38px] items-center justify-center bg-white">
+                    <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#FF6A3D]" aria-hidden="true">
+                        <path fill="currentColor"
+                            d="M18.244 2H21.56l-7.24 8.273L22.854 22h-6.87l-5.38-7.19L4.45 22H1.134l7.75-8.86L1.146 2h6.97l4.86 6.48L18.244 2zm-1.2 18h1.84L7.2 4h-1.9l11.744 16z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</footer>

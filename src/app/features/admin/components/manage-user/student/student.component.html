@@ -1,0 +1,152 @@
+<div class="min-h-screen w-full bg-white px-6 py-5">
+
+  <!-- Tabs (Top Left like image) -->
+  <div class="flex items-center gap-4">
+    <button *ngFor="let tab of tabs" (click)="setActiveTab(tab)"
+      class="h-8 px-4 text-[12px] font-medium rounded-sm transition-colors"
+      [ngClass]="activeTab === tab ? 'bg-[#923D8C] text-white' : 'bg-transparent text-gray-900 hover:text-gray-700'">
+      {{ tab }}
+    </button>
+  </div>
+
+  <!-- Keep your search + bulk (NO functionality change) but hide to match screenshot -->
+  <div class="hidden">
+    <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" />
+    <button *ngIf="anySelected()" (click)="markSelectedInactive()">Inactive Selected</button>
+  </div>
+
+  <!-- Table Wrapper -->
+  <div class="mt-8 w-full border border-[#E7D6E6] overflow-x-auto">
+
+    <!-- Header Row (light purple) -->
+    <div class="flex items-center bg-[#E7D6E6] px-6 py-3">
+      <div class="w-10 flex items-center">
+        <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" class="h-4 w-4 accent-[#923D8C]" />
+      </div>
+
+      <div class="w-[120px] text-[11px] font-medium text-gray-900">Select all</div>
+      <div class="w-[260px] text-[11px] font-medium text-gray-900">Name</div>
+      <div class="w-[220px] text-[11px] font-medium text-gray-900">Courses</div>
+
+      <div class="w-[140px] text-[11px] font-medium text-gray-900">Status</div>
+      <div class="flex-1 text-[11px] font-medium text-gray-900 text-center">Actions</div>
+    </div>
+
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-20 gap-3">
+      <div class="h-10 w-10 rounded-full border-4 border-[#923D8C22] border-t-[#923D8C] animate-spin"></div>
+      <div class="text-sm text-gray-500">Fetching records...</div>
+    </div>
+
+    <!-- Rows -->
+    <div *ngIf="!isLoading" class="flex flex-col">
+
+      <div *ngFor="let student of paginatedStudents" class="flex items-center px-6 py-4">
+
+        <!-- Row checkbox -->
+        <div class="w-10 flex items-center">
+          <input type="checkbox" [(ngModel)]="student.selected" (change)="checkIfAllSelected()"
+            class="h-4 w-4 accent-[#923D8C]" />
+        </div>
+
+        <!-- Empty space under "Select all" column -->
+        <div class="w-[120px]"></div>
+
+        <!-- Name (avatar + name) -->
+        <div class="w-[260px] flex items-center gap-3">
+          <img [src]="student.avatar" alt="" class="h-10 w-10 rounded-full object-cover" />
+          <div class="text-[12px] font-medium text-gray-900">
+            {{ student.name }}
+          </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="w-[220px] text-[12px] text-gray-900">
+          {{ student.course }}
+        </div>
+
+
+
+
+        <!-- Status Pill (rounded, outlined like image) -->
+        <div class="w-[140px] flex items-center">
+          <span class="inline-flex items-center justify-center h-6 px-5 rounded-full text-[11px] font-medium border"
+            [ngClass]="(student.accountStatus || '').toLowerCase() === 'active'
+              ? 'bg-[#E8F7EE] text-[#2D8A61] border-[#2D8A61]'
+              : (student.accountStatus || '').toLowerCase() === 'inactive'
+                ? 'bg-[#FFE9E9] text-[#E63946] border-[#E63946]'
+                : (student.accountStatus || '').toLowerCase() === 'pending'
+                  ? 'bg-[#FFF9E7] text-[#D4A017] border-[#D4A017]'
+                  : (student.accountStatus || '').toLowerCase() === 'flagged'
+                    ? 'bg-[#FFF0E6] text-[#E76F51] border-[#E76F51]'
+                    : 'bg-gray-100 text-gray-600 border-gray-300'">
+            {{ student.accountStatus || '' }}
+          </span>
+        </div>
+
+        <!-- Actions: 3 dots + dropdown (match screenshot placement) -->
+        <div class="flex-1 flex items-center justify-center relative action-menu">
+          <button (click)="toggleMenu(student)"
+            class="h-8 w-10 flex items-center justify-center rounded-md hover:bg-gray-100">
+            <span class="text-[18px] leading-none text-gray-900">···</span>
+          </button>
+
+          <!-- Dropdown -->
+          <div *ngIf="openedStudent === student"
+            class="absolute right-0 top-full mt-2 w-40 bg-white border border-gray-200 rounded-sm shadow-lg z-[60] flex flex-col py-1">
+
+            <button (click)="viewProfile(student)"
+              class="px-3 py-1.5 text-[11px] text-left text-gray-900 hover:bg-gray-50">
+              View Profile
+            </button>
+
+            <button (click)="viewProgress(student)"
+              class="px-3 py-1.5 text-[11px] text-left text-gray-900 hover:bg-gray-50">
+              View Progress
+            </button>
+
+            <button *ngIf="(student.accountStatus || '').toLowerCase() === 'active'"
+              (click)="changeStatus(student, 'inactive')"
+              class="px-3 py-1.5 text-[11px] text-left text-red-600 hover:bg-red-50">
+              Inactive
+            </button>
+
+            <button *ngIf="(student.accountStatus || '').toLowerCase() !== 'active'"
+              (click)="changeStatus(student, 'active')"
+              class="px-3 py-1.5 text-[11px] text-left text-green-700 hover:bg-green-50">
+              Active
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="students.length === 0" class="py-20 flex flex-col items-center justify-center">
+        <div class="text-sm font-semibold text-gray-900">No Students Found</div>
+        <div class="text-xs text-gray-500 mt-1">No records available for {{ activeTab }}.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Pagination like image -->
+  <div *ngIf="!isLoading && students.length > 0" class="mt-6 flex items-center justify-between">
+    <div class="w-1/3"></div>
+
+    <div class="w-1/3 flex items-center justify-center">
+      <span class="text-[11px] text-gray-800">Page {{ page }}/{{ totalPages }}</span>
+    </div>
+
+    <div class="w-1/3 flex items-center justify-end">
+      <button (click)="goNext()" [disabled]="page === totalPages"
+        class="h-7 px-6 rounded-full bg-[#923D8C] text-white text-[11px] font-medium disabled:opacity-40">
+        Next
+      </button>
+    </div>
+  </div>
+
+  <!-- Standardized Status Modal -->
+  <app-status-modal [show]="showModal" [title]="modalTitle" [message]="modalMessage" [type]="modalType"
+    (close)="closeModal()">
+  </app-status-modal>
+</div>

@@ -1,0 +1,66 @@
+﻿<aside class="fixed right-0 top-[80px] z-50 hidden h-[calc(100vh-80px)] w-full max-w-[420px] flex-col bg-white md:flex">
+
+  <div class="flex h-[64px] w-full items-center justify-between border-b border-[#E5E7EB] px-6">
+    <h2 class="text-[20px] font-semibold text-[#111827]">Notifications</h2>
+
+    <button
+      type="button"
+      (click)="onClose()"
+      class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-black/5"
+      aria-label="Close notifications"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex w-full flex-col">
+    <div class="flex w-full items-center justify-between border-b border-[#E5E7EB] px-6 py-4">
+      <p class="text-[14px] text-[#111827]">Live session starting in 15 min</p>
+      <span class="text-[12px] text-[#9CA3AF]">Just Now</span>
+    </div>
+
+    <div class="flex w-full items-center justify-between border-b border-[#E5E7EB] px-6 py-4">
+      <p class="text-[14px] text-[#111827]">Assignment deadline tomorrow</p>
+      <span class="text-[12px] text-[#9CA3AF]">2 hour ago</span>
+    </div>
+
+    <div class="flex w-full items-center justify-between border-b border-[#E5E7EB] px-6 py-4">
+      <p class="text-[14px] text-[#111827]">Live session starting in 15 min</p>
+      <span class="text-[12px] text-[#9CA3AF]">3 hour ago</span>
+    </div>
+
+    <div class="flex w-full items-center justify-between border-b border-[#E5E7EB] px-6 py-4">
+      <p class="text-[14px] text-[#111827]">Live session starting in 15 min</p>
+      <span class="text-[12px] text-[#9CA3AF]">yesterday</span>
+    </div>
+
+    <div class="flex w-full items-center justify-between border-b border-[#E5E7EB] px-6 py-4">
+      <p class="text-[14px] text-[#111827]">Live session starting in 15 min</p>
+      <span class="text-[12px] text-[#9CA3AF]">Yesterday</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile (full screen) -->
+<aside class="fixed right-0 top-0 z-50 flex h-screen w-full flex-col bg-white md:hidden">
+  <div class="flex h-[64px] w-full items-center justify-between border-b border-[#E5E7EB] px-6">
+    <h2 class="text-[20px] font-semibold text-[#111827]">Notifications</h2>
+
+    <button
+      type="button"
+      (click)="onClose()"
+      class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-black/5"
+      aria-label="Close notifications"
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex w-full flex-col">
+    <!-- same items -->
+  </div>
+</aside>

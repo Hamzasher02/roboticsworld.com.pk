@@ -1,0 +1,311 @@
+﻿<!-- Page -->
+<div class="min-h-screen bg-white">
+  <!-- Top bar -->
+  <header class="border-b border-gray-100 p-0 m-0 mt-0 w-full">
+    <div class="mx-auto flex h-14 w-full items-center gap-3 px-0 sm:px-6 sm:gap-12">
+      <a [routerLink]="['/student/wishlist']" aria-label="Back"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100">
+        <img src="/assets/student/buy course/LeftArrow.svg" alt="Back" class="h-4 w-4" />
+      </a>
+
+      <h1 class="text-[20px] font-bold sm:text-3xl">Checkout</h1>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="mx-auto max-w-6xl px-0 pb-10 pt-4 sm:px-6 sm:pt-6">
+    <!-- Top-level Error Alert (Toast-like) -->
+    <div *ngIf="error"
+      class="mb-6 rounded-md bg-red-50 border border-red-200 p-4 flex items-center gap-3 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
+        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h3 class="text-sm font-bold text-red-800">Enrollment Notice</h3>
+        <p class="text-sm text-red-700 mt-0.5">{{ error }}</p>
+      </div>
+      <button (click)="error = ''" class="text-red-400 hover:text-red-600 transition-colors">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Success Message (Toast-like) -->
+    <div *ngIf="successMessage"
+      class="mb-6 rounded-md bg-green-50 border border-green-200 p-4 flex items-center gap-3 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100">
+        <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h3 class="text-sm font-bold text-green-800">Success</h3>
+        <p class="text-sm text-green-700 mt-0.5">{{ successMessage }}</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-start">
+      <!-- LEFT -->
+      <section class="flex w-full flex-col gap-5 lg:flex-1">
+        <!-- Course Summary -->
+        <article class="rounded-md border border-gray-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+          <div class="px-4 pb-4 pt-4 sm:px-5">
+            <h2 class="text-[18px] font-bold sm:text-[20px]">Course Summary</h2>
+
+            <div class="mt-4 flex flex-col gap-4 sm:flex-row">
+              <div
+                class="h-[170px] w-full overflow-hidden rounded-md border border-gray-200 bg-gray-100 sm:h-[100px] sm:w-[130px]">
+                <!-- thumbnail -->
+                <img
+                  [src]="enrollmentState?.courseData?.course?.courseThumbnail?.secureUrl || '/assets/student/courseImage/courseImage.svg'"
+                  alt="Course thumbnail" class="h-full w-full object-cover"
+                  onerror="this.src='assets/student/courseImage/courseImage.svg'" />
+              </div>
+
+              <div class="min-w-0 flex-1">
+                <div class="text-[16px] font-semibold sm:text-[18px]">
+                  {{ enrollmentState?.courseData?.course?.courseTitle || 'Course Enrollment' }}
+                </div>
+
+                <div class="mt-2 space-y-2 text-[12px] text-gray-500">
+                  <div class="flex items-center gap-2">
+                    <img src="/assets/student/buy course/courseLevel.svg" alt="" class="h-4 w-4" />
+                    <span class="font-medium text-gray-500">Level:</span>
+                    <span>{{ enrollmentState?.courseData?.course?.courseLevel || 'Intermediate' }}</span>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <img src="/assets/student/buy course/instructor.svg" alt="" class="h-4 w-4" />
+                    <span class="font-medium text-gray-500">Instructor:</span>
+                    <!-- Display first instructor name if available -->
+                    <span *ngIf="enrollmentState?.courseData?.course?.instructors?.length">
+                      {{ enrollmentState?.courseData?.course?.instructors?.[0]?.name }}
+                    </span>
+                    <span *ngIf="!(enrollmentState?.courseData?.course?.instructors?.length)">
+                      Not Available
+                    </span>
+                  </div>
+
+                  <!-- New fields for Type/Time -->
+                  <div *ngIf="enrollmentState?.enrollmentType" class="flex items-center gap-2">
+                    <span class="font-medium text-gray-500">Type:</span>
+                    <span class="font-semibold text-purple-700">{{ enrollmentState?.enrollmentType }}</span>
+                  </div>
+                  <div *ngIf="enrollmentState?.selectedTimeSlot" class="flex items-center gap-2">
+                    <span class="font-medium text-gray-500">Time:</span>
+                    <span class="font-semibold text-purple-700">{{ enrollmentState?.selectedTimeSlot }}</span>
+                  </div>
+
+                </div>
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <div class="text-[15px] font-semibold text-orange-600">$ {{ displayCoursePrice }}</div>
+                  <!-- <div class="text-[14px] text-gray-400 line-through">$149.99</div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Payment Instructions -->
+        <article class="rounded-md border border-gray-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+          <div class="px-4 pb-5 pt-4 sm:px-5">
+            <h2 class="text-[18px] font-bold sm:text-[20px]">Payment Instructions</h2>
+
+            <!-- Bank transfer block -->
+            <div class="mt-4 rounded-md bg-purple-50 px-4 py-4">
+              <div class="flex items-start gap-3">
+                <div class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-md bg-purple-600 shrink-0">
+                  <img src="/student/buy course/bankIcon.svg" alt="">
+                </div>
+
+                <div class="min-w-0">
+                  <div class="text-[15px] font-semibold">Bank Transfer</div>
+                  <div class="mt-1 space-y-0.5 text-[12px] leading-5 text-gray-600 break-words">
+                    <div><span class="font-semibold">Bank Name:</span> Allied Bank Limited</div>
+                    <div><span class="font-semibold">Account Holder:</span> UPLAW Platform</div>
+                    <div><span class="font-semibold">Account Number:</span> 1234-5678-9012-3456</div>
+                    <div><span class="font-semibold">IBAN:</span> PK12ABCD0000001234567890</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Two methods -->
+            <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+              <div class="w-full rounded-md bg-emerald-50 px-4 py-3">
+                <div class="flex items-start gap-3">
+                  <div
+                    class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-md bg-emerald-600 shrink-0">
+                    <img src="/assets/student/buy course/mobileIcone.svg" alt="">
+                  </div>
+
+                  <div class="min-w-0">
+                    <div class="text-[15px] font-semibold">Easypaisa</div>
+                    <div class="mt-1 space-y-0.5 text-[12px] leading-5 text-gray-600">
+                      <div><span class="font-semibold">Account:</span> 0300-1234567</div>
+                      <div><span class="font-semibold">Name:</span> EduLearn</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full rounded-md bg-rose-50 px-4 py-3">
+                <div class="flex items-start gap-3">
+                  <div class="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-md bg-rose-600 shrink-0">
+                    <img src="/assets/student/buy course/mobileIcone.svg" alt="">
+                  </div>
+
+                  <div class="min-w-0">
+                    <div class="text-[15px] font-semibold">JazzCash</div>
+                    <div class="mt-1 space-y-0.5 text-[12px] leading-5 text-gray-600">
+                      <div><span class="font-semibold">Account:</span> 0311-9876543</div>
+                      <div><span class="font-semibold">Name:</span> EduLearn</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Important instructions -->
+            <div class="mt-3 rounded-md bg-blue-50 px-4 py-3">
+              <div class="flex items-start gap-2">
+                <div class="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full shrink-0">
+                  <img src="/assets/student/buy course/Vector.png" alt="">
+                </div>
+
+                <div class="min-w-0">
+                  <div class="text-[15px] font-semibold text-blue-700">Important Instructions:</div>
+                  <ul class="mt-2 list-disc space-y-1 pl-4 text-[12px] leading-5 text-blue-700">
+                    <li>Transfer the exact amount: <span class="font-semibold">${{ displayCoursePrice }}</span></li>
+                    <li>Take a clear screenshot of the payment confirmation</li>
+                    <li>Upload the screenshot below</li>
+                    <li>Your enrollment will be activated within 24 hours after verification</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Upload Payment Screenshot -->
+        <article class="rounded-md border border-gray-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+          <div class="px-4 pb-6 pt-4 sm:px-5">
+            <h2 class="text-[16px] font-semibold">Upload Payment Screenshot</h2>
+
+            <div class="mt-4 rounded-md border border-dashed border-gray-300 bg-white px-4 py-8 sm:py-10">
+              <div class="mx-auto flex max-w-md flex-col items-center text-center">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
+                  <img src="/assets/student/buy course/uploadIcon (2).svg" alt="">
+                </div>
+
+                <div class="mt-3 text-[14px] font-semibold text-gray-800">Upload Payment Proof</div>
+                <p class="mt-1 text-[11px] text-gray-500">
+                  Drag and drop your screenshot here, or click to browse
+                </p>
+
+                <label
+                  class="mt-3 inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-purple-600 px-4 py-2 text-[14px] font-semibold text-white hover:bg-purple-700 sm:w-auto">
+                  <img src="/assets/student/buy course/fileIcone.svg" alt="Upload icon" class="h-6 w-6" />
+                  <span>Choose File</span>
+                  <input type="file" (change)="onFileSelected($event)" class="sr-only"
+                    aria-label="Choose payment screenshot" />
+                </label>
+
+                <p class="mt-2 text-[11px] text-gray-500">
+                  Supported formats: JPG, PNG, PDF (Max 5MB)
+                </p>
+
+                <!-- File Preview/Name -->
+                <div *ngIf="selectedFile" class="mt-4 flex items-center gap-2 rounded bg-gray-50 px-3 py-2">
+                  <span class="text-xs text-gray-600">{{ selectedFile.name }}</span>
+                  <button type="button" (click)="removeFile()" class="text-red-500 text-xs">Remove</button>
+                </div>
+
+                <!-- Error/Success Messages Moved to Top -->
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="w-full lg:w-[320px] lg:shrink-0">
+
+        <!-- CARD (WITH BORDER) -->
+        <div class="rounded-md border border-gray-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+
+          <div class="px-4 py-4">
+            <h2 class="text-[18px] font-bold text-gray-900">Order Summary</h2>
+
+            <!-- Prices -->
+            <div class="mt-4 space-y-2 text-[12px] text-gray-600">
+              <div class="flex items-center justify-between">
+                <span>Course Price</span>
+                <span class="font-semibold text-gray-700">$ {{ courseBasePrice }}</span>
+              </div>
+
+              <div *ngIf="courseDiscount > 0" class="flex items-center justify-between">
+                <span>Discount ({{ discountPercentage }}%)</span>
+                <span class="font-semibold text-emerald-600">-$ {{ courseDiscount }}</span>
+              </div>
+            </div>
+
+            <div class="mt-3 h-px w-full bg-gray-200"></div>
+
+            <!-- Total -->
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-[15px] font-bold text-gray-800">Total Amount</span>
+              <span class="text-[15px] font-semibold text-orange-600">$ {{ totalAmount }}</span>
+            </div>
+
+            <!-- Submit -->
+            <button type="button" (click)="submitEnrollments()" [disabled]="submitting"
+              class="mt-4 w-full rounded-md bg-gradient-to-r from-rose-300 to-orange-300 px-3 py-2 text-[12px] font-semibold text-white shadow-sm disabled:opacity-50">
+              <span *ngIf="!submitting">✓ Submit Payment</span>
+              <span *ngIf="submitting">Submitting...</span>
+            </button>
+
+            <!-- Cancel -->
+            <a [routerLink]="['/student/courses']"
+              class="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-gray-200 bg-white px-3 py-2 text-[12px] font-semibold text-gray-600 hover:bg-gray-50">
+              <img src="/assets/student/buy course/crossIcon.svg" alt="" class="h-4 w-4">Cancel
+            </a>
+
+            <div class="mt-3 h-px w-full bg-gray-200"></div>
+
+            <!-- Security note -->
+            <div class="mt-3 flex gap-2">
+              <span class="mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-full  ">
+                <img src="/assets/student/buy course/greenVerified.svg" alt="" class="w-7 h-7">
+              </span>
+
+              <p class="text-[11px] leading-4 text-gray-600">
+                Your payment information is secure. We will verify your payment and activate your enrollment within 24
+                hours.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" (click)="submitEnrollments()" [disabled]="submitting"
+          class="mt-6 w-full bg-[#FF6A3D] py-3 text-[14px] font-semibold text-white hover:bg-[#ff7a55] disabled:opacity-50">
+          <span *ngIf="!submitting">Complete Payment</span>
+          <span *ngIf="submitting">Processing...</span>
+        </button>
+
+      </aside>
+
+
+
+    </div>
+  </main>
+</div>

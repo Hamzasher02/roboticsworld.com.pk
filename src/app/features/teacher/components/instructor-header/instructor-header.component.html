@@ -1,0 +1,80 @@
+<header
+  class="flex w-full items-center justify-between border-b border-gray-200 bg-white px-4 py-2"
+>
+  <!-- Left: Logo -->
+  <div class="flex items-center gap-2">
+    <img
+      [src]="headerData.logoPath"
+      class="h-10 w-10 object-contain"
+      alt="STEAM Minds Logo"
+    />
+    <span class="text-lg font-semibold tracking-wide text-gray-800">
+      {{ headerData.appName }}
+    </span>
+  </div>
+
+  <!-- Center: Search -->
+  <div class="hidden w-[420px] sm:flex">
+    <div class="relative w-full">
+      <input
+        type="text"
+        placeholder="Search here"
+        class="w-full rounded-full border border-gray-300 py-1.5 pl-4 pr-10 text-sm text-gray-700
+               focus:outline-none focus:ring-2 focus:ring-purple-500"
+      />
+      <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-4.35-4.35m1.85-5.4a7.25 7.25 0 11-14.5 0 7.25 7.25 0 011.5-4.25 7.25 7.25 0 0113 0 7.25 7.25 0 010 8.5z"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- Right: Notification + User Info -->
+  <div class="flex items-center gap-4 mr-6">
+    <!-- Notification -->
+    <button
+      (click)="openNotifications()"
+      class="relative rounded-full bg-gray-100 p-2 text-gray-500 transition hover:bg-gray-200 hover:text-red-500"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 17h5l-1.4-1.4A2 2 0 0118 14V9a6 6 0 00-12 0v5a2 2 0 01-.6 1.6L4 17h5m6 0a3 3 0 11-6 0h6z"
+        />
+      </svg>
+
+      <span
+        *ngIf="notificationCount > 0"
+        class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] text-white"
+      >
+        {{ notificationCount }}
+      </span>
+    </button>
+
+    <!-- User Info (NO DROPDOWN) -->
+    <div class="flex items-center gap-3">
+      <img
+        [src]="userAvatar"
+        (error)="onAvatarError($event)"
+        class="h-10 w-10 rounded-full object-cover"
+        alt="Instructor"
+      />
+
+      <div class="flex flex-col leading-tight">
+        <span class="text-sm font-semibold text-gray-900">
+          {{ userName }}
+        </span>
+        <span class="text-xs text-gray-500">
+          {{ userRoleLabel }}
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 🔥 WHEN ICON CLICKED → SHOW NOTIFICATION LIST -->
+<div *ngIf="showNotifications" class="mt-4">
+  <app-notification-list></app-notification-list>
+</div>

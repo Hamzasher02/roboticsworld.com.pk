@@ -1,0 +1,96 @@
+﻿<!-- Start New Discussion -->
+<div class="min-h-screen bg-white">
+    <div class="mx-auto max-w-6xl sm:px-6 sm:py-10">
+        <!-- Back + Title -->
+        <a aria-label="Back" [routerLink]="['/student/forum']"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-700 hover:bg-gray-50">
+            <img src="assets/student/buy course/LeftArrow.svg" alt="Back" class="h-5 w-5" />
+        </a>
+
+        <div class="flex items-center gap-4">
+            <div>
+                <h1 class="text-[24px] font-bold">
+                    Start New Discussion
+                </h1>
+
+                <!-- removed on < sm -->
+                <p class="mt-2 hidden text-[14px] sm:block">
+                    Share your thoughts and engage with the community
+                </p>
+            </div>
+        </div>
+
+        <!-- Section heading -->
+        <h2 class="mt-10 text-[24px] font-semibold text-orange-500">
+            Create Your Post
+        </h2>
+
+        <!-- Form -->
+        <form class="mt-6" (ngSubmit)="onSubmit()">
+
+            <div *ngIf="error" class="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded">
+                {{error}}
+            </div>
+
+            <!-- Discussion Title -->
+            <div>
+                <label class="block text-[12px] text-gray-500">Discussion Title</label>
+                <input type="text" name="title" [(ngModel)]="postData.title" required
+                    placeholder="what would you like to discuss"
+                    class="mt-2 h-11 w-full rounded-sm border border-gray-200 bg-gray-100 px-4 text-[14px] !text-black placeholder:text-gray-400 focus:border-gray-300 focus:outline-none">
+            </div>
+
+            <!-- Category -->
+            <div class="mt-6">
+                <label class="block text-[12px] text-gray-500">Category</label>
+                <select name="category" [(ngModel)]="postData.categoryId" required
+                    class="mt-2 h-11 w-full rounded-sm border border-gray-200 bg-gray-100 px-4 text-[14px] !text-black font-medium focus:border-gray-300 focus:outline-none">
+                    <option value="" disabled selected>Select a category</option>
+                    <option *ngFor="let cat of categories" [value]="cat.id || cat._id" class="!text-black !bg-white">
+                        {{cat.categoryName || cat.name || cat.category}}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="mt-6">
+                <label class="block text-[12px] text-gray-500">Description</label>
+                <textarea rows="6" name="description" [(ngModel)]="postData.description" required
+                    placeholder="Describe your topic in detail. The more context you provide, the better response you'll get"
+                    class="mt-2 w-full resize-none rounded-sm border border-gray-200 bg-gray-100 px-4 py-3 text-[14px] !text-black placeholder:text-gray-400 focus:border-gray-300 focus:outline-none"></textarea>
+            </div>
+
+            <!-- Bottom row -->
+            <div class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <!-- Left buttons -->
+                <div class="flex flex-wrap items-center gap-4">
+                    <button type="button"
+                        class="inline-flex h-11 w-[150px] items-center justify-center gap-2 rounded-sm border border-gray-200 bg-white text-[12px] font-bold text-black shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-gray-50">
+                        <img src="assets/student/forum/add-image-icon.svg" alt="" class="h-5 w-5">
+                        Add Image
+                    </button>
+
+                    <button type="button"
+                        class="inline-flex h-11 w-[150px] items-center justify-center gap-2 rounded-sm border border-gray-200 bg-white text-[12px] font-bold text-black shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-gray-50">
+                        <img src="assets/student/forum/AttachFile.svg" alt="" class="h-5 w-5">
+                        Attach File
+                    </button>
+                </div>
+
+                <!-- Right submit -->
+                <button type="submit" [disabled]="submitting"
+                    class="h-10 w-full bg-orange-500 px-4 text-[11px] font-semibold text-white shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-orange-600 sm:h-11 sm:w-[160px] sm:px-0 sm:text-[12px] disabled:bg-gray-400">
+                    {{ submitting ? 'Posting...' : 'Post Discussion' }}
+                </button>
+            </div>
+
+            <!-- Tip (hidden on < sm) -->
+            <div class="mt-6 hidden items-center gap-2 text-[12px] text-gray-500 sm:flex">
+                <span aria-hidden="true">
+                    <img src="assets/student/forum/Lightbulb.svg" alt="">
+                </span>
+                <p>Tip: Clear, detailed posts get better responses!</p>
+            </div>
+        </form>
+    </div>
+</div>

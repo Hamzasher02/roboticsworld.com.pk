@@ -1,0 +1,225 @@
+<!-- new-session-detail.component.html -->
+<div *ngIf="isLoading" class="py-6 text-center text-xs text-gray-500">
+  Loading...
+</div>
+
+<section class="min-h-screen bg-white">
+  <div class="mx-auto flex w-full flex-col px-4 pb-10 pt-4 sm:px-6 lg:max-w-[980px]">
+    <!-- Breadcrumb -->
+    <nav class="flex flex-wrap items-center gap-2 text-[10px] text-[#9CA3AF] sm:text-[11px]">
+      <span class="cursor-pointer">Dashboard</span>
+      <span class="text-[#D1D5DB]">/</span>
+      <span class="cursor-pointer">Manage Sessions</span>
+    </nav>
+
+    <!-- Title -->
+    <div class="mt-3 flex items-center gap-2">
+      <button
+        type="button"
+        aria-label="Back"
+        (click)="goBack()"
+        class="flex h-8 w-8 items-center justify-center rounded-full text-[#0EA5B7] hover:bg-[#0EA5B7]/10 sm:h-9 sm:w-9"
+      >
+        <svg viewBox="0 0 24 24" class="h-4 w-4 sm:h-[18px] sm:w-[18px]" fill="none" aria-hidden="true">
+          <path
+            d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+      </button>
+
+      <h1 class="text-[14px] font-semibold text-[#111827] sm:text-[16px] lg:text-[18px]">
+        Session Details
+      </h1>
+    </div>
+
+    <!-- Course Progress -->
+    <article class="mt-4 overflow-hidden rounded-[8px] border border-[#E5E7EB] bg-white">
+      <div class="flex flex-col px-4 pb-3 pt-3 sm:px-5 sm:pb-4 sm:pt-4">
+        <div class="text-[11px] font-semibold text-[#111827] sm:text-[12px]">
+          Course Progress
+        </div>
+
+        <div class="mt-2 flex items-center justify-between">
+          <div class="text-[10px] font-semibold text-[#6B7280] sm:text-[11px]">Progress</div>
+          <div class="text-[10px] font-semibold text-[#6B7280] sm:text-[11px]">
+            {{ completedSessions }} of {{ totalSessions }} Sessions
+          </div>
+        </div>
+
+        <div class="mt-2 flex h-[6px] w-full overflow-hidden rounded-full bg-[#E5E7EB]">
+          <div
+            class="h-full rounded-full bg-[#089BC4] transition-all"
+            [style.width.%]="progressPercent"
+          ></div>
+        </div>
+
+        <div class="mt-2 text-[10px] font-medium text-[#9CA3AF] sm:text-[11px]">
+          {{ remainingSessions }} Sessions Remaining
+        </div>
+      </div>
+    </article>
+
+    <!-- Student card -->
+    <article class="mt-3 overflow-hidden rounded-[8px] border border-[#E5E7EB] bg-white">
+      <div class="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 overflow-hidden rounded-full border border-[#E5E7EB] bg-[#F3F4F6] sm:h-12 sm:w-12">
+            <img [src]="student.avatar" alt="Student avatar" class="h-full w-full object-cover" />
+          </div>
+
+          <div class="flex flex-col">
+            <div class="text-[12px] font-semibold text-[#111827] sm:text-[13px]">
+              {{ student.name }}
+            </div>
+            <div class="text-[10px] font-medium text-[#9CA3AF] sm:text-[11px]">
+              {{ student.role }}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2 sm:items-end">
+          <div class="flex flex-wrap items-center gap-4 sm:gap-6">
+            <div class="flex items-center gap-2 text-[10px] font-medium text-[#6B7280] sm:text-[11px]">
+              <img [src]="student.durationIcon" alt="Duration" class="h-4 w-4 object-contain" />
+              <span>{{ student.duration }}</span>
+            </div>
+
+            <div class="text-[10px] font-medium text-[#6B7280] sm:text-[11px]">
+              {{ student.days }}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-[10px] font-medium text-[#6B7280] sm:text-[11px]">
+            <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#111827]" fill="none" aria-hidden="true">
+              <path
+                d="M12 7v5l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>{{ student.time }}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Live Sessions (dynamic) -->
+    <article *ngIf="liveSession" class="mt-3 rounded-[8px] border border-[#E5E7EB] bg-[#F8FAFC]">
+      <div class="px-4 py-4 sm:px-5">
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center">
+              <img [src]="liveSession.icon" alt="Live" class="h-5 w-5 object-contain" />
+            </span>
+            <div class="text-[12px] font-semibold text-[#111827] sm:text-[13px]">
+              {{ liveSession.title }}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center">
+              <img [src]="liveSession.calendarIcon" alt="Calendar" class="h-5 w-5 object-contain" />
+            </span>
+            <div class="text-[12px] font-semibold text-[#111827] sm:text-[13px]">
+              {{ liveSession.whenText }}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="flex h-6 w-6 items-center justify-center">
+              <img [src]="liveSession.clockIcon" alt="Timer" class="h-5 w-5 object-contain" />
+            </span>
+            <div class="text-[13px] font-semibold text-[#EEE603] sm:text-[14px]">
+              Starts In {{ liveCountdown }}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            (click)="joinLiveClass()"
+            class="mt-1 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[6px]
+                   bg-[#0EA5B7] px-4 text-[11px] font-semibold text-white
+                   shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C94A4] sm:w-[190px] sm:text-[12px]"
+          >
+            <img [src]="liveSession.joinIcon" alt="Join" class="h-4 w-4 object-contain" />
+            <span>{{ liveSession.joinText }}</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- ✅ Modules list (NO headings now) -->
+    <div class="mt-6 flex flex-col gap-6">
+      <div *ngFor="let m of modules; trackBy: trackByModuleId" class="flex flex-col">
+        <div class="flex flex-col gap-2">
+          <div
+            *ngFor="let s of m.sessions; trackBy: trackBySessionId"
+            class="flex items-center justify-between rounded-[10px] border border-[#E5E7EB] px-3 py-3 shadow-[0_1px_0_rgba(0,0,0,0.06)]"
+            [ngClass]="{
+              'bg-[#D9FBE6]': s.status === 'completed',
+              'bg-[#D9EEF7]': s.status === 'active',
+              'bg-white': s.status === 'upcoming'
+            }"
+          >
+            <!-- Left -->
+            <div class="flex min-w-0 items-center gap-3">
+              <!-- Counting Badge -->
+              <div
+                class="flex h-[44px] w-[44px] flex-none items-center justify-center rounded-xl bg-white
+                       shadow-[0_10px_24px_rgba(17,24,39,0.14)] sm:h-[56px] sm:w-[56px]"
+              >
+                <span class="text-[14px] font-semibold leading-none text-[#111827] sm:text-[16px]">
+                  {{ s.sessionNo }}
+                </span>
+              </div>
+
+              <!-- Text -->
+              <div class="flex min-w-0 flex-col">
+                <!-- ✅ moduleName -->
+                <div class="truncate text-[11px] font-semibold text-[#111827] sm:text-[12px]">
+                  {{ s.title }}
+                </div>
+
+                <!-- ✅ moduleDescription instead of Session 1 -->
+                <div class="mt-0.5 line-clamp-2 text-[9px] font-medium text-[#6B7280] sm:text-[10px]">
+                  {{ s.description || '—' }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Checkbox -->
+            <button
+              type="button"
+              (click)="toggleSession(m.id, s.id)"
+              [disabled]="lockActiveSession && s.status === 'active'"
+              class="flex h-7 w-7 flex-none items-center justify-center rounded-[6px] border bg-white
+                     shadow-[0_1px_0_rgba(0,0,0,0.06)] sm:h-8 sm:w-8"
+              [ngClass]="
+                s.status === 'completed'
+                  ? 'border-transparent'
+                  : (lockActiveSession && s.status === 'active')
+                      ? 'border-[#D1D5DB] opacity-50'
+                      : 'border-[#D1D5DB]'
+              "
+              aria-label="Mark session complete"
+            >
+              <img
+                *ngIf="s.status === 'completed'"
+                src="/assets/instructor-images/session/Check.svg"
+                alt="Checked"
+                class="h-4 w-4 object-contain sm:h-[18px] sm:w-[18px]"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

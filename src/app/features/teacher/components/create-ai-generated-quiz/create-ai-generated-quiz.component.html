@@ -1,0 +1,799 @@
+<!-- create-ai-generated-quiz.component.html -->
+<section class="min-h-screen bg-white">
+  <div class="mx-auto w-full max-w-[1200px] px-4 py-6 sm:px-6">
+
+    <!-- Top header bar -->
+    <header
+      class="overflow-hidden rounded-[10px] border border-gray-100 bg-[#F6F8FF] shadow-[0_10px_26px_rgba(0,0,0,0.10)]">
+      <div class="flex items-center gap-4 px-5 py-4">
+
+        <button type="button" (click)="goBack()" aria-label="Back"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-black/5">
+          <img [src]="header.backIcon" alt="Back" class="h-3 w-3" />
+        </button>
+
+        <div class="flex h-9 w-9 items-center justify-center rounded-[8px] bg-[#4F46E5]">
+          <img [src]="header.headerIcon" alt="" class="h-4 w-4" />
+        </div>
+
+        <div class="min-w-0">
+          <div class="text-[14px] font-semibold text-gray-900">{{ header.title }}</div>
+          <div class="mt-0.5 text-[11px] text-gray-500">{{ header.subtitle }}</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main big card -->
+    <div
+      class="mt-6 overflow-hidden rounded-[10px] border border-gray-100 bg-white shadow-[0_18px_40px_rgba(0,0,0,0.12)]">
+
+      <!-- Stepper row -->
+      <div class="px-6 pt-6">
+        <div class="mx-auto flex max-w-[720px] items-center justify-center">
+          <div class="flex w-full items-center justify-between">
+
+            <div *ngFor="let s of steps; let i = index; let last = last" class="flex flex-1 items-center">
+              <button type="button" (click)="setStep(s.key)" class="flex items-center gap-2"
+                [attr.aria-current]="s.active ? 'step' : null">
+                <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border" [ngClass]="s.active || isCompletedByIndex(i)
+                    ? 'border-[#0EA5B7] bg-[#0EA5B7]'
+                    : 'border-gray-200 bg-[#E5E7EB]'">
+                  <img [src]="(s.active || isCompletedByIndex(i)) ? s.iconWhite : s.icon" alt="" class="h-2 w-3" />
+                </span>
+
+                <span class="text-[12px] font-medium"
+                  [ngClass]="s.active || isCompletedByIndex(i) ? 'text-gray-900' : 'text-gray-400'">
+                  {{ s.label }}
+                </span>
+              </button>
+
+              <!-- connector line -->
+              <div *ngIf="!last" class="mx-3 h-[2px] flex-1 rounded-full"
+                [ngClass]="isCompletedByIndex(i + 1) ? 'bg-[#0EA5B7]' : 'bg-[#E5E7EB]'"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Center heading changes per step -->
+        <div class="mt-8 text-center">
+          <h1 class="text-[16px] font-semibold text-gray-900" *ngIf="activeStep === 'setup'">Quiz Information</h1>
+          <h1 class="text-[16px] font-semibold text-gray-900" *ngIf="activeStep === 'content'">Provide Content for AI
+          </h1>
+
+          <p class="mt-1 text-[11px] text-gray-500" *ngIf="activeStep === 'setup'">
+            Set up your quiz details and context
+          </p>
+
+          <p class="mt-1 text-[11px] text-gray-500" *ngIf="activeStep === 'content'">
+            Upload files or provide text for AI to generate questions
+          </p>
+        </div>
+      </div>
+
+      <!-- =========================
+           SETUP STEP
+      ========================= -->
+      <ng-container *ngIf="activeStep === 'setup'">
+        <div class="px-6 pb-6 pt-6">
+
+          <div class="flex flex-col gap-6 lg:flex-row">
+            <!-- LEFT: Basic Information -->
+            <article class="flex-1 rounded-[10px] border border-[#D6E8FF] bg-[#EEF6FF] p-5">
+              <!-- Section title -->
+              <div class="flex items-center gap-2">
+                <img src="/assets/instructor-images/quiz/Vector (13).svg" alt="" class="h-3 w-3" />
+                <div class="text-[12px] font-semibold text-[#1D4ED8]">Basic Information</div>
+              </div>
+
+              <div class="mt-5 flex flex-col gap-4">
+                <!-- Quiz Title -->
+                <div>
+                  <label class="text-[11px] font-semibold text-[#1D4ED8]">Quiz Title *</label>
+                  <input [(ngModel)]="form.title" name="title" type="text" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-800
+                         placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100" />
+                </div>
+
+                <!-- Category / Sub Category -->
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Category*</label>
+                    <select [(ngModel)]="form.category" name="category" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let c of categories" [value]="c.value">{{ c.label }}</option>
+                    </select>
+                  </div>
+
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Sub Category</label>
+                    <select [(ngModel)]="form.subCategory" name="subCategory" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let s of subCategories" [value]="s.value">{{ s.label }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Course / Level -->
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Course *</label>
+                    <select [(ngModel)]="form.course" name="course" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let c of courses" [value]="c.value">{{ c.label }}</option>
+                    </select>
+                  </div>
+
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Level*</label>
+                    <select [(ngModel)]="form.level" name="level" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let l of levels" [value]="l.value">{{ l.label }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Age group / Module -->
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Age group*</label>
+                    <select [(ngModel)]="form.ageGroup" name="ageGroup" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let a of ageGroups" [value]="a.value">{{ a.label }}</option>
+                    </select>
+                  </div>
+
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#1D4ED8]">Module *</label>
+                    <select [(ngModel)]="form.module" name="module" class="mt-2 h-9 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-blue-100">
+                      <option *ngFor="let m of modules" [value]="m.value">{{ m.label }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                  <label class="text-[11px] font-semibold text-[#1D4ED8]">Description</label>
+                  <textarea [(ngModel)]="form.description" name="description" rows="4" class="mt-2 w-full rounded-[6px] border border-[#93C5FD] bg-white px-3 py-2 text-[11px] text-gray-800
+                         placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100"></textarea>
+                </div>
+              </div>
+            </article>
+
+            <!-- RIGHT: AI Generation Settings -->
+            <article class="flex-1 rounded-[10px] border border-[#E9D5FF] bg-[#F7F1FF] p-5">
+              <div class="flex items-center gap-2">
+                <img src="/assets/instructor-images/quiz/Vector (14).svg" alt="" class="h-3 w-3" />
+                <div class="text-[12px] font-semibold text-[#7C3AED]">AI Generation Settings</div>
+              </div>
+
+              <div class="mt-5 flex flex-col gap-4">
+                <!-- Learning objectives -->
+                <div>
+                  <label class="text-[11px] font-semibold text-[#7C3AED]">Learning Objectives</label>
+                  <textarea [(ngModel)]="form.learningObjectives" name="learningObjectives" rows="3" class="mt-2 w-full rounded-[6px] border border-[#C4B5FD] bg-white px-3 py-2 text-[11px] text-gray-800
+                         focus:outline-none focus:ring-4 focus:ring-purple-100"></textarea>
+                </div>
+
+                <!-- Number of questions / Difficulty -->
+                <div class="flex flex-col gap-4 sm:flex-row">
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#7C3AED]">Number of Questions</label>
+                    <input [(ngModel)]="form.numberOfQuestions" name="numberOfQuestions" type="number" class="mt-2 h-9 w-full rounded-[6px] border border-[#C4B5FD] bg-white px-3 text-[11px] text-gray-800
+                           focus:outline-none focus:ring-4 focus:ring-purple-100" />
+                  </div>
+
+                  <div class="flex-1">
+                    <label class="text-[11px] font-semibold text-[#7C3AED]">Difficulty Level</label>
+                    <select [(ngModel)]="form.difficulty" name="difficulty" class="mt-2 h-9 w-full rounded-[6px] border border-[#C4B5FD] bg-white px-3 text-[11px] text-gray-700
+                           focus:outline-none focus:ring-4 focus:ring-purple-100">
+                      <option *ngFor="let d of difficulties" [value]="d.value">{{ d.label }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Question Types -->
+                <div>
+                  <label class="text-[11px] font-semibold text-[#7C3AED]">Question Types</label>
+
+                  <div class="mt-3 flex flex-col flex-wrap gap-3 sm:flex-row">
+                    <button *ngFor="let qt of questionTypeCards" type="button" (click)="toggleQuestionType(qt.key)"
+                      class="relative flex h-[56px] w-full items-center rounded-[8px] border px-4 text-left sm:w-[calc(50%-6px)]"
+                      [ngClass]="isSelectedType(qt.key)
+                        ? 'border-[#8B5CF6] bg-[#F5F3FF] shadow-[0_6px_16px_rgba(0,0,0,0.06)]'
+                        : 'border-[#E5E7EB] bg-[#F7F7FB]'" aria-label="Select question type">
+
+                      <img [src]="qt.icon" alt=""
+                        class="absolute left-1/2 top-[14px] h-3 w-3 -translate-x-1/2" />
+
+                      <span class="mt-[18px] text-[11px] font-medium"
+                        [ngClass]="isSelectedType(qt.key) ? 'text-[#7C3AED]' : 'text-[#111827]'">
+                        {{ qt.label }}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Focus Areas -->
+                <div>
+                  <label class="text-[11px] font-semibold text-[#7C3AED]">Focus Areas</label>
+                  <input [(ngModel)]="form.focusAreas" name="focusAreas" type="text" class="mt-2 h-9 w-full rounded-[6px] border border-[#C4B5FD] bg-white px-3 text-[11px] text-gray-800
+                         focus:outline-none focus:ring-4 focus:ring-purple-100" />
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Bottom actions -->
+          <div class="mt-6 flex items-center justify-between px-1">
+            <button type="button"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] border border-gray-200 bg-white px-4 text-[11px]  text-gray-700 hover:bg-gray-50"
+              (click)="goBack()">
+              <span class="text-[12px] leading-none">←</span>
+              Back
+            </button>
+
+            <button type="button"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] bg-[#0EA5B7] px-5 text-[11px] font-semibold text-white
+                     shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100"
+              (click)="next()">
+              Next: Add Content
+              <span class="text-[14px] leading-none">→</span>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- =========================
+           CONTENT STEP
+      ========================= -->
+      <ng-container *ngIf="activeStep === 'content'">
+        <div class="px-6 pb-6 pt-6">
+
+          <!-- Toggle buttons (center) -->
+          <div class="mt-2 flex items-center justify-center gap-3">
+            <button type="button" (click)="setContentMode('upload')"
+              class="inline-flex h-9 items-center gap-2 rounded-[6px] border px-5 text-[11px] " [ngClass]="contentMode === 'upload'
+          ? 'border-[#48C7EA] bg-[#FAF5FF] text-[#089BC4] shadow-[0_1px_0_rgba(0,0,0,0.04)]'
+          : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'">
+              <img src="/assets/instructor-images/quiz/upload.svg" alt="" class="h-3.5 w-3.5" />
+              Upload Files
+            </button>
+
+            <button type="button" (click)="setContentMode('prompt')"
+              class="inline-flex h-9 items-center gap-2 rounded-[6px] border px-5 text-[11px]" [ngClass]="contentMode === 'prompt'
+          ? 'border-[#D1D5DB] bg-white text-[#374151] shadow-[0_1px_0_rgba(0,0,0,0.04)]'
+          : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'">
+              <img src="/assets/instructor-images/quiz/Vector (18).svg" alt="" class="h-3 w-3" />
+              Text Prompt
+            </button>
+          </div>
+
+          <!-- TEXT PROMPT PANEL -->
+          <div *ngIf="contentMode === 'prompt'" class="mt-6">
+            <article class="rounded-[10px] border border-[#E9D5FF] bg-[#F7F1FF] p-5">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex h-4 w-4 items-center justify-center">
+                  <img src="/assets/instructor-images/quiz/Vector (35).svg" alt="" class="h-3 w-3" />
+                </span>
+                <div class="text-[11px] font-semibold text-[#7C3AED]">
+                  Text Content for AI Generation
+                </div>
+              </div>
+
+              <textarea [(ngModel)]="textPrompt" name="textPrompt" rows="11" class="mt-3 w-full resize-none rounded-[8px] border border-[#C4B5FD] bg-white px-3 py-3 text-[11px] leading-5 text-gray-800
+                 focus:outline-none focus:ring-4 focus:ring-purple-100"></textarea>
+
+              <div class="mt-2 text-[10px] text-[#7C3AED]">
+                <span class="font-semibold">Tips:</span>
+                Include key concepts, definitions, examples, and important information you want students to be tested on.
+              </div>
+            </article>
+          </div>
+
+          <!-- UPLOAD MODE -->
+          <div *ngIf="contentMode === 'upload'" class="mt-6">
+            <div class="rounded-[10px] border border-dashed border-[#CBD5E1] bg-white px-6 py-10">
+              <div class="mx-auto flex max-w-[520px] flex-col items-center text-center">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#F3F4F6]">
+                  <img src="/assets/instructor-images/quiz/Vector (20).svg" alt="" class="h-5 w-5" />
+                </div>
+
+                <div class="mt-4 text-[12px] font-semibold text-gray-900">
+                  Upload Course Content
+                </div>
+                <div class="mt-1 text-[10px] text-gray-500">
+                  Supported formats: PDF, DOCX, PPT, PPTX, TXT files
+                </div>
+
+                <div class="mt-5">
+                  <label class="inline-flex h-9 cursor-pointer items-center justify-center rounded-[8px] bg-[#0EA5B7] px-6 text-[11px] font-semibold text-white
+                     shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C96A7]">
+                    Choose Files
+                    <input type="file" class="hidden" multiple (change)="onChooseFiles($event)" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom actions -->
+          <div class="mt-6 flex items-center justify-between px-1">
+            <button type="button"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] border border-gray-200 bg-white px-4 text-[11px] font-semibold text-gray-700 hover:bg-gray-50"
+              (click)="backStep()">
+              <span class="text-[14px] leading-none">←</span>
+              Back
+            </button>
+
+            <button type="button" (click)="generateWithAI()" [disabled]="!canGenerate()" class="inline-flex h-9 items-center justify-center rounded-[8px] px-6 text-[11px] font-semibold
+               shadow-[0_1px_0_rgba(0,0,0,0.06)] focus:outline-none focus:ring-4" [ngClass]="canGenerate()
+          ? 'bg-[#0EA5B7] text-white hover:bg-[#0C96A7] focus:ring-sky-100'
+          : 'bg-[#E5E7EB] text-white cursor-not-allowed focus:ring-gray-100'">
+              Generate Quiz with AI
+            </button>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <!-- =========================
+           QUESTIONS STEP
+      ========================= -->
+      <ng-container *ngIf="activeStep === 'questions'">
+        <div class="px-6 pb-7 pt-6">
+
+          <!-- Header row -->
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0">
+              <div class="text-[14px] font-semibold text-gray-900">Generated Questions</div>
+              <div class="mt-1 text-[11px] text-gray-500">Review and edit AI-generated questions</div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="inline-flex items-center gap-2 text-[11px] text-gray-500">
+                <span class="inline-flex h-4 w-4 items-center justify-center ">
+                  <img src="/assets/instructor-images/quiz/tick.svg" alt="" class="h-2 w-2" />
+                </span>
+                <span>{{ generatedCount }} questions generated</span>
+              </div>
+
+              <button type="button" (click)="openAddQuestionModal()"
+                class="inline-flex h-8 items-center gap-2 rounded-[8px] bg-[#2563EB] px-4 text-[11px] font-semibold text-white
+         shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#1D4ED8] focus:outline-none focus:ring-4 focus:ring-blue-100">
+                <span class="text-[13px] leading-none">+</span>
+                Add Question
+              </button>
+            </div>
+          </div>
+
+          <!-- Questions list -->
+          <div class="mt-5 flex flex-col gap-4">
+
+            <article *ngFor="let q of questions"
+              class="rounded-[10px] border border-gray-200 bg-white p-4 shadow-[0_1px_0_rgba(0,0,0,0.03)]">
+              <!-- top row -->
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-[12px] font-semibold text-gray-900">{{ q.title }}</div>
+                  <div class="mt-1 text-[10px] leading-5 text-gray-600">
+                    {{ q.prompt }}
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1">
+                  <span
+                    class="inline-flex items-center rounded-full bg-[#FEF3C7] px-2 py-0.5 text-[9px] font-semibold text-[#92400E]">
+                    {{ difficultyLabel(q.difficulty) }}
+                  </span>
+                  <span class="text-[10px] text-gray-400">{{ q.points }} pts</span>
+
+                  <div class="flex items-center">
+                    <!-- edit -->
+                    <button type="button" (click)="openEditQuestionModal(q)"
+                      class="inline-flex h-6 w-6 items-center justify-center rounded-md hover:bg-gray-50"
+                      aria-label="Edit">
+                      <img src="/assets/instructor-images/quiz/Vector (22).svg" alt="" class="h-3 w-3" />
+                    </button>
+
+                    <!-- delete -->
+                    <button type="button" (click)="removeQuestion(q.id)"
+                      class="inline-flex h-6 w-6 items-center justify-center rounded-md hover:bg-red-50"
+                      aria-label="Delete">
+                      <img src="/assets/instructor-images/quiz/Vector (23).svg" alt="" class="h-3 w-3" />
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- MCQ -->
+              <div *ngIf="q.type === 'mcq'" class="mt-3 flex flex-col gap-2">
+                <div *ngFor="let opt of q.options; let i = index"
+                  class="flex items-start gap-2 rounded-[6px] border px-3 py-2 text-[10px]" [ngClass]="i === q.correctIndex
+      ? 'border-[#86EFAC] bg-[#ECFDF5] text-gray-900'
+      : 'border-gray-200 bg-[#F9FAFB] text-gray-700'">
+                  <span class="mt-[1px] text-[10px] text-gray-500">
+                    {{ (i === 0 ? 'A' : i === 1 ? 'B' : i === 2 ? 'C' : 'D') }}.
+                  </span>
+
+                  <span class="flex items-center gap-1">
+                    <span class="flex-1">
+                      {{ opt }}
+                    </span>
+
+                    <img *ngIf="i === q.correctIndex" src="/assets/instructor-images/quiz/tick.svg" alt="Correct"
+                      class="h-2 w-2" />
+                  </span>
+                </div>
+              </div>
+
+              <!-- True/False -->
+              <div *ngIf="q.type === 'tf'" class="mt-3 flex items-center gap-2">
+                <span class="inline-flex h-7 items-center gap-1 rounded-[6px] border px-3 text-[10px]" [ngClass]="q.tfAnswer === true
+      ? 'border-[#86EFAC] bg-[#ECFDF5] text-gray-900'
+      : 'border-gray-200 bg-white text-gray-700'">
+                  True
+                  <img *ngIf="q.tfAnswer === true" src="/assets/instructor-images/quiz/tick.svg" alt="Correct" class="h-2 w-2" />
+                </span>
+
+                <span class="inline-flex h-7 items-center gap-1 rounded-[6px] border px-3 text-[10px]" [ngClass]="q.tfAnswer === false
+      ? 'border-[#86EFAC] bg-[#ECFDF5] text-gray-900'
+      : 'border-gray-200 bg-white text-gray-700'">
+                  False
+                  <img *ngIf="q.tfAnswer === false" src="/assets/instructor-images/quiz/tick.svg" alt="Correct" class="h-3 w-3" />
+                </span>
+              </div>
+
+              <!-- Short answer -->
+              <div *ngIf="q.type === 'short'" class="mt-3">
+                <input type="text" disabled value="Short answer input field"
+                  class="h-8 w-full rounded-[6px] border border-gray-200 bg-[#F9FAFB] px-3 text-[10px] text-gray-500" />
+              </div>
+
+              <!-- Explanation box -->
+              <div class="mt-3 rounded-[6px] border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2 text-[10px] text-[#1D4ED8]">
+                <span class="font-semibold">Explanation:</span>
+                {{ q.explanation }}
+              </div>
+
+              <div class="mt-2 text-[9px] text-gray-400">
+                Source: {{ q.source }}
+              </div>
+            </article>
+
+          </div>
+
+          <!-- Bottom actions -->
+          <div class="mt-6 flex items-center justify-between">
+            <button type="button" (click)="backToContent()"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] border border-gray-200 bg-white px-4 text-[11px] font-semibold text-gray-700 hover:bg-gray-50">
+              <span class="text-[14px] leading-none">←</span>
+              Back to Content
+            </button>
+
+            <button type="button" (click)="nextToSettings()"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] bg-[#0EA5B7] px-5 text-[11px] font-semibold text-white
+               shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100">
+              Next: Quiz Settings
+              <span class="text-[14px] leading-none">→</span>
+            </button>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <!-- ✅ Add/Edit Question Modal (same design, only heading changes) -->
+      <div *ngIf="showAddQuestionModal"
+        class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-3 sm:p-4" role="dialog"
+        aria-modal="true" [attr.aria-label]="isEditMode ? 'Question Editor' : 'Add a Question'">
+
+<div class="w-full max-w-[580px]">
+  <div
+    class="flex max-h-[92vh] flex-col overflow-hidden rounded-[10px] bg-white
+           shadow-[0_18px_40px_rgba(0,0,0,0.20)]"
+  >
+
+
+            <!-- Header -->
+            <div class="shrink-0 px-6 py-4 sm:px-7 sm:py-5">
+              <div class="text-[16px] font-semibold text-gray-900">
+                {{ isEditMode ? 'Question Editor' : 'Add a Question' }}
+              </div>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 overflow-y-auto px-6 pb-6 sm:px-7">
+              <!-- Question -->
+              <div>
+                <label class="text-[12px] font-semibold text-gray-900">Question *</label>
+                <textarea [(ngModel)]="newQuestion.prompt" rows="3"
+                  class="mt-2 w-full resize-none rounded-[8px] border border-gray-200 bg-white px-4 py-3 text-[12px] text-gray-800
+                   placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                  placeholder="Enter your question here..."></textarea>
+              </div>
+
+              <!-- Answer Options -->
+              <div class="mt-5">
+                <div class="text-[12px] font-semibold text-gray-900">Answer Options</div>
+
+                <div class="mt-3 flex flex-col gap-3">
+                  <div *ngFor="let opt of newQuestion.options; let i = index" class="flex items-center gap-3">
+                    <!-- radio -->
+                    <button type="button" (click)="setCorrectOption(i)"
+                      class="inline-flex h-4 w-4 items-center justify-center rounded-full border" [ngClass]="newQuestion.correctIndex === i
+                  ? 'border-[#2563EB] bg-[#2563EB]'
+                  : 'border-gray-300 bg-white'" aria-label="Select correct option">
+                      <span class="h-2 w-2 rounded-full bg-white"
+                        [ngClass]="newQuestion.correctIndex === i ? '' : 'opacity-0'"></span>
+                    </button>
+
+                    <input [(ngModel)]="newQuestion.options[i]" type="text"
+                      class="h-10 w-full rounded-[8px] border border-gray-200 bg-white px-4 text-[12px] text-gray-800
+                       placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                      [placeholder]="'Option ' + (i === 0 ? 'A' : i === 1 ? 'B' : i === 2 ? 'C' : 'D')" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Points / Difficulty / Tags (flex instead of grid) -->
+              <div class="mt-5 flex flex-col gap-4 sm:flex-row">
+                <div class="w-full sm:flex-1">
+                  <label class="text-[12px] font-semibold text-gray-900">Points</label>
+                  <input [(ngModel)]="newQuestion.points" type="number" min="1"
+                    class="mt-2 h-10 w-full rounded-[8px] border border-gray-200 bg-white px-4 text-[12px] text-gray-800
+                     focus:outline-none focus:ring-4 focus:ring-blue-100" />
+                </div>
+
+                <div class="w-full sm:flex-1">
+                  <label class="text-[12px] font-semibold text-gray-900">Difficulty</label>
+                  <select [(ngModel)]="newQuestion.difficulty"
+                    class="mt-2 h-10 w-full rounded-[8px] border border-gray-200 bg-white px-4 text-[12px] text-gray-800
+                     focus:outline-none focus:ring-4 focus:ring-blue-100">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </div>
+
+                <div class="w-full sm:flex-1">
+                  <label class="text-[12px] font-semibold text-gray-900">Tags</label>
+                  <input [(ngModel)]="newQuestion.tags" type="text"
+                    class="mt-2 h-10 w-full rounded-[8px] border border-gray-200 bg-white px-4 text-[12px] text-gray-800
+                     placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                    placeholder="topic, concept, skill" />
+                </div>
+              </div>
+
+              <!-- Explanation -->
+              <div class="mt-5">
+                <label class="text-[12px] font-semibold text-gray-900">Explanation (Optional)</label>
+                <textarea [(ngModel)]="newQuestion.explanation" rows="2"
+                  class="mt-2 w-full resize-none rounded-[8px] border border-gray-200 bg-white px-4 py-3 text-[12px] text-gray-800
+                   placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-blue-100"
+                  placeholder="Explain why this is the correct answer..."></textarea>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="shrink-0 border-t border-gray-100 bg-white px-6 py-4 sm:px-7">
+              <div class="flex items-center justify-end gap-4">
+                <button type="button" (click)="closeAddQuestionModal()"
+                  class="inline-flex h-10 items-center justify-center rounded-[10px] bg-[#6B7280] px-10 text-[12px] font-semibold text-white
+                   hover:bg-[#5B6472] focus:outline-none focus:ring-4 focus:ring-gray-200">
+                  Cancel
+                </button>
+
+                <button type="button" (click)="confirmQuestionModal()"
+                  class="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] bg-[#2563EB] px-10 text-[12px] font-semibold text-white
+                   shadow-[0_1px_0_rgba(0,0,0,0.06)] hover:bg-[#1D4ED8] focus:outline-none focus:ring-4 focus:ring-blue-100">
+                  <span class="text-[14px] leading-none" *ngIf="!isEditMode">+</span>
+                  {{ isEditMode ? 'Edit Question' : 'Add Question' }}
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================
+           SETTINGS STEP
+      ========================= -->
+      <ng-container *ngIf="activeStep === 'settings'">
+        <div class="px-6 pb-8 pt-7">
+          <div class="text-center">
+            <div class="text-[16px] font-semibold text-gray-900">Quiz Settings</div>
+            <div class="mt-1 text-[11px] text-gray-500">
+              Configure quiz behavior and student experience
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-col gap-6 lg:flex-row">
+            <!-- LEFT: Quiz Configuration -->
+            <article class="flex-1 rounded-[12px] border border-[#BBF7D0] bg-[#ECFDF5] p-5">
+              <div class="flex items-center gap-2">
+<img
+  src="/assets/instructor-images/quiz/Vector (25).svg"
+  alt="Active"
+  class="h-3.5  w-3.5"
+/>
+                
+                <div class="text-[12px] font-semibold text-[#065F46]">Quiz Configuration</div>
+              </div>
+
+              <div class="mt-4 flex flex-col flex-wrap gap-4 sm:flex-row">
+                <div class="w-full sm:w-[calc(50%-8px)]">
+                  <label class="text-[10px] font-semibold text-[#065F46]">Time Limit (minutes)</label>
+                  <input type="number" min="1" [(ngModel)]="settings.timeLimit" class="mt-2 h-9 w-full rounded-[7px] border border-[#86EFAC] bg-white px-3 text-[11px] text-gray-900
+                     focus:outline-none focus:ring-4 focus:ring-green-100" />
+                </div>
+
+                <div class="w-full sm:w-[calc(50%-8px)]">
+                  <label class="text-[10px] font-semibold text-[#065F46]">Attempts Allowed</label>
+                  <select [(ngModel)]="settings.attemptsAllowed" class="mt-2 h-9 w-full rounded-[7px] border border-[#86EFAC] bg-white px-3 text-[11px] text-gray-900
+                     focus:outline-none focus:ring-4 focus:ring-green-100">
+                    <option value="1">1 attempt</option>
+                    <option value="2">2 attempts</option>
+                    <option value="3">3 attempts</option>
+                    <option value="0">Unlimited</option>
+                  </select>
+                </div>
+
+                <div class="w-full sm:w-[calc(50%-8px)]">
+                  <label class="text-[10px] font-semibold text-[#065F46]">Passing Score (%)</label>
+                  <input type="number" min="0" max="100" [(ngModel)]="settings.passingScore" class="mt-2 h-9 w-full rounded-[7px] border border-[#86EFAC] bg-white px-3 text-[11px] text-gray-900
+                     focus:outline-none focus:ring-4 focus:ring-green-100" />
+                </div>
+
+                <div class="w-full sm:w-[calc(50%-8px)]">
+                  <label class="text-[10px] font-semibold text-[#065F46]">Show Results</label>
+                  <select [(ngModel)]="settings.showResults" class="mt-2 h-9 w-full rounded-[7px] border border-[#86EFAC] bg-white px-3 text-[11px] text-gray-900
+                     focus:outline-none focus:ring-4 focus:ring-green-100">
+                    <option value="immediately">Immediately</option>
+                    <option value="after_submit">After Submit</option>
+                    <option value="manual">Manually (Instructor)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-col gap-3">
+                <label class="flex items-center gap-3 text-[11px] text-gray-700">
+                  <input type="checkbox" [(ngModel)]="settings.randomizeOrder"
+                    class="h-3.5 w-3.5 rounded border-gray-300 text-[#0EA5B7] focus:ring-sky-100" />
+                  Randomize question order for each student
+                </label>
+
+                <label class="flex items-center gap-3 text-[11px] text-gray-700">
+                  <input type="checkbox" [(ngModel)]="settings.allowBack"
+                    class="h-3.5 w-3.5 rounded border-gray-300 text-[#0EA5B7] focus:ring-sky-100" />
+                  Allow students to go back to previous questions
+                </label>
+
+                <label class="flex items-center gap-3 text-[11px] text-gray-700">
+                  <input type="checkbox" [(ngModel)]="settings.showProgress"
+                    class="h-3.5 w-3.5 rounded border-gray-300 text-[#0EA5B7] focus:ring-sky-100" />
+                  Show progress bar to students
+                </label>
+              </div>
+            </article>
+
+            <!-- RIGHT: Quiz Summary -->
+            <article class="flex-1 rounded-[12px] border border-[#BFDBFE] bg-[#EFF6FF] p-5">
+              <div class="flex items-center gap-2">
+<img
+  src="/assets/instructor-images/quiz/Vector (24).svg"
+  alt="Active"
+  class="h-3.5 w-3.5"
+/>
+                
+                <div class="text-[12px] font-semibold text-[#1D4ED8]">Quiz Summary</div>
+              </div>
+
+              <div class="mt-4 flex flex-col gap-2 text-[11px]">
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Title:</span>
+                  <span class="font-semibold text-gray-900">{{ summaryTitle }}</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Course:</span>
+                  <span class="font-semibold text-gray-900">{{ summaryCourse }}</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Questions:</span>
+                  <span class="font-semibold text-gray-900">{{ questionCount }}</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Total Points:</span>
+                  <span class="font-semibold text-gray-900">{{ totalPoints }}</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Time Limit:</span>
+                  <span class="font-semibold text-gray-900">{{ settings.timeLimit }} minutes</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Difficulty:</span>
+                  <span class="font-semibold text-gray-900">{{ summaryDifficulty }}</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-6">
+                  <span class="text-[#1D4ED8]">Content Source:</span>
+                  <span class="font-semibold text-gray-900">{{ contentSourceText }}</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <button type="button" (click)="backToQuestions()"
+              class="inline-flex h-9 items-center gap-2 rounded-[8px] border border-gray-200 bg-white px-4 text-[11px] font-semibold text-gray-700 hover:bg-gray-50">
+              <span class="text-[14px] leading-none">←</span>
+              Back to Questions
+            </button>
+
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
+
+  <!-- Save as Draft -->
+  <button
+    type="button"
+    (click)="saveDraft()"
+    class="inline-flex h-9 items-center justify-center gap-2 rounded-[8px]
+           border border-[#93C5FD] bg-white px-6 text-[11px] font-semibold text-[#2563EB]
+           hover:bg-[#EFF6FF] focus:outline-none focus:ring-4 focus:ring-blue-100"
+  >
+    <img
+      src="/assets/instructor-images/quiz/Vector (26).svg"
+      alt=""
+      class="h-3.5 w-3.5"
+    />
+    Save as Draft
+  </button>
+
+  <!-- Preview -->
+  <button
+    type="button"
+    (click)="previewQuiz()"
+    class="inline-flex h-9 items-center justify-center gap-2 rounded-[8px]
+           border border-[#93C5FD] bg-white px-6 text-[11px] font-semibold text-[#2563EB]
+           hover:bg-[#EFF6FF] focus:outline-none focus:ring-4 focus:ring-blue-100"
+  >
+    <img
+      src="/assets/instructor-images/quiz/Vector (27).svg"
+      alt=""
+      class="h-3.5 w-3.5"
+    />
+    Preview
+  </button>
+
+  <!-- Publish Quiz -->
+  <button
+    type="button"
+    (click)="publishQuiz()"
+    class="inline-flex h-9 items-center justify-center gap-2 rounded-[8px]
+           bg-[#0EA5B7] px-7 text-[11px] font-semibold text-white
+           shadow-[0_1px_0_rgba(0,0,0,0.06)]
+           hover:bg-[#0C96A7] focus:outline-none focus:ring-4 focus:ring-sky-100"
+  >
+    <img
+      src="/assets/instructor-images/quiz/Vector (28).svg"
+      alt=""
+      class="h-3.5 w-3.5"
+    />
+    Publish Quiz
+  </button>
+
+</div>
+
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</section>
+
